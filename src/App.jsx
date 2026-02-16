@@ -18,6 +18,7 @@ import {
     ChevronDown,
     Briefcase,
     GraduationCap,
+    Loader,
     Globe,
     Download,
     Sun,
@@ -85,6 +86,40 @@ const Card = ({ children, className = "", noPadding = false, delay = 0, style = 
         {children}
     </motion.div>
 );
+
+// Project Image Component with Loading State
+const ProjectImage = ({ project }) => {
+    const [isLoading, setIsLoading] = useState(true);
+
+    return (
+        <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {isLoading && (
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-card)' }}>
+                    <Loader className="spin-animation" size={32} color="var(--accent-primary)" />
+                </div>
+            )}
+            <img
+                src={project.image}
+                alt={project.title}
+                loading="lazy"
+                decoding="async"
+                onLoad={() => setIsLoading(false)}
+                style={{
+                    width: !project.isWeb ? 'auto' : '100%',
+                    height: '100%',
+                    objectFit: project.isMobile ? 'contain' : 'cover',
+                    filter: 'desaturate(0.02) contrast(1.05)',
+                    transition: 'all 0.5s ease, opacity 0.5s ease',
+                    opacity: isLoading ? 0 : 1,
+                    borderRadius: !project.isWeb ? '12px' : 'clamp(16px, 4vw, 40px)',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+                    display: 'block'
+                }}
+                className="project-image"
+            />
+        </div>
+    );
+};
 
 const App = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -857,21 +892,7 @@ const App = () => {
                                         )}
                                     </motion.div>
                                     {project.image ? (
-                                        <img
-                                            src={project.image}
-                                            alt={project.title}
-                                            style={{
-                                                width: !project.isWeb ? 'auto' : '100%',
-                                                height: '100%',
-                                                objectFit: project.isMobile ? 'contain' : 'cover',
-                                                filter: 'desaturate(0.02) contrast(1.05)',
-                                                transition: 'all 0.5s ease',
-                                                borderRadius: !project.isWeb ? '12px' : 'clamp(16px, 4vw, 40px)',
-                                                boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-                                                display: 'block'
-                                            }}
-                                            className="project-image"
-                                        />
+                                        <ProjectImage project={project} />
                                     ) : (
                                         <div style={{ textAlign: 'center', opacity: 0.4, zIndex: 1, position: 'relative' }}>
                                             {project.title.includes("Mobile") || project.title.includes("Ride") ? <Smartphone size={100} className="accent-text" /> : <Globe size={100} className="accent-text" />}
@@ -1193,8 +1214,9 @@ const App = () => {
                     .nav-links { display: none !important; }
                     .menu-toggle { display: flex !important; }
                     section { padding: 80px 24px; }
+                    #hero { padding-top: 60px !important; }
+                    #hero h1 { font-size: 3rem !important; margin-top: 100px !important; }
                     .project-image-placeholder { height: 300px !important; }
-                    #hero h1 { font-size: 3rem !important; }
                     footer > div:first-child { flex-direction: column !important; gap: 40px !important; }
                 }
 
