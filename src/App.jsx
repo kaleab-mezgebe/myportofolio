@@ -23,7 +23,11 @@ import {
     Sun,
     Moon,
     Server,
-    Play
+    Play,
+    Menu,
+    X,
+    Twitter,
+    Instagram
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -60,7 +64,7 @@ const SectionHeading = ({ children, subtitle, align = "center" }) => (
     </div>
 );
 
-const Card = ({ children, className = "", noPadding = false, delay = 0 }) => (
+const Card = ({ children, className = "", noPadding = false, delay = 0, style = {}, ...props }) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -68,7 +72,15 @@ const Card = ({ children, className = "", noPadding = false, delay = 0 }) => (
         transition={{ duration: 0.5, delay }}
         whileHover={{ y: -10, scale: 1.02 }}
         className={`glass-card card-hover ${className}`}
-        style={{ padding: noPadding ? '0' : '32px', transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)', height: '100%', display: 'flex', flexDirection: 'column' }}
+        style={{
+            padding: noPadding ? '0' : '32px',
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            ...style
+        }}
+        {...props}
     >
         {children}
     </motion.div>
@@ -109,6 +121,7 @@ const App = () => {
 
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [selectedVideo, setSelectedVideo] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const VideoModal = ({ videoSrc, onClose }) => (
         <motion.div
@@ -153,6 +166,108 @@ const App = () => {
             <AnimatePresence>
                 {selectedVideo && <VideoModal videoSrc={selectedVideo} onClose={() => setSelectedVideo(null)} />}
             </AnimatePresence>
+
+            {/* Mobile Drawer */}
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsMenuOpen(false)}
+                            style={{
+                                position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 998
+                            }}
+                        />
+                        <motion.div
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            style={{
+                                position: 'fixed', top: 0, right: 0, bottom: 0, width: '300px', maxWidth: '80%',
+                                background: 'var(--bg-card)', backdropFilter: 'blur(20px)',
+                                borderLeft: '1px solid var(--glass-border)', zIndex: 999,
+                                display: 'flex', flexDirection: 'column',
+                                boxShadow: '-10px 0 30px rgba(0,0,0,0.5)'
+                            }}
+                        >
+                            <div style={{
+                                padding: '32px',
+                                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                borderBottom: '1px solid var(--glass-border)',
+                                background: 'linear-gradient(to right, rgba(129, 140, 248, 0.1), transparent)'
+                            }}>
+                                <span style={{ fontWeight: 900, fontSize: '1.4rem', letterSpacing: '-0.5px' }}>
+                                    KALEAB<span className="accent-text">.M</span>
+                                </span>
+                                <button
+                                    onClick={() => setIsMenuOpen(false)}
+                                    style={{
+                                        background: 'var(--glass-border)',
+                                        color: 'var(--text-main)',
+                                        padding: '8px',
+                                        borderRadius: '50%',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        border: '1px solid var(--glass-border)'
+                                    }}>
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1, overflowY: 'auto' }}>
+                                {[
+                                    { name: 'Home', href: '#hero' },
+                                    { name: 'Portfolio', href: '#projects' },
+                                    { name: 'Experience', href: '#experience' },
+                                    { name: 'Services', href: '#services' },
+                                    { name: 'About', href: '#about' },
+                                    { name: 'Contact', href: '#contact' }
+                                ].map((item) => (
+                                    <motion.a
+                                        key={item.name}
+                                        href={item.href}
+                                        onClick={() => setIsMenuOpen(false)}
+                                        whileTap={{ scale: 0.98 }}
+                                        style={{
+                                            color: 'var(--text-main)',
+                                            display: 'flex', alignItems: 'center', gap: '16px',
+                                            padding: '16px',
+                                            borderRadius: '12px',
+                                            fontSize: '1.1rem', fontWeight: 600,
+                                            background: 'var(--glass-border)',
+                                            border: '1px solid transparent',
+                                            transition: 'all 0.2s ease'
+                                        }}
+                                        className="drawer-link"
+                                    >
+                                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 10px var(--accent-primary)' }}></span>
+                                        {item.name}
+                                    </motion.a>
+                                ))}
+                            </div>
+
+                            <div style={{ padding: '32px', borderTop: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)' }}>
+                                <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', justifyContent: 'center' }}>
+                                    {[
+                                        { Icon: Github, link: "https://github.com/kaleab-mezgebe" },
+                                        { Icon: Linkedin, link: "https://linkedin.com/in/kaleab-mezgebe-764a56198/" },
+                                        { Icon: Mail, link: "mailto:kaleabmezgebe4@gmail.com" }
+                                    ].map(({ Icon, link }, i) => (
+                                        <a key={i} href={link} target="_blank" style={{ padding: '10px', background: 'var(--glass-border)', borderRadius: '12px', color: 'var(--text-muted)', display: 'flex' }}>
+                                            <Icon size={20} />
+                                        </a>
+                                    ))}
+                                </div>
+                                <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', opacity: 0.6 }}>
+                                    © {new Date().getFullYear()} Kaleab Mezgebe
+                                </p>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
             {/* Background Decor */}
             <div style={{ position: 'fixed', top: '10%', left: '-5%', width: '600px', height: '600px', background: 'var(--accent-primary)', filter: 'blur(180px)', opacity: isDarkMode ? 0.08 : 0.05, zIndex: -1 }}></div>
             <div style={{ position: 'fixed', bottom: '10%', right: '-5%', width: '500px', height: '500px', background: 'var(--accent-secondary)', filter: 'blur(180px)', opacity: isDarkMode ? 0.08 : 0.05, zIndex: -1 }}></div>
@@ -192,7 +307,7 @@ const App = () => {
                         <a href="#contact" className="nav-link">Contact</a>
                     </div>
 
-                    <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme">
+                    <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme" style={{ width: '40px', height: '40px' }}>
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={isDarkMode ? 'moon' : 'sun'}
@@ -205,17 +320,30 @@ const App = () => {
                             </motion.div>
                         </AnimatePresence>
                     </button>
+
+                    <button
+                        className="menu-toggle"
+                        onClick={() => setIsMenuOpen(true)}
+                        style={{
+                            background: 'var(--bg-card)', border: '1px solid var(--glass-border)',
+                            borderRadius: '12px', width: '40px', height: '40px', display: 'none',
+                            alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        <Menu size={24} />
+                    </button>
                 </div>
             </nav>
 
-            <section id="hero" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '120px 6% 60px 6%', position: 'relative' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '60px', alignItems: 'center', width: '100%' }}>
+            <section id="hero" className="hero-container">
+                <div className="hero-grid">
                     {/* Left Content */}
-                    <div style={{ textAlign: 'left' }}>
+                    <div className="hero-text-content">
                         <motion.h1
                             initial={{ opacity: 0, x: -30 }}
                             animate={{ opacity: 1, x: 0 }}
-                            style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 900, lineHeight: 1, marginBottom: '20px', letterSpacing: '-0.02em', position: 'relative' }}
+                            className="hero-title"
                         >
                             Kaleab<br />Mezgebe
                             <motion.div
@@ -230,6 +358,7 @@ const App = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
+                            className="hero-description"
                             style={{ marginTop: '40px', maxWidth: '550px' }}
                         >
                             <div style={{ marginBottom: '25px' }}>
@@ -251,7 +380,7 @@ const App = () => {
                                 Mastering cross-platform <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Mobile and Web Development</span> skills to transform ideas into attractive digital visuals.
                             </p>
 
-                            <div style={{ display: 'flex', gap: '60px', alignItems: 'center' }}>
+                            <div className="hero-stats">
 
                                 <div style={{ width: '1px', height: '60px', background: 'var(--glass-border)' }} />
                                 <div>
@@ -263,7 +392,7 @@ const App = () => {
                     </div>
 
                     {/* Right Image Container */}
-                    <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+                    <div className="hero-image-container">
                         {/* Background Splatter/Glows - Expanded and more visible */}
                         <motion.div
                             animate={{
@@ -273,6 +402,7 @@ const App = () => {
                                 y: [0, -30, 0]
                             }}
                             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                            className="bg-blob"
                             style={{
                                 position: 'absolute', top: '-10%', right: '-30%',
                                 width: '500px', height: '500px',
@@ -337,13 +467,7 @@ const App = () => {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8 }}
-                            style={{
-                                width: '380px', height: '480px', borderRadius: '32px',
-                                // background: 'transparent',
-                                overflow: 'hidden', position: 'relative',
-                                // boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-                                zIndex: 2
-                            }}
+                            className="hero-image-wrapper"
                         >
                             <img
                                 src="/assets/myphoto.png"
@@ -378,14 +502,14 @@ const App = () => {
                             {/* Card Splatter Effect */}
                             <div style={{ position: 'absolute', bottom: -5, left: '20%', right: '20%', height: '5px', background: 'linear-gradient(90deg, transparent, var(--accent-primary), var(--accent-secondary), transparent)', filter: 'blur(10px)', opacity: 0.5 }} />
 
-                            <a href="https://github.com/kaleab-mezgebe" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'white', color: 'black', padding: '10px 20px', borderRadius: '8px', fontWeight: 800 }}>
-                                <Github size={20} /> GitHub
+                            <a href="https://github.com/kaleab-mezgebe" target="_blank" className="hero-social-link" style={{ background: 'white', color: 'black' }}>
+                                <Github /> GitHub
                             </a>
-                            <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#0077b5', color: 'white', padding: '10px 20px', borderRadius: '8px', fontWeight: 800 }}>
-                                <Linkedin size={20} /> LinkedIn
+                            <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" className="hero-social-link" style={{ background: '#0077b5', color: 'white' }}>
+                                <Linkedin /> LinkedIn
                             </a>
-                            <a href="mailto:kaleabmezgebe4@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#ea4335', color: 'white', padding: '10px 20px', borderRadius: '8px', fontWeight: 800 }}>
-                                <Mail size={20} /> Email
+                            <a href="mailto:kaleabmezgebe4@gmail.com" className="hero-social-link" style={{ background: '#ea4335', color: 'white' }}>
+                                <Mail /> Email
                             </a>
                         </motion.div>
                     </div>
@@ -393,7 +517,7 @@ const App = () => {
             </section>
 
             {/* About Me Section - Dribbble Style */}
-            <section id="about" style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto', padding: '120px 24px' }}>
+            <section id="about">
                 <SectionHeading subtitle="Combining academic excellence with professional technical mastery" align="center">About Me</SectionHeading>
 
                 <div style={{ marginTop: '60px', display: 'flex', flexDirection: 'column', gap: '80px', alignItems: 'center', textAlign: 'center' }}>
@@ -412,13 +536,13 @@ const App = () => {
                             Combining academic excellence with 1.5+ years of practical technical expertise to create meaningful, high-performance works.
                         </p>
 
-                        <div style={{ display: 'inline-flex', gap: '60px', padding: '20px 40px', background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid var(--glass-border)' }}>
-                            <div>
+                        <div className="about-stats-container">
+                            <div className="about-stat-item">
                                 <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-primary)', lineHeight: 1 }}>3.88</div>
                                 <div style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.6, marginTop: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>CGPA Excellence</div>
                             </div>
                             <div style={{ width: '1px', height: '50px', background: 'var(--glass-border)' }} />
-                            <div>
+                            <div className="about-stat-item">
                                 <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-secondary)', lineHeight: 1 }}>1.5+</div>
                                 <div style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.6, marginTop: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Years Experience</div>
                             </div>
@@ -468,9 +592,9 @@ const App = () => {
             {/* Experience Section */}
             <section id="experience">
                 <SectionHeading subtitle="My professional journey and key technical contributions" align="center">Professional Experience</SectionHeading>
-                <div style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto' }}>
+                <div className="timeline-container">
                     {/* Vertical Line */}
-                    <div style={{ position: 'absolute', left: '20px', top: '0', bottom: '0', width: '2px', background: 'linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary), transparent)' }}></div>
+                    <div className="timeline-line"></div>
 
                     {[
                         {
@@ -528,13 +652,9 @@ const App = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            style={{ marginBottom: '40px', paddingLeft: '60px', position: 'relative' }}
+                            className="timeline-item"
                         >
-                            <div style={{
-                                position: 'absolute', left: '10px', top: '0', width: '22px', height: '22px',
-                                borderRadius: '50%', background: 'var(--bg-dark)', border: '4px solid var(--accent-primary)',
-                                zIndex: 2, boxShadow: '0 0 15px var(--accent-glow)'
-                            }}></div>
+                            <div className="timeline-dot"></div>
 
                             <Card style={{ padding: '32px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
@@ -605,7 +725,8 @@ const App = () => {
                             link: "https://github.com/kaleab-mezgebe/ride_mobile-",
                             image: "/assets/ride.png",
                             type: "COMMERCIAL MVP",
-                            localVideo: "/assets/ride_vedio.mp4"
+                            localVideo: "/assets/ride_vedio.mp4",
+                            isMobile: true
                         },
                         {
                             title: "CBEBirr App Clone (FinTech UI)",
@@ -617,7 +738,8 @@ const App = () => {
                             demoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC5t-bwBhhi4m3cAxBFDoKwSu4ZPJnGon3o", // Keeping demoLink for logic backward compatibility if needed, though videoLink is used in UI
                             videoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC5t-bwBhhi4m3cAxBFDoKwSu4ZPJnGon3o",
                             image: "/assets/cbebirr.png",
-                            type: "UI ENGINEERING"
+                            type: "UI ENGINEERING",
+                            isMobile: true
                         },
                         {
                             title: "Ethiobeds (PensionFinder)",
@@ -640,7 +762,8 @@ const App = () => {
                             tags: ["Operations", "Digitization", "Data Management"],
                             link: "https://github.com/kaleab-mezgebe/tyamms",
                             image: "/assets/tyamms.png",
-                            type: "ENTERPRISE SOLUTION"
+                            type: "ENTERPRISE SOLUTION",
+                            isMobile: true
                         },
                         {
                             title: "AI Dermatologist",
@@ -650,7 +773,8 @@ const App = () => {
                             tags: ["AI", "Flutter", "Computer Vision", "HealthTech"],
                             link: "https://github.com/kaleab-mezgebe/AI-Dermatologist",
                             image: "/assets/ai.png",
-                            type: "INNOVATION PROJECT"
+                            type: "INNOVATION PROJECT",
+                            isMobile: true
                         },
                         {
                             title: "Tigray Cultural Property Hub",
@@ -660,8 +784,8 @@ const App = () => {
                             tags: ["GIS", "Preservation", "Metadata"],
                             link: "https://github.com/kaleab-mezgebe/TCPH-",
                             image: "/assets/tcph.png",
-
-                            type: "SOCIAL IMPACT"
+                            type: "SOCIAL IMPACT",
+                            isMobile: true
                         },
 
                         {
@@ -685,41 +809,24 @@ const App = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.6, delay: idx * 0.1 }}
-                            className="project-grid"
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: project.isWeb
-                                    ? (idx % 2 === 0 ? '1fr 1.6fr' : '1.6fr 1fr') // Web: More space for image
-                                    : (idx % 2 === 0 ? '1.3fr 1fr' : '1fr 1.3fr'), // Mobile: More space for text
-                                gap: '48px',
-                                alignItems: 'center'
-                            }}
+                            className={`project-grid ${idx % 2 !== 0 ? 'alternate' : ''}`}
                         >
                             <div style={{ order: idx % 2 === 0 ? 0 : 1 }}>
                                 <motion.div
                                     whileHover={{ scale: 1.05, rotate: idx % 2 === 0 ? 1 : -1 }}
-                                    className="project-image-placeholder glow-effect-hover"
+                                    className={`project-image-placeholder glow-effect-hover project-card-image-container ${!project.isWeb ? 'mobile-app' : ''}`}
+                                    style={{
+                                        borderRadius: '32px',
+                                        overflow: 'hidden',
+                                        padding: !project.isWeb ? '20px' : '0',
+                                        display: 'flex', justifyContent: 'center', alignItems: 'center'
+                                    }}
                                     onClick={() => {
                                         if (project.localVideo) {
                                             setSelectedVideo(project.localVideo);
                                         } else {
                                             window.open(project.link, '_blank');
                                         }
-                                    }}
-                                    style={{
-                                        position: 'relative',
-                                        height: project.isWeb ? '450px' : '600px', borderRadius: '32px',
-                                        width: project.isWeb ? '750px' : '500px',
-                                        boxShadow: '0 30px 60px -12px rgba(0,0,0,0.3)',
-                                        transition: 'all 0.5s ease',
-                                        overflow: 'hidden',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        background: 'transparent',
-                                        padding: '40px',
-                                        border: '1px solid rgba(255,255,255,0.05)',
-                                        cursor: 'pointer'
                                     }}
                                 >
                                     <motion.div
@@ -754,11 +861,12 @@ const App = () => {
                                             src={project.image}
                                             alt={project.title}
                                             style={{
-                                                maxWidth: '100%', maxHeight: '100%',
-                                                objectFit: 'contain',
+                                                width: !project.isWeb ? 'auto' : '100%',
+                                                height: '100%',
+                                                objectFit: project.isMobile ? 'contain' : 'cover',
                                                 filter: 'desaturate(0.02) contrast(1.05)',
                                                 transition: 'all 0.5s ease',
-                                                borderRadius: '40px',
+                                                borderRadius: !project.isWeb ? '12px' : 'clamp(16px, 4vw, 40px)',
                                                 boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
                                                 display: 'block'
                                             }}
@@ -798,11 +906,11 @@ const App = () => {
                                     </motion.div>
                                 </div>
 
-                                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
                                     <motion.a
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
-                                        href={project.link} target="_blank" className="accent-bg glow-effect" style={{ padding: '16px 32px', borderRadius: '16px', color: 'white', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        href={project.link} target="_blank" className="accent-bg glow-effect" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                         GITHUB <Github size={20} />
                                     </motion.a>
                                     {project.localVideo && (
@@ -812,10 +920,11 @@ const App = () => {
                                             onClick={() => setSelectedVideo(project.localVideo)}
                                             className="glass-card"
                                             style={{
-                                                padding: '16px 32px',
+                                                padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)',
                                                 borderRadius: '16px',
                                                 color: 'var(--text-main)',
                                                 fontWeight: 800,
+                                                fontSize: 'clamp(0.8rem, 2.5vw, 1rem)',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 gap: '10px',
@@ -830,7 +939,7 @@ const App = () => {
                                         <motion.a
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
-                                            href={project.videoLink} target="_blank" className="glass-card" style={{ padding: '16px 32px', borderRadius: '16px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                            href={project.videoLink} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                             LIVE VIDEO <ExternalLink size={20} />
                                         </motion.a>
                                     )}
@@ -838,7 +947,7 @@ const App = () => {
                                         <motion.a
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
-                                            href={project.link} target="_blank" className="glass-card" style={{ padding: '16px 32px', borderRadius: '16px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                            href={project.link} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                             LIVE DEMO <ExternalLink size={20} />
                                         </motion.a>
                                     )}
@@ -850,9 +959,9 @@ const App = () => {
             </section>
 
             {/* Endorsements & References */}
-            <section id="endorsements" style={{ background: 'rgba(59, 130, 246, 0.03)', borderRadius: '60px', padding: '100px 60px' }}>
+            <section id="endorsements" style={{ background: 'rgba(59, 130, 246, 0.03)', borderRadius: '60px', padding: 'clamp(40px, 8vw, 100px) clamp(20px, 5vw, 60px)' }}>
                 <SectionHeading subtitle="Verified feedback and professional references from industry leaders" align="center">Professional Endorsements</SectionHeading>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '40px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
                     {[
                         {
                             quote: "Kaleab delivered an exceptional MVP for our ride-sharing platform. His technical depth in Flutter and commitment to timeline was impressive.",
@@ -873,13 +982,13 @@ const App = () => {
                             contact: "Verified Academic Achievement"
                         }
                     ].map((t, i) => (
-                        <Card key={i} style={{ position: 'relative', padding: '48px' }}>
-                            <div style={{ fontSize: '4rem', color: 'var(--accent-primary)', opacity: 0.15, position: 'absolute', top: '10px', left: '20px', fontFamily: 'serif' }}>"</div>
+                        <Card key={i} style={{ position: 'relative', padding: 'clamp(24px, 5vw, 48px)' }}>
+                            <div style={{ fontSize: '4rem', color: 'var(--accent-primary)', opacity: 0.15, position: 'absolute', top: 'clamp(10px, 2vw, 20px)', left: 'clamp(10px, 2vw, 20px)', fontFamily: 'serif' }}>"</div>
                             <p style={{ fontSize: '1.2rem', fontStyle: 'italic', color: 'var(--text-main)', marginBottom: '32px', position: 'relative', zIndex: 1, lineHeight: '1.6' }}>{t.quote}</p>
                             <div>
                                 <p style={{ fontWeight: 900, fontSize: '1.2rem', color: 'var(--accent-primary)' }}>{t.author}</p>
                                 <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 700, marginBottom: '8px' }}>{t.role}</p>
-                                <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', borderTop: '1px solid var(--glass-border)', paddingTop: '12px', marginTop: '12px' }}>{t.contact}</p>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', borderTop: '1px solid var(--glass-border)', paddingTop: '12px', marginTop: '12px', wordBreak: 'break-word' }}>{t.contact}</p>
                             </div>
                         </Card>
                     ))}
@@ -889,7 +998,7 @@ const App = () => {
             {/* Languages */}
             <section id="languages" style={{ padding: '80px 0', textAlign: 'center' }}>
                 <SectionHeading align="center" subtitle="Global communication proficiency">Language Mastery</SectionHeading>
-                <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto', padding: '0 clamp(20px, 5vw, 60px)' }}>
                     {[
                         { lang: "English", level: "Professional Working Proficiency" },
                         { lang: "Tigrigna", level: "Native Proficiency" },
@@ -899,7 +1008,7 @@ const App = () => {
                             key={i}
                             whileHover={{ scale: 1.05 }}
                             className="glass-card"
-                            style={{ padding: '24px 48px', borderRadius: '20px', border: '1px solid var(--accent-primary)', background: 'rgba(59, 130, 246, 0.05)' }}
+                            style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--accent-primary)', background: 'rgba(59, 130, 246, 0.05)' }}
                         >
                             <p style={{ fontWeight: 900, fontSize: '1.4rem', marginBottom: '4px' }}>{l.lang}</p>
                             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 600 }}>{l.level}</p>
@@ -930,23 +1039,49 @@ const App = () => {
                         </Card>
                     </div>
 
-                    <Card style={{ padding: '60px' }}>
+                    <Card style={{ padding: 'clamp(30px, 5vw, 60px)' }}>
                         <h3 style={{ fontSize: '2rem', marginBottom: '32px' }}>Send a Quick Message</h3>
                         <div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '20px' }}>
                                 <input
                                     type="text"
                                     placeholder="Name"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    style={{ background: 'var(--glass-border)', border: '1px solid var(--glass-border)', padding: '16px', borderRadius: '12px', color: 'var(--text-main)', width: '100%', outline: 'none' }}
+                                    className="form-input"
+                                    style={{
+                                        background: 'rgba(255,255,255,0.03)',
+                                        border: '1px solid var(--glass-border)',
+                                        padding: '16px',
+                                        borderRadius: '12px',
+                                        color: 'var(--text-main)',
+                                        width: '100%',
+                                        maxWidth: '100%',
+                                        outline: 'none',
+                                        boxSizing: 'border-box',
+                                        fontSize: '1rem',
+                                        transition: 'all 0.3s ease'
+                                    }}
                                 />
                                 <input
                                     type="email"
                                     placeholder="Email"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    style={{ background: 'var(--glass-border)', border: '1px solid var(--glass-border)', padding: '16px', borderRadius: '12px', color: 'var(--text-main)', width: '100%', outline: 'none' }}
+                                    className="form-input"
+                                    style={{
+                                        background: 'rgba(255,255,255,0.03)',
+                                        border: '1px solid var(--glass-border)',
+                                        padding: '16px',
+                                        borderRadius: '12px',
+                                        color: 'var(--text-main)',
+                                        width: '100%',
+                                        maxWidth: '100%',
+                                        outline: 'none',
+                                        boxSizing: 'border-box',
+                                        fontSize: '1rem',
+                                        transition: 'all 0.3s ease'
+                                    }}
                                 />
                             </div>
                             <textarea
@@ -954,7 +1089,24 @@ const App = () => {
                                 rows="5"
                                 value={formData.message}
                                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                style={{ width: '100%', background: 'var(--glass-border)', border: '1px solid var(--glass-border)', padding: '16px', borderRadius: '12px', color: 'var(--text-main)', marginBottom: '32px', outline: 'none', fontFamily: 'inherit' }}
+                                className="form-input"
+                                style={{
+                                    width: '100%',
+                                    maxWidth: '100%',
+                                    background: 'rgba(255,255,255,0.03)',
+                                    border: '1px solid var(--glass-border)',
+                                    padding: '16px',
+                                    borderRadius: '12px',
+                                    color: 'var(--text-main)',
+                                    marginBottom: '32px',
+                                    outline: 'none',
+                                    fontFamily: 'inherit',
+                                    boxSizing: 'border-box',
+                                    fontSize: '1rem',
+                                    minHeight: '150px',
+                                    resize: 'vertical',
+                                    transition: 'all 0.3s ease'
+                                }}
                             ></textarea>
                             <a
                                 href={`mailto:kaleabmezgebe4@gmail.com?subject=${encodeURIComponent(`Portfolio Contact from ${formData.name}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`}
@@ -962,11 +1114,11 @@ const App = () => {
                                 style={{
                                     display: 'block',
                                     width: '100%',
-                                    padding: '20px',
+                                    padding: 'clamp(14px, 2.5vw, 20px)',
                                     borderRadius: '16px',
                                     color: 'white',
                                     fontWeight: 900,
-                                    fontSize: '1.2rem',
+                                    fontSize: 'clamp(0.9rem, 2vw, 1.2rem)',
                                     letterSpacing: '1px',
                                     textAlign: 'center',
                                     textDecoration: 'none',
@@ -976,11 +1128,11 @@ const App = () => {
                                 SEND MESSAGE
                             </a>
                         </div>
-                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'center', marginTop: '40px' }}>
-                            <a href="https://www.linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ color: 'var(--text-muted)' }}>Connect on LinkedIn</a>
+                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'center', marginTop: '32px' }}>
+                            <a href="https://www.linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ color: 'var(--text-muted)', padding: '10px', fontSize: '0.9rem' }}>Connect on LinkedIn</a>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '40px' }}>
-                            <a href="mailto:kaleabmezgebe4@gmail.com" className="accent-bg glow-effect" style={{ padding: '20px 48px', borderRadius: '18px', color: 'white', fontWeight: 800, fontSize: '1.1rem' }}>
+                        <div className="contact-actions">
+                            <a href="mailto:kaleabmezgebe4@gmail.com" className="accent-bg glow-effect btn-primary" style={{ padding: 'clamp(14px, 3vw, 20px) clamp(24px, 5vw, 48px)', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}>
                                 Start Conversation
                             </a>
                             <a
@@ -988,10 +1140,10 @@ const App = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 download
-                                className="glass-card"
-                                style={{ padding: '20px 48px', borderRadius: '18px', fontWeight: 800, fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: 'inherit' }}
+                                className="glass-card btn-secondary"
+                                style={{ padding: 'clamp(14px, 3vw, 20px) clamp(24px, 5vw, 48px)', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}
                             >
-                                <Download size={20} /> Download Resume
+                                <Download size={18} /> Download Resume
                             </a>
                         </div>
                     </Card>
@@ -1034,13 +1186,57 @@ const App = () => {
                 .nav-link:hover { color: var(--text-main); }
                 .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent-primary); transition: width 0.3s ease; }
                 .nav-link:hover::after { width: 100%; }
+                .nav-link:hover::after { width: 100%; }
+                
                 @media (max-width: 968px) {
                     nav { padding: 12px 4% !important; }
                     .nav-links { display: none !important; }
+                    .menu-toggle { display: flex !important; }
                     section { padding: 80px 24px; }
                     .project-image-placeholder { height: 300px !important; }
                     #hero h1 { font-size: 3rem !important; }
                     footer > div:first-child { flex-direction: column !important; gap: 40px !important; }
+                }
+
+                @media (max-width: 768px) {
+                    .theme-toggle {
+                        width: 32px !important;
+                        height: 32px !important;
+                    }
+                    .theme-toggle svg {
+                        width: 18px !important;
+                        height: 18px !important;
+                    }
+                    .menu-toggle {
+                        width: 44px !important;
+                        height: 44px !important;
+                    }
+                    .menu-toggle svg {
+                        width: 24px !important;
+                        height: 24px !important;
+                    }
+                }
+
+                .project-image-placeholder { min-height: 400px; }
+                .project-image-placeholder.mobile-app {
+                    min-height: 500px !important;
+                    max-height: 70vh;
+                    aspect-ratio: 9/16;
+                    margin: 0 auto;
+                }
+                @media (max-width: 968px) {
+                    .project-image-placeholder { min-height: 300px; }
+                    .project-image-placeholder.mobile-app { min-height: 500px !important; }
+                }
+
+                /* Form Input Focus Effect */
+                .form-input:focus {
+                    border-color: var(--accent-primary) !important;
+                    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.1);
+                    background: rgba(255,255,255,0.05) !important;
+                }
+                .drawer-link:active {
+                    background: rgba(255,255,255,0.1) !important;
                 }
             `}</style>
         </div>
