@@ -331,7 +331,7 @@ const App = () => {
     // Command palette actions
     const commandActions = [
         { label: "Navigate: Home Hero", action: () => { window.location.href = "#hero"; setIsCmdOpen(false); } },
-        { label: "Navigate: System Architecture Lab", action: () => { window.location.href = "#interactive-lab"; setIsCmdOpen(false); } },
+        { label: "Navigate: Architecture Demos", action: () => { window.location.href = "#architecture-demos"; setIsCmdOpen(false); } },
         { label: "Navigate: Engineering Standards", action: () => { window.location.href = "#metrics"; setIsCmdOpen(false); } },
         { label: "Navigate: Production Code Inspector", action: () => { window.location.href = "#code-standards"; setIsCmdOpen(false); } },
         { label: "Navigate: Flagship Highlights", action: () => { window.location.href = "#highlights"; setIsCmdOpen(false); } },
@@ -471,8 +471,8 @@ const App = () => {
                     {/* Desktop Navigation Links */}
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }} className="hidden md:flex">
                         <a href="#hero" className="nav-link">Home</a>
-                        <a href="#interactive-lab" className="nav-link" style={{ color: 'var(--accent-secondary)' }}>⚡ Lab</a>
                         <a href="#highlights" className="nav-link">Highlights</a>
+                        <a href="#architecture-demos" className="nav-link">Architecture</a>
                         <a href="#projects" className="nav-link">Projects</a>
                         <a href="#skills" className="nav-link">Skills</a>
                         <a href="#experience" className="nav-link">Experience</a>
@@ -569,14 +569,14 @@ const App = () => {
                                 className="accent-bg glow-effect"
                                 style={{ padding: '14px 32px', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
                             >
-                                View Projects <ArrowUpRight size={18} />
+                                Explore Projects <ArrowUpRight size={18} />
                             </a>
                             <a
-                                href="#interactive-lab"
+                                href="#architecture-demos"
                                 className="glass-card"
-                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-secondary)', borderColor: 'rgba(6,182,212,0.4)' }}
+                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}
                             >
-                                <Zap size={18} /> Launch System Lab
+                                <Zap size={18} color="var(--accent-secondary)" /> Live Demos
                             </a>
                             <a
                                 href="#contact"

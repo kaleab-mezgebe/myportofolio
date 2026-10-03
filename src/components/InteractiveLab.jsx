@@ -135,18 +135,18 @@ Status: PAID`
     };
 
     return (
-        <section id="interactive-lab" style={{ position: 'relative', zIndex: 1 }}>
+        <section id="architecture-demos" style={{ position: 'relative', zIndex: 1 }}>
             <div className="section-header">
                 <div style={{ marginBottom: '14px' }}>
                     <span className="status-pill" style={{ color: 'var(--accent-secondary)', borderColor: 'rgba(6, 182, 212, 0.3)', background: 'rgba(6, 182, 212, 0.08)' }}>
-                        <Zap size={14} /> // 02. SYSTEM ARCHITECTURE LAB
+                        <Zap size={14} /> // 02. ARCHITECTURE DEMOS
                     </span>
                 </div>
                 <h2 className="accent-text" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.6rem)', fontWeight: 900, marginBottom: '16px', letterSpacing: '-0.03em' }}>
-                    Interactive System Playground
+                    Interactive Architecture Demos
                 </h2>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', maxWidth: '750px', margin: '0 auto', lineHeight: 1.6 }}>
-                    Test and interact in real-time with live simulations of the production architectures I engineer: WebSocket streaming, FinTech webhooks, and Computer Vision OCR.
+                    Explore interactive simulations of real-time WebSocket fleet tracking, FinTech payment settlements, and OCR document processing pipelines.
                 </p>
                 <div style={{ width: '80px', height: '4px', background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary))', margin: '24px auto 0', borderRadius: '4px' }} />
             </div>
