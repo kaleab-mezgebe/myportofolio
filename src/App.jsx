@@ -536,7 +536,7 @@ const App = () => {
 
                             <div className="status-pill">
                                 <span className="status-dot"></span>
-                                Available for Senior Frontend &amp; Mobile Roles
+                                Available for Frontend &amp; Mobile Software Engineering Roles
                             </div>
                         </motion.div>
 
@@ -991,7 +991,7 @@ const App = () => {
 
             {/* 8. CONTACT & GET IN TOUCH */}
             <section id="contact" style={{ textAlign: 'center' }}>
-                <SectionHeading subtitle="Open for full-time engineering positions, senior roles, and high-impact contracts" badge="// 08. DIRECT INBOX CONTACT">
+                <SectionHeading subtitle="Open for full-time engineering positions and high-impact software contracts" badge="// 08. DIRECT INBOX CONTACT">
                     Let's Build Together
                 </SectionHeading>
 
