@@ -32,6 +32,8 @@ import {
     ShieldCheck,
     Cpu,
     Activity,
+    Clock,
+    Calendar,
     Loader2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -607,21 +609,24 @@ const App = () => {
                         {
                             role: "Frontend & Mobile Developer",
                             company: "Niyat Consultancy PLC",
-                            period: "Sep 2025 – Present | Addis Ababa",
+                            period: "Sep 2025 – Present",
+                            location: "Addis Ababa, Ethiopia",
                             desc: "Developing and maintaining user-facing web and mobile applications using React.js, TypeScript, and Flutter. Building production dashboards, payment integrations (Telebirr, Chapa), and real-time GPS tracking.",
                             stack: ["React.js", "TypeScript", "Flutter", "BLoC", "SignalR", "Telebirr & Chapa", "PostgreSQL"]
                         },
                         {
                             role: "Software Developer",
                             company: "Grand Technology Solutions",
-                            period: "Sep 2024 – Sep 2025 | Mekelle, Tigray, Ethiopia",
+                            period: "Sep 2024 – Sep 2025",
+                            location: "Mekelle, Tigray, Ethiopia",
                             desc: "Developed reusable UI components in React.js and integrated them with backend RESTful APIs. Developed and tested CRUD endpoints using FastAPI and PostgreSQL with comprehensive Postman test coverage.",
                             stack: ["React.js", "JavaScript", "Flutter", "FastAPI", "PostgreSQL", "Postman"]
                         },
                         {
                             role: "Remote Mobile Application Developer (Contract)",
                             company: "Tigray Culture & Tourism Bureau",
-                            period: "Jan 2024 – Jun 2024 | Mekelle (Remote)",
+                            period: "Jan 2024 – Jun 2024",
+                            location: "Mekelle, Ethiopia (Remote)",
                             desc: "Developed a cross-platform Flutter application for cultural heritage registration and spatial documentation. Implemented offline-first local caching (Hive/SQLite) and synchronization for robust field operation.",
                             stack: ["Flutter", "Dart", "Hive / SQLite", "REST APIs", "Git"]
                         }
@@ -629,14 +634,19 @@ const App = () => {
                         <div key={idx} className="timeline-item">
                             <div className="timeline-dot"></div>
                             <Card delay={idx * 0.08}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
-                                    <div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
+                                    <div style={{ minWidth: '220px', flex: '1 1 auto' }}>
                                         <h3 style={{ fontSize: 'clamp(1.15rem, 3vw, 1.35rem)', fontWeight: 800 }}>{exp.role}</h3>
                                         <p className="accent-text font-mono" style={{ fontWeight: 700, fontSize: '0.98rem' }}>{exp.company}</p>
                                     </div>
-                                    <span className="timeline-period">
-                                        {exp.period}
-                                    </span>
+                                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
+                                        <span className="timeline-period">
+                                            <Calendar size={13} /> {exp.period}
+                                        </span>
+                                        <span className="timeline-location">
+                                            <MapPin size={13} /> {exp.location}
+                                        </span>
+                                    </div>
                                 </div>
                                 <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: 1.6, marginBottom: '16px' }}>{exp.desc}</p>
                                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
