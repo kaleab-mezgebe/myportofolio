@@ -482,115 +482,198 @@ const App = () => {
                 </div>
             </nav>
 
-            {/* HERO SECTION WITH INTERACTIVE CLI TERMINAL */}
-            <section id="hero" className="hero-container">
-                <div className="hero-grid">
-                    <div>
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            style={{ marginBottom: '28px' }}
-                        >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-                                <div style={{ position: 'relative', width: '68px', height: '68px' }}>
-                                    <div style={{ width: '68px', height: '68px', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--accent-primary)', boxShadow: '0 0 25px var(--accent-glow)' }}>
-                                        <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                    </div>
-                                    <span className="status-dot" style={{ position: 'absolute', bottom: '2px', right: '2px', border: '2px solid var(--bg-dark)' }}></span>
-                                </div>
-                                <div>
-                                    <div className="status-pill">
-                                        <span className="status-dot"></span>
-                                        Available for High-Impact Frontend &amp; Mobile Roles
-                                    </div>
-                                    <p className="font-mono" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: '4px 0 0' }}>
-                                        Addis Ababa, Ethiopia • Full-Stack Mobile &amp; Web
-                                    </p>
-                                </div>
-                            </div>
-                        </motion.div>
+            {/* HERO SECTION - NEXT-GEN EXECUTIVE ARCHITECTURAL LAYOUT */}
+            <section id="hero" className="hero-container" style={{ paddingTop: '130px', paddingBottom: '70px' }}>
+                {/* Top Telemetry Ticker */}
+                <motion.div
+                    initial={{ opacity: 0, y: -15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid var(--glass-border)' }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span className="status-dot"></span>
+                        <span className="font-mono" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10b981', letterSpacing: '0.5px' }}>
+                            STATUS: ACTIVE &amp; AVAILABLE FOR HIGH-IMPACT ROLES
+                        </span>
+                    </div>
+                    <div className="font-mono" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                        <span className="tech-chip" style={{ padding: '3px 8px' }}>📍 Addis Ababa, ET (UTC+3)</span>
+                        <span className="tech-chip" style={{ padding: '3px 8px' }}>⚡ 3+ Yrs Exp</span>
+                        <span className="tech-chip" style={{ padding: '3px 8px' }}>🎓 MIT 3.88 CGPA</span>
+                    </div>
+                </motion.div>
 
+                {/* Main Hero Split Showcase */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '40px', alignItems: 'center' }}>
+                    {/* Left Column: Heading & Value Proposition */}
+                    <div>
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            className="hero-title"
+                            style={{
+                                fontSize: 'clamp(2.6rem, 5.2vw, 4.2rem)',
+                                fontWeight: 900,
+                                lineHeight: 1.1,
+                                letterSpacing: '-0.04em',
+                                marginBottom: '24px'
+                            }}
                         >
-                            Engineering <span className="accent-text">High-Velocity</span> Mobile &amp; Modern Web Architectures.
+                            Engineering <span className="accent-text">High-Performance</span> Mobile &amp; Modern Web Systems.
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '620px', marginBottom: '36px' }}
+                            style={{
+                                fontSize: 'clamp(1.1rem, 2vw, 1.25rem)',
+                                color: 'var(--text-sub)',
+                                lineHeight: 1.75,
+                                maxWidth: '640px',
+                                marginBottom: '32px'
+                            }}
                         >
-                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> crafting production Flutter mobile apps, responsive React/Next.js platforms, real-time tracking (SignalR), and local FinTech payments (Telebirr &amp; Chapa).
+                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> building production Flutter apps, React/Next.js architectures, real-time tracking (SignalR), and local FinTech integrations (Telebirr &amp; Chapa).
                         </motion.p>
 
+                        {/* CTA Cluster */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.3 }}
-                            style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}
+                            style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '40px' }}
                         >
                             <a
                                 href="#projects"
                                 className="accent-bg glow-effect"
-                                style={{ padding: '14px 32px', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+                                style={{ padding: '14px 30px', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
                             >
-                                View Projects <ArrowUpRight size={18} />
+                                Explore Projects <ArrowUpRight size={18} />
                             </a>
                             <a
                                 href="#interactive-lab"
                                 className="glass-card"
-                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-secondary)', borderColor: 'rgba(6,182,212,0.4)' }}
+                                style={{ padding: '14px 26px', borderRadius: '16px', fontWeight: 800, fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-secondary)', borderColor: 'rgba(6,182,212,0.4)' }}
                             >
-                                <Zap size={18} /> Launch System Lab
+                                <Zap size={18} /> System Architecture Lab
                             </a>
                             <a
                                 href="#contact"
                                 className="glass-card"
-                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                style={{ padding: '14px 24px', borderRadius: '16px', fontWeight: 800, fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                             >
                                 Contact Me <Mail size={18} />
                             </a>
                         </motion.div>
 
+                        {/* Micro Performance KPI Cards */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.4 }}
-                            className="hero-stats"
+                            style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px', maxWidth: '600px' }}
                         >
-                            <div>
-                                <div className="stat-number" style={{ color: 'var(--accent-primary)' }}>3+</div>
-                                <div className="stat-label">Years Experience</div>
+                            <div className="glass-card" style={{ padding: '16px 20px', borderLeft: '3px solid var(--accent-primary)' }}>
+                                <div className="font-display" style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--accent-primary)' }}>3+ Yrs</div>
+                                <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>Production Track Record</div>
                             </div>
-                            <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
-                            <div>
-                                <div className="stat-number" style={{ color: 'var(--accent-secondary)' }}>3.88</div>
-                                <div className="stat-label">MIT CGPA Distinction</div>
+                            <div className="glass-card" style={{ padding: '16px 20px', borderLeft: '3px solid var(--accent-secondary)' }}>
+                                <div className="font-display" style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--accent-secondary)' }}>3.88</div>
+                                <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>MIT CGPA Distinction</div>
                             </div>
-                            <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
-                            <div>
-                                <div className="stat-number" style={{ color: 'var(--accent-tertiary)' }}>86/100</div>
-                                <div className="stat-label">National Exit Exam</div>
+                            <div className="glass-card" style={{ padding: '16px 20px', borderLeft: '3px solid var(--accent-tertiary)' }}>
+                                <div className="font-display" style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--accent-tertiary)' }}>86/100</div>
+                                <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>National Exit Exam</div>
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Interactive CLI Developer Terminal */}
+                    {/* Right Column: Executive Developer Identity Card */}
                     <div>
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
+                            initial={{ opacity: 0, scale: 0.96 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8 }}
+                            className="glass-card"
+                            style={{
+                                padding: '32px',
+                                background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(10, 15, 30, 0.95))',
+                                border: '1px solid rgba(99, 102, 241, 0.3)',
+                                boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.8)'
+                            }}
                         >
-                            <InteractiveTerminal onTriggerToast={showToast} />
+                            {/* Profile Header */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '24px' }}>
+                                <div style={{ position: 'relative', width: '84px', height: '84px', flexShrink: 0 }}>
+                                    <div style={{ width: '84px', height: '84px', borderRadius: '24px', overflow: 'hidden', border: '3px solid var(--accent-primary)', boxShadow: '0 0 30px var(--accent-glow)' }}>
+                                        <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    </div>
+                                    <span className="status-dot" style={{ position: 'absolute', bottom: '-2px', right: '-2px', border: '3px solid var(--bg-dark)' }}></span>
+                                </div>
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                                        <h3 style={{ fontSize: '1.45rem', fontWeight: 900, margin: 0, letterSpacing: '-0.02em' }}>Kaleab Mezgebe</h3>
+                                        <ShieldCheck size={18} color="#10b981" />
+                                    </div>
+                                    <p className="font-mono" style={{ fontSize: '0.88rem', color: 'var(--accent-secondary)', fontWeight: 700, margin: 0 }}>
+                                        Frontend &amp; Mobile Software Engineer
+                                    </p>
+                                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: '4px 0 0' }}>
+                                        Mekelle Institute of Technology (MIT)
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Verified Skills Tags */}
+                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '24px' }}>
+                                {["Flutter", "React.js", "Next.js", "TypeScript", "BLoC", "SignalR", "FastAPI", "Telebirr"].map((tag, idx) => (
+                                    <span key={idx} className="tech-chip" style={{ fontSize: '0.75rem', padding: '4px 8px' }}>
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+
+                            {/* Quick Action Contact Triggers */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                <button
+                                    onClick={() => copyToClipboard("kaleabmezgebe4@gmail.com", "Email")}
+                                    className="tech-chip font-mono"
+                                    style={{ justifyContent: 'space-between', padding: '12px 16px', cursor: 'pointer', background: 'rgba(255,255,255,0.03)' }}
+                                >
+                                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <Mail size={15} color="var(--accent-primary)" /> kaleabmezgebe4@gmail.com
+                                    </span>
+                                    <Copy size={14} style={{ opacity: 0.6 }} />
+                                </button>
+                                <button
+                                    onClick={() => copyToClipboard("+251945989369", "Phone")}
+                                    className="tech-chip font-mono"
+                                    style={{ justifyContent: 'space-between', padding: '12px 16px', cursor: 'pointer', background: 'rgba(255,255,255,0.03)' }}
+                                >
+                                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <Phone size={15} color="var(--accent-secondary)" /> +251 945989369
+                                    </span>
+                                    <Copy size={14} style={{ opacity: 0.6 }} />
+                                </button>
+                                <a
+                                    href="./assets/Kaleab Mezgebe's cv.pdf"
+                                    target="_blank"
+                                    download
+                                    className="tech-chip font-mono"
+                                    style={{ justifyContent: 'center', padding: '12px 16px', background: 'rgba(99, 102, 241, 0.15)', borderColor: 'var(--accent-primary)', color: 'white', fontWeight: 700 }}
+                                >
+                                    <Download size={15} /> Download Verified CV (PDF)
+                                </a>
+                            </div>
                         </motion.div>
                     </div>
+                </div>
+
+                {/* Interactive CLI Developer Terminal Sub-HUD */}
+                <div style={{ marginTop: '48px' }}>
+                    <InteractiveTerminal onTriggerToast={showToast} />
                 </div>
             </section>
 
