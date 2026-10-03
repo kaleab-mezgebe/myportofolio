@@ -96,10 +96,11 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
             newEntries.push({
                 type: 'output',
                 text: `[DIRECT CONTACT CHANNELS]
-  • Email:    kaleabmezgebe4@gmail.com (Copied to clipboard!)
-  • Phone:    +251 945989369
-  • GitHub:   https://github.com/kaleab-mezgebe
-  • LinkedIn: https://linkedin.com/in/kaleab-mezgebe-764a56198/`
+  • Portfolio: https://kaleab-mezgebe.github.io/myportofolio/
+  • Email:     kaleabmezgebe4@gmail.com (Copied to clipboard!)
+  • Phone:     +251 945989369
+  • GitHub:    https://github.com/kaleab-mezgebe
+  • LinkedIn:  https://linkedin.com/in/kaleab-mezgebe-764a56198/`
             });
         } else if (cmd === 'curl cv' || cmd === 'cv' || cmd === 'resume') {
             soundFx.playBeep(1000);
