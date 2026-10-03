@@ -387,11 +387,11 @@ const App = () => {
             {/* Navigation Bar */}
             <nav className="navbar-fixed">
                 <div className="navbar-inner">
-                    <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
-                        <div style={{ width: '38px', height: '38px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', boxShadow: '0 0 12px var(--accent-glow)', flexShrink: 0 }}>
-                            <img src={kaleabPortrait} alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+                    <a href="#hero" className="nav-brand-link">
+                        <div className="nav-avatar-wrapper">
+                            <img src={kaleabPortrait} alt="Kaleab Mezgebe" className="nav-avatar-img" />
                         </div>
-                        <span style={{ fontWeight: 900, fontSize: '1.1rem', letterSpacing: '-0.5px', color: 'var(--text-main)', whiteSpace: 'nowrap' }}>
+                        <span className="nav-brand-text">
                             KALEAB<span className="accent-text">.M</span>
                         </span>
                     </a>
