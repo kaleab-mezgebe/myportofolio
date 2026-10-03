@@ -120,6 +120,7 @@ const App = () => {
     const [activeFilter, setActiveFilter] = useState('all');
     const [toastMessage, setToastMessage] = useState(null);
     const [isCmdOpen, setIsCmdOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [cmdSearch, setCmdSearch] = useState('');
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -483,7 +484,7 @@ const App = () => {
                         <a href="#contact" className="nav-link">Contact</a>
                     </div>
 
-                    {/* Quick Tools */}
+                    {/* Quick Tools & Mobile Toggle */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <button
                             onClick={toggleSound}
@@ -512,10 +513,70 @@ const App = () => {
                             className="accent-bg glow-effect"
                             style={{ padding: '8px 16px', borderRadius: '9999px', color: 'white', fontWeight: 800, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}
                         >
-                            <Download size={14} /> Resume
+                            <Download size={14} /> <span className="hidden sm:inline">Resume</span>
                         </a>
+
+                        {/* Mobile Hamburger Menu Toggle */}
+                        <button
+                            type="button"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="theme-toggle md:hidden"
+                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            aria-label="Toggle mobile menu"
+                        >
+                            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
                     </div>
                 </div>
+
+                {/* Mobile Navigation Drawer */}
+                <AnimatePresence>
+                    {isMobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.25 }}
+                            style={{
+                                overflow: 'hidden',
+                                background: 'var(--nav-bg)',
+                                borderTop: '1px solid var(--glass-border)',
+                                backdropFilter: 'blur(20px)',
+                                padding: '14px 20px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '8px'
+                            }}
+                        >
+                            {[
+                                { href: '#hero', label: '⚡ Home' },
+                                { href: '#highlights', label: '✨ Highlights' },
+                                { href: '#projects', label: '🚀 Projects' },
+                                { href: '#skills', label: '🛠️ Skills' },
+                                { href: '#experience', label: '💼 Experience' },
+                                { href: '#contact', label: '📫 Contact' }
+                            ].map((item) => (
+                                <a
+                                    key={item.href}
+                                    href={item.href}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    style={{
+                                        color: 'var(--text-main)',
+                                        textDecoration: 'none',
+                                        fontSize: '1rem',
+                                        fontWeight: 700,
+                                        padding: '10px 14px',
+                                        borderRadius: '10px',
+                                        background: 'rgba(255,255,255,0.04)',
+                                        display: 'block'
+                                    }}
+                                >
+                                    {item.label}
+                                </a>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </nav>
 
             {/* HERO SECTION WITH PROFILE PHOTO & CLI TERMINAL */}
@@ -985,32 +1046,69 @@ const App = () => {
                 </SectionHeading>
 
                 <div style={{ maxWidth: '750px', margin: '0 auto' }}>
-                    {/* One-Click Copy Badges */}
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '36px' }}>
+                    {/* One-Click Copy Badges with High Visibility & Contrast */}
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '36px' }}>
                         <button
+                            type="button"
                             onClick={() => copyToClipboard("kaleabmezgebe4@gmail.com", "Email")}
-                            className="glass-card font-mono"
-                            style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
+                            className="font-mono"
+                            style={{
+                                padding: '14px 22px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                fontWeight: 800,
+                                fontSize: '0.95rem',
+                                cursor: 'pointer',
+                                color: '#ffffff',
+                                background: isDarkMode 
+                                    ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(15, 23, 42, 0.95))' 
+                                    : 'linear-gradient(135deg, #4f46e5, #4338ca)',
+                                border: '1.5px solid #6366f1',
+                                borderRadius: '16px',
+                                boxShadow: '0 6px 20px rgba(99, 102, 241, 0.35)',
+                                maxWidth: '100%',
+                                wordBreak: 'break-all'
+                            }}
+                            title="Click to copy email address"
                         >
-                            <Mail size={18} color="var(--accent-primary)" />
-                            <span>kaleabmezgebe4@gmail.com</span>
-                            <Copy size={15} style={{ opacity: 0.6 }} />
+                            <Mail size={18} color={isDarkMode ? "#818cf8" : "#ffffff"} />
+                            <span style={{ color: '#ffffff', fontWeight: 800 }}>kaleabmezgebe4@gmail.com</span>
+                            <Copy size={15} style={{ opacity: 0.85, color: '#38bdf8' }} />
                         </button>
                         <button
+                            type="button"
                             onClick={() => copyToClipboard("+251945989369", "Phone")}
-                            className="glass-card font-mono"
-                            style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
+                            className="font-mono"
+                            style={{
+                                padding: '14px 22px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                fontWeight: 800,
+                                fontSize: '0.95rem',
+                                cursor: 'pointer',
+                                color: '#ffffff',
+                                background: isDarkMode 
+                                    ? 'linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(15, 23, 42, 0.95))' 
+                                    : 'linear-gradient(135deg, #0891b2, #0e7490)',
+                                border: '1.5px solid #06b6d4',
+                                borderRadius: '16px',
+                                boxShadow: '0 6px 20px rgba(6, 182, 212, 0.35)',
+                                maxWidth: '100%'
+                            }}
+                            title="Click to copy phone number"
                         >
-                            <Phone size={18} color="var(--accent-secondary)" />
-                            <span>+251 945989369</span>
-                            <Copy size={15} style={{ opacity: 0.6 }} />
+                            <Phone size={18} color={isDarkMode ? "#22d3ee" : "#ffffff"} />
+                            <span style={{ color: '#ffffff', fontWeight: 800 }}>+251 945989369</span>
+                            <Copy size={15} style={{ opacity: 0.85, color: '#38bdf8' }} />
                         </button>
                     </div>
 
                     {/* Interactive Message Form (Active Direct Inbox) */}
-                    <Card style={{ padding: '40px', textAlign: 'left' }}>
+                    <Card style={{ padding: 'clamp(20px, 4vw, 40px)', textAlign: 'left' }}>
                         <form onSubmit={handleSubmitMessage}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '20px' }}>
                                 <div>
                                     <label className="font-mono" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>// Your Name</label>
                                     <input
