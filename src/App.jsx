@@ -30,11 +30,23 @@ import {
     Send,
     Flame,
     ArrowUpRight,
-    Command
+    Command,
+    ShieldCheck,
+    Cpu,
+    Activity,
+    Compass,
+    Volume2,
+    VolumeX
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { soundFx } from './utils/sound';
+import ParticleBackground from './components/ParticleBackground';
+import { InteractiveLab } from './components/InteractiveLab';
+import { InteractiveTerminal } from './components/InteractiveTerminal';
+import { EngineeringMetrics } from './components/EngineeringMetrics';
+import { CodeArchitecturePreview } from './components/CodeArchitecturePreview';
 
-// Shared Section Header Component
+// Section Heading Component
 const SectionHeading = ({ children, subtitle, align = "center", badge = null }) => (
     <div className="section-header" style={{ marginBottom: '56px', textAlign: align }}>
         {badge && (
@@ -54,7 +66,7 @@ const SectionHeading = ({ children, subtitle, align = "center", badge = null }) 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="accent-text"
-            style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, marginBottom: '16px', letterSpacing: '-0.03em' }}
+            style={{ fontSize: 'clamp(2.2rem, 5vw, 3.6rem)', fontWeight: 900, marginBottom: '16px', letterSpacing: '-0.03em' }}
         >
             {children}
         </motion.h2>
@@ -74,7 +86,7 @@ const SectionHeading = ({ children, subtitle, align = "center", badge = null }) 
             whileInView={{ width: '80px' }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            style={{ height: '4px', background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))', margin: align === "center" ? '24px auto 0' : '24px 0 0', borderRadius: '4px' }}
+            style={{ height: '4px', background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary))', margin: align === "center" ? '24px auto 0' : '24px 0 0', borderRadius: '4px' }}
         />
     </div>
 );
@@ -86,7 +98,6 @@ const Card = ({ children, className = "", noPadding = false, delay = 0, style = 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.5, delay }}
-        whileHover={{ y: -6, scale: 1.01 }}
         className={`glass-card ${className}`}
         style={{
             padding: noPadding ? '0' : '32px',
@@ -104,10 +115,10 @@ const Card = ({ children, className = "", noPadding = false, delay = 0, style = 
 const App = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(true);
+    const [soundEnabled, setSoundEnabled] = useState(false);
     const [activeFilter, setActiveFilter] = useState('all');
     const [toastMessage, setToastMessage] = useState(null);
     const [isCmdOpen, setIsCmdOpen] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [cmdSearch, setCmdSearch] = useState('');
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -143,28 +154,37 @@ const App = () => {
     }, []);
 
     const toggleTheme = () => {
+        soundFx.playClick();
         setIsDarkMode(!isDarkMode);
         document.body.classList.toggle('light');
         localStorage.setItem('theme', !isDarkMode ? 'dark' : 'light');
     };
 
+    const toggleSound = () => {
+        const newState = soundFx.toggleSound();
+        setSoundEnabled(newState);
+        showToast(newState ? 'Tactile Sound Effects ON 🔊' : 'Sound Effects Muted 🔇');
+    };
+
     const showToast = (text) => {
         setToastMessage(text);
-        setTimeout(() => setToastMessage(null), 3000);
+        setTimeout(() => setToastMessage(null), 3500);
     };
 
     const copyToClipboard = (text, label) => {
+        soundFx.playClick();
         navigator.clipboard.writeText(text);
         showToast(`${label} copied to clipboard! 📋`);
         handleConfetti();
     };
 
     const handleConfetti = () => {
+        soundFx.playSuccess();
         confetti({
-            particleCount: 120,
-            spread: 70,
+            particleCount: 130,
+            spread: 75,
             origin: { y: 0.6 },
-            colors: isDarkMode ? ['#6366f1', '#06b6d4', '#a855f7'] : ['#4f46e5', '#0891b2', '#0f172a']
+            colors: isDarkMode ? ['#6366f1', '#06b6d4', '#ec4899'] : ['#4f46e5', '#0891b2', '#0f172a']
         });
     };
 
@@ -278,15 +298,20 @@ const App = () => {
 
     // Command palette actions
     const commandActions = [
-        { label: "Navigate: Home", action: () => { window.location.href = "#hero"; setIsCmdOpen(false); } },
-        { label: "Navigate: About & Skills", action: () => { window.location.href = "#about"; setIsCmdOpen(false); } },
+        { label: "Navigate: Home Hero", action: () => { window.location.href = "#hero"; setIsCmdOpen(false); } },
+        { label: "Navigate: System Architecture Lab", action: () => { window.location.href = "#interactive-lab"; setIsCmdOpen(false); } },
+        { label: "Navigate: Engineering Standards", action: () => { window.location.href = "#metrics"; setIsCmdOpen(false); } },
+        { label: "Navigate: Production Code Inspector", action: () => { window.location.href = "#code-standards"; setIsCmdOpen(false); } },
+        { label: "Navigate: Flagship Highlights", action: () => { window.location.href = "#highlights"; setIsCmdOpen(false); } },
         { label: "Navigate: Projects Showcase", action: () => { window.location.href = "#projects"; setIsCmdOpen(false); } },
-        { label: "Navigate: Professional Experience", action: () => { window.location.href = "#experience"; setIsCmdOpen(false); } },
+        { label: "Navigate: Technical Stack", action: () => { window.location.href = "#skills"; setIsCmdOpen(false); } },
+        { label: "Navigate: Experience Timeline", action: () => { window.location.href = "#experience"; setIsCmdOpen(false); } },
         { label: "Navigate: Contact Me", action: () => { window.location.href = "#contact"; setIsCmdOpen(false); } },
         { label: "Copy Email (kaleabmezgebe4@gmail.com)", action: () => { copyToClipboard("kaleabmezgebe4@gmail.com", "Email"); setIsCmdOpen(false); } },
         { label: "Copy Phone (+251 945989369)", action: () => { copyToClipboard("+251945989369", "Phone"); setIsCmdOpen(false); } },
         { label: "Download Latest CV (PDF)", action: () => { window.open("./assets/Kaleab Mezgebe's cv.pdf", "_blank"); setIsCmdOpen(false); } },
         { label: "Toggle Dark / Light Theme", action: () => { toggleTheme(); setIsCmdOpen(false); } },
+        { label: "Toggle Audio Feedback", action: () => { toggleSound(); setIsCmdOpen(false); } },
         { label: "Open GitHub Profile", action: () => { window.open("https://github.com/kaleab-mezgebe", "_blank"); setIsCmdOpen(false); } },
         { label: "Open LinkedIn Profile", action: () => { window.open("https://linkedin.com/in/kaleab-mezgebe-764a56198/", "_blank"); setIsCmdOpen(false); } }
     ];
@@ -295,6 +320,9 @@ const App = () => {
 
     return (
         <div className={`app-container ${isDarkMode ? 'dark' : 'light'}`}>
+            {/* Dynamic Constellation Particle Field */}
+            <ParticleBackground isDarkMode={isDarkMode} />
+
             {/* Toast Notification */}
             <AnimatePresence>
                 {toastMessage && (
@@ -325,13 +353,13 @@ const App = () => {
                                 <Search size={20} color="var(--accent-primary)" />
                                 <input
                                     type="text"
-                                    placeholder="Type a command or search section..."
+                                    placeholder="Type a command or search (e.g., 'lab', 'projects', 'resume', 'hire')..."
                                     className="cmd-input"
                                     value={cmdSearch}
                                     onChange={(e) => setCmdSearch(e.target.value)}
                                     autoFocus
                                 />
-                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.08)', padding: '2px 8px', borderRadius: '6px' }}>ESC</span>
+                                <span className="font-mono" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.08)', padding: '3px 8px', borderRadius: '6px' }}>ESC</span>
                             </div>
                             <div style={{ maxHeight: '350px', overflowY: 'auto', padding: '8px 0' }}>
                                 {filteredCommands.length > 0 ? (
@@ -396,7 +424,7 @@ const App = () => {
                 )}
             </AnimatePresence>
 
-            {/* Floating Navigation Header */}
+            {/* Navigation Bar */}
             <nav className="navbar-fixed">
                 <div className="navbar-inner">
                     <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
@@ -409,43 +437,52 @@ const App = () => {
                     </a>
 
                     {/* Desktop Navigation Links */}
-                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }} className="hidden md:flex">
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }} className="hidden md:flex">
                         <a href="#hero" className="nav-link">Home</a>
-                        <a href="#about" className="nav-link">About</a>
-                        <a href="#skills" className="nav-link">Skills</a>
+                        <a href="#interactive-lab" className="nav-link" style={{ color: 'var(--accent-secondary)' }}>⚡ Lab</a>
+                        <a href="#highlights" className="nav-link">Highlights</a>
                         <a href="#projects" className="nav-link">Projects</a>
+                        <a href="#skills" className="nav-link">Skills</a>
                         <a href="#experience" className="nav-link">Experience</a>
                         <a href="#contact" className="nav-link">Contact</a>
                     </div>
 
-                    {/* Quick Tools (Command Palette Trigger & Theme Toggle) */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    {/* Quick Tools */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button
+                            onClick={toggleSound}
+                            className={`sound-toggle-btn ${soundEnabled ? 'active' : ''}`}
+                            title="Toggle Web Audio SFX"
+                        >
+                            {soundEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}
+                            <span className="hidden sm:inline">{soundEnabled ? 'SFX ON' : 'SFX'}</span>
+                        </button>
                         <button
                             onClick={() => setIsCmdOpen(true)}
                             className="status-pill"
-                            style={{ cursor: 'pointer', background: 'rgba(255,255,255,0.05)', color: 'var(--text-sub)', borderColor: 'var(--glass-border)' }}
+                            style={{ cursor: 'pointer', background: 'rgba(255,255,255,0.05)', color: 'var(--text-sub)', borderColor: 'var(--glass-border)', padding: '6px 10px' }}
                             title="Command Palette (Cmd+K)"
                         >
                             <Command size={14} />
                             <span className="hidden sm:inline">⌘K</span>
                         </button>
                         <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
-                            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                            {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
                         </button>
                         <a
                             href="./assets/Kaleab Mezgebe's cv.pdf"
                             target="_blank"
                             download
                             className="accent-bg glow-effect"
-                            style={{ padding: '8px 18px', borderRadius: '9999px', color: 'white', fontWeight: 800, fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                            style={{ padding: '8px 16px', borderRadius: '9999px', color: 'white', fontWeight: 800, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}
                         >
-                            <Download size={15} /> Resume
+                            <Download size={14} /> Resume
                         </a>
                     </div>
                 </div>
             </nav>
 
-            {/* HERO SECTION */}
+            {/* HERO SECTION WITH INTERACTIVE CLI TERMINAL */}
             <section id="hero" className="hero-container">
                 <div className="hero-grid">
                     <div>
@@ -457,7 +494,7 @@ const App = () => {
                         >
                             <div className="status-pill">
                                 <span className="status-dot"></span>
-                                Available for High-Impact Frontend & Mobile Roles
+                                Available for High-Impact Frontend &amp; Mobile Roles
                             </div>
                         </motion.div>
 
@@ -467,16 +504,16 @@ const App = () => {
                             transition={{ duration: 0.6, delay: 0.1 }}
                             className="hero-title"
                         >
-                            Engineering <span className="accent-text">High-Performance</span> Mobile &amp; Modern Web Systems.
+                            Engineering <span className="accent-text">High-Velocity</span> Mobile &amp; Modern Web Architectures.
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{ fontSize: 'clamp(1.1rem, 2vw, 1.3rem)', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '620px', marginBottom: '36px' }}
+                            style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '620px', marginBottom: '36px' }}
                         >
-                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> building production Flutter apps, React/Next.js architectures, real-time tracking (SignalR), and local FinTech integrations (Telebirr &amp; Chapa).
+                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> crafting production Flutter mobile apps, responsive React/Next.js platforms, real-time tracking (SignalR), and local FinTech payments (Telebirr &amp; Chapa).
                         </motion.p>
 
                         <motion.div
@@ -490,14 +527,21 @@ const App = () => {
                                 className="accent-bg glow-effect"
                                 style={{ padding: '14px 32px', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
                             >
-                                Explore Projects <ArrowUpRight size={18} />
+                                View Projects <ArrowUpRight size={18} />
+                            </a>
+                            <a
+                                href="#interactive-lab"
+                                className="glass-card"
+                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-secondary)', borderColor: 'rgba(6,182,212,0.4)' }}
+                            >
+                                <Zap size={18} /> Launch System Lab
                             </a>
                             <a
                                 href="#contact"
                                 className="glass-card"
                                 style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                             >
-                                Get in Touch <Mail size={18} />
+                                Contact Me <Mail size={18} />
                             </a>
                         </motion.div>
 
@@ -524,119 +568,162 @@ const App = () => {
                         </motion.div>
                     </div>
 
-                    {/* Hero Visual Card */}
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    {/* Interactive CLI Developer Terminal */}
+                    <div>
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8 }}
-                            className="hero-image-wrapper"
                         >
-                            <img
-                                src="./assets/myphoto.png"
-                                alt="Kaleab Mezgebe"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            />
-                            <div style={{
-                                position: 'absolute', bottom: 0, left: 0, right: 0,
-                                padding: '20px', background: 'linear-gradient(to top, rgba(3, 7, 18, 0.95), transparent)',
-                                display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                            }}>
-                                <div>
-                                    <h4 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'white' }}>Kaleab Mezgebe</h4>
-                                    <p style={{ fontSize: '0.85rem', color: 'var(--accent-secondary)', fontWeight: 600 }}>Frontend &amp; Mobile Engineer</p>
-                                </div>
-                                <div style={{ display: 'flex', gap: '8px' }}>
-                                    <a href="https://github.com/kaleab-mezgebe" target="_blank" style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px', color: 'white' }}><Github size={18} /></a>
-                                    <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px', color: 'white' }}><Linkedin size={18} /></a>
-                                </div>
-                            </div>
+                            <InteractiveTerminal onTriggerToast={showToast} />
                         </motion.div>
                     </div>
                 </div>
             </section>
 
-            {/* ABOUT & SKILLS MATRIX SECTION */}
-            <section id="about">
-                <SectionHeading subtitle="Combining engineering discipline with practical full-stack delivery" badge="Technical Foundations">
-                    Technical Mastery &amp; Expertise
+            {/* 1. BENTO GRID SHOWCASE */}
+            <section id="highlights">
+                <SectionHeading subtitle="Architectural depth, production deployments, and verified metrics" badge="// 01. BENTO SHOWCASE">
+                    Flagship Architecture Highlights
                 </SectionHeading>
 
-                <div className="grid-auto" id="skills">
-                    {[
-                        {
-                            icon: <Smartphone size={32} color="var(--accent-primary)" />,
-                            category: "Mobile App Development",
-                            skills: ["Flutter & Dart", "BLoC & Provider", "Google Maps SDK", "SignalR GPS Tracking", "Firebase FCM & Auth", "Hive & SQLite Caching"]
-                        },
-                        {
-                            icon: <Code2 size={32} color="var(--accent-secondary)" />,
-                            category: "Frontend Web Engineering",
-                            skills: ["React.js & Next.js", "TypeScript & JavaScript ES6+", "Tailwind CSS & Material UI", "Redux Toolkit & Zustand", "Vite & Modern Build Tools", "Responsive UX Design"]
-                        },
-                        {
-                            icon: <Server size={32} color="var(--accent-tertiary)" />,
-                            category: "Backend & AI Integration",
-                            skills: ["Node.js & Express.js", "FastAPI & Python", "RESTful API Design", "Tesseract OCR & OpenCV", "TensorFlow Lite On-Device", "Pydantic Schema Validation"]
-                        },
-                        {
-                            icon: <Database size={32} color="#10b981" />,
-                            category: "Databases & FinTech",
-                            skills: ["PostgreSQL & MySQL", "Redis Caching", "Telebirr & Chapa Payments", "JWT Secure Authentication", "Docker & CI/CD Pipelines", "Git / GitHub / GitLab"]
-                        }
-                    ].map((block, idx) => (
-                        <Card key={idx} delay={idx * 0.1}>
-                            <div style={{ marginBottom: '20px' }}>{block.icon}</div>
-                            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginBottom: '16px' }}>{block.category}</h3>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                {block.skills.map((skill, sIdx) => (
-                                    <span
-                                        key={sIdx}
-                                        style={{
-                                            background: 'rgba(255,255,255,0.04)',
-                                            border: '1px solid var(--glass-border)',
-                                            padding: '6px 12px',
-                                            borderRadius: '8px',
-                                            fontSize: '0.85rem',
-                                            fontWeight: 600,
-                                            color: 'var(--text-main)'
-                                        }}
-                                    >
-                                        {skill}
+                <div className="bento-grid">
+                    {/* Bento Item 1: Axumite Ride Live GPS Stream */}
+                    <div className="bento-col-8">
+                        <Card style={{ position: 'relative', overflow: 'hidden' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+                                <div>
+                                    <span className="status-pill" style={{ color: '#10b981', borderColor: 'rgba(16, 185, 129, 0.3)', background: 'rgba(16, 185, 129, 0.1)', marginBottom: '8px' }}>
+                                        <Activity size={14} /> LIVE PRODUCTION GOOGLE PLAY
                                     </span>
+                                    <h3 style={{ fontSize: '1.8rem', fontWeight: 900 }}>Axumite Ride — Real-Time Fleet &amp; Passenger App</h3>
+                                </div>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                    <a href="https://play.google.com/store/apps/details?id=com.axumite.customer&hl=en_US" target="_blank" className="tech-chip" style={{ background: '#059669', color: 'white', borderColor: 'transparent' }}>
+                                        Passenger App <ExternalLink size={14} />
+                                    </a>
+                                    <a href="https://play.google.com/store/apps/details?id=com.axumite.partner&hl=en_US" target="_blank" className="tech-chip" style={{ background: '#0284c7', color: 'white', borderColor: 'transparent' }}>
+                                        Driver App <ExternalLink size={14} />
+                                    </a>
+                                </div>
+                            </div>
+
+                            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '20px' }}>
+                                Architected with <strong>Flutter BLoC</strong> and <strong>SignalR</strong> live streaming. Features instant GPS polling, sub-second route calculation with Google Maps SDK, phone OTP authentication, and push notifications.
+                            </p>
+
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                {["Flutter", "Dart", "BLoC Pattern", "SignalR", "Google Maps SDK", "Firebase FCM"].map((t, idx) => (
+                                    <span key={idx} className="tech-chip">{t}</span>
                                 ))}
                             </div>
                         </Card>
-                    ))}
+                    </div>
+
+                    {/* Bento Item 2: MIT Academic Excellence */}
+                    <div className="bento-col-4">
+                        <Card style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.08))' }}>
+                            <div style={{ marginBottom: '16px' }}>
+                                <GraduationCap size={32} color="var(--accent-primary)" />
+                            </div>
+                            <h3 style={{ fontSize: '1.4rem', fontWeight: 900, marginBottom: '8px' }}>Mekelle Institute of Technology (MIT)</h3>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', marginBottom: '16px' }}>BSc in Information Technology (2018–2025)</p>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div className="tech-chip" style={{ justifyContent: 'space-between' }}>
+                                    <span>Cumulative GPA:</span>
+                                    <strong style={{ color: 'var(--accent-primary)' }}>3.88 / 4.00</strong>
+                                </div>
+                                <div className="tech-chip" style={{ justifyContent: 'space-between' }}>
+                                    <span>National Exit Exam:</span>
+                                    <strong style={{ color: 'var(--accent-secondary)' }}>86 / 100 (Top Tier)</strong>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
+
+                    {/* Bento Item 3: Shemeta E-Commerce Platform */}
+                    <div className="bento-col-6">
+                        <Card>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                                <span className="status-pill" style={{ color: '#06b6d4', borderColor: 'rgba(6, 182, 212, 0.3)', background: 'rgba(6, 182, 212, 0.1)' }}>
+                                    <Globe size={14} /> MULTI-VENDOR COMMERCE
+                                </span>
+                                <a href="https://nicom.dev.niyatconsultancy.com/en" target="_blank" className="tech-chip font-mono">
+                                    nicom.dev.niyatconsultancy.com <ArrowUpRight size={14} />
+                                </a>
+                            </div>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '12px' }}>Shemeta E-Commerce Marketplace</h3>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', lineHeight: 1.6, marginBottom: '20px' }}>
+                                Scalable React.js &amp; Next.js frontend with dynamic category filtering, interactive shopping cart, merchant wallet accounting, and local payment checkout with <strong>Telebirr &amp; Chapa</strong>.
+                            </p>
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                {["React.js", "Next.js", "TypeScript", "Tailwind CSS", "Telebirr", "Chapa"].map((t, idx) => (
+                                    <span key={idx} className="tech-chip">{t}</span>
+                                ))}
+                            </div>
+                        </Card>
+                    </div>
+
+                    {/* Bento Item 4: AI & OCR Pipeline */}
+                    <div className="bento-col-6">
+                        <Card>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                                <span className="status-pill" style={{ color: '#ec4899', borderColor: 'rgba(236, 72, 153, 0.3)', background: 'rgba(236, 72, 153, 0.1)' }}>
+                                    <Cpu size={14} /> COMPUTER VISION &amp; AI
+                                </span>
+                                <a href="https://github.com/kaleab-mezgebe" target="_blank" className="tech-chip font-mono">
+                                    GitHub Code <ArrowUpRight size={14} />
+                                </a>
+                            </div>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '12px' }}>Financial Document OCR Extraction</h3>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', lineHeight: 1.6, marginBottom: '20px' }}>
+                                Intelligent document pipeline combining OpenCV deskewing/binarization, Tesseract OCR character recognition, and FastAPI Pydantic schema validation for instant JSON auditing.
+                            </p>
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                {["Python", "FastAPI", "OpenCV", "Tesseract OCR", "Pydantic", "React.js"].map((t, idx) => (
+                                    <span key={idx} className="tech-chip">{t}</span>
+                                ))}
+                            </div>
+                        </Card>
+                    </div>
                 </div>
             </section>
 
-            {/* PROJECTS SECTION WITH INTERACTIVE FILTERING */}
+            {/* 2. INTERACTIVE SYSTEM ARCHITECTURE LAB */}
+            <InteractiveLab />
+
+            {/* 3. ENGINEERING STANDARDS & PERFORMANCE BENCHMARKS */}
+            <EngineeringMetrics />
+
+            {/* 4. PRODUCTION CODE INSPECTOR */}
+            <CodeArchitecturePreview onTriggerToast={showToast} />
+
+            {/* 5. FULL PROJECT CATALOG WITH DYNAMIC FILTERING */}
             <section id="projects">
-                <SectionHeading subtitle="Production mobile applications, multi-vendor platforms, and AI systems" badge="Verified Works">
-                    Featured Project Showcase
+                <SectionHeading subtitle="Filter production mobile apps, SaaS platforms, and machine learning pipelines" badge="// 05. PROVEN DELIVERY">
+                    Complete Project Catalog
                 </SectionHeading>
 
                 {/* Filter Tabs */}
                 <div className="filter-tabs-container">
                     {[
                         { id: 'all', label: 'All Projects (7)' },
-                        { id: 'mobile', label: '📱 Mobile & Flutter (4)' },
+                        { id: 'mobile', label: '📱 Flutter & Mobile (4)' },
                         { id: 'web', label: '🌐 Web & Full-Stack (2)' },
                         { id: 'ai', label: '🤖 AI & OCR Pipelines (2)' }
                     ].map((tab) => (
                         <button
                             key={tab.id}
                             className={`filter-tab-btn ${activeFilter === tab.id ? 'active' : ''}`}
-                            onClick={() => setActiveFilter(tab.id)}
+                            onClick={() => { soundFx.playClick(); setActiveFilter(tab.id); }}
                         >
                             {tab.label}
                         </button>
                     ))}
                 </div>
 
-                {/* Project Showcase List */}
-                <div>
+                {/* Projects Grid */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '36px' }}>
                     {filteredProjects.map((project, idx) => (
                         <motion.div
                             key={project.title}
@@ -644,24 +731,9 @@ const App = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: idx * 0.1 }}
-                            className={`project-card-container ${idx % 2 !== 0 ? 'alternate' : ''}`}
+                            className={`glass-card ${idx % 2 !== 0 ? 'alternate' : ''}`}
+                            style={{ padding: '36px', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '40px', alignItems: 'center' }}
                         >
-                            {/* Project Mockup Visual */}
-                            <div style={{ order: idx % 2 !== 0 ? 1 : 0 }}>
-                                <div className="project-preview-box">
-                                    <img
-                                        src={project.image}
-                                        alt={project.title}
-                                        style={{
-                                            width: project.isMobile ? 'auto' : '100%',
-                                            height: '100%',
-                                            objectFit: project.isMobile ? 'contain' : 'cover',
-                                            borderRadius: '16px'
-                                        }}
-                                    />
-                                </div>
-                            </div>
-
                             {/* Project Content */}
                             <div>
                                 <div style={{ marginBottom: '12px' }}>
@@ -670,26 +742,26 @@ const App = () => {
                                     </span>
                                 </div>
 
-                                <h3 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '20px', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
+                                <h3 style={{ fontSize: '1.75rem', fontWeight: 900, marginBottom: '18px', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
                                     {project.title}
                                 </h3>
 
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px', fontSize: '0.98rem' }}>
                                     <div>
-                                        <p style={{ fontWeight: 800, fontSize: '0.82rem', color: 'var(--accent-primary)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>Challenge</p>
+                                        <p style={{ fontWeight: 800, fontSize: '0.80rem', color: 'var(--accent-primary)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Problem</p>
                                         <p style={{ color: 'var(--text-muted)' }}>{project.problem}</p>
                                     </div>
                                     <div>
-                                        <p style={{ fontWeight: 800, fontSize: '0.82rem', color: 'var(--accent-secondary)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>Solution &amp; Architecture</p>
+                                        <p style={{ fontWeight: 800, fontSize: '0.80rem', color: 'var(--accent-secondary)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Architecture &amp; Solution</p>
                                         <p style={{ color: 'var(--text-main)', fontWeight: 500 }}>{project.solution}</p>
                                     </div>
                                     <div>
-                                        <p style={{ fontWeight: 800, fontSize: '0.82rem', color: '#10b981', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>Production Impact</p>
+                                        <p style={{ fontWeight: 800, fontSize: '0.80rem', color: '#10b981', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Production Outcome</p>
                                         <p style={{ color: 'var(--text-muted)' }}>{project.result}</p>
                                     </div>
                                 </div>
 
-                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '28px' }}>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '24px' }}>
                                     {project.tags.map((tag, tIdx) => (
                                         <span key={tIdx} className="tech-chip">
                                             {tag}
@@ -755,14 +827,72 @@ const App = () => {
                                     )}
                                 </div>
                             </div>
+
+                            {/* Project Preview Image */}
+                            <div style={{ width: '100%', height: '360px', borderRadius: '20px', overflow: 'hidden', background: 'rgba(15, 23, 42, 0.6)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <img
+                                    src={project.image}
+                                    alt={project.title}
+                                    style={{
+                                        width: project.isMobile ? 'auto' : '100%',
+                                        height: '100%',
+                                        objectFit: project.isMobile ? 'contain' : 'cover',
+                                        borderRadius: '16px'
+                                    }}
+                                />
+                            </div>
                         </motion.div>
                     ))}
                 </div>
             </section>
 
-            {/* PROFESSIONAL EXPERIENCE TIMELINE */}
+            {/* 6. TECHNICAL SKILLS MATRIX */}
+            <section id="skills">
+                <SectionHeading subtitle="Comprehensive mastery across client frameworks, mobile runtimes, and APIs" badge="// 06. SKILLS MATRIX">
+                    Technical Stack &amp; Tooling
+                </SectionHeading>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+                    {[
+                        {
+                            icon: <Smartphone size={30} color="var(--accent-primary)" />,
+                            category: "Mobile App Development",
+                            skills: ["Flutter & Dart", "BLoC & Provider", "Google Maps SDK", "SignalR GPS Tracking", "Firebase FCM & Auth", "Hive & SQLite Caching"]
+                        },
+                        {
+                            icon: <Code2 size={30} color="var(--accent-secondary)" />,
+                            category: "Frontend Web Engineering",
+                            skills: ["React.js & Next.js", "TypeScript & JavaScript ES6+", "Tailwind CSS & Material UI", "Redux Toolkit & Zustand", "Vite & Modern Bundlers", "Responsive UX Design"]
+                        },
+                        {
+                            icon: <Server size={30} color="var(--accent-tertiary)" />,
+                            category: "Backend & AI Pipelines",
+                            skills: ["Node.js & Express.js", "FastAPI & Python", "RESTful API Contracts", "Tesseract OCR & OpenCV", "TensorFlow Lite On-Device", "Pydantic Data Schemas"]
+                        },
+                        {
+                            icon: <Database size={30} color="#10b981" />,
+                            category: "Databases & FinTech",
+                            skills: ["PostgreSQL & MySQL", "Redis (Caching)", "Telebirr & Chapa Payments", "JWT Secure Authentication", "Docker & CI/CD Pipelines", "Git / GitHub / GitLab"]
+                        }
+                    ].map((block, idx) => (
+                        <Card key={idx} delay={idx * 0.1}>
+                            <div style={{ marginBottom: '18px' }}>{block.icon}</div>
+                            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: '16px' }}>{block.category}</h3>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                {block.skills.map((skill, sIdx) => (
+                                    <span key={sIdx} className="tech-chip">
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+                        </Card>
+                    ))}
+                </div>
+            </section>
+
+            {/* 7. CAREER TIMELINE */}
             <section id="experience">
-                <SectionHeading subtitle="Track record of engineering robust software across logistics, SaaS, and public institutions" badge="// 02. CAREER TIMELINE">
+                <SectionHeading subtitle="Track record of engineering robust software across logistics, SaaS, and public institutions" badge="// 07. CAREER JOURNEY">
                     Professional Experience
                 </SectionHeading>
 
@@ -818,19 +948,19 @@ const App = () => {
                 </div>
             </section>
 
-            {/* CONTACT & DIRECT ACTION SECTION */}
+            {/* 8. CONTACT & GET IN TOUCH */}
             <section id="contact" style={{ textAlign: 'center' }}>
-                <SectionHeading subtitle="Let's build something exceptional together. Feel free to reach out directly." badge="Get In Touch">
-                    Start a Conversation
+                <SectionHeading subtitle="Open for full-time engineering positions, senior roles, and high-impact contracts" badge="// 08. CONTACT">
+                    Let's Build Together
                 </SectionHeading>
 
                 <div style={{ maxWidth: '750px', margin: '0 auto' }}>
-                    {/* Quick Contact Badges */}
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '40px' }}>
+                    {/* One-Click Copy Badges */}
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '36px' }}>
                         <button
                             onClick={() => copyToClipboard("kaleabmezgebe4@gmail.com", "Email")}
-                            className="glass-card"
-                            style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, fontSize: '0.98rem' }}
+                            className="glass-card font-mono"
+                            style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
                         >
                             <Mail size={18} color="var(--accent-primary)" />
                             <span>kaleabmezgebe4@gmail.com</span>
@@ -838,8 +968,8 @@ const App = () => {
                         </button>
                         <button
                             onClick={() => copyToClipboard("+251945989369", "Phone")}
-                            className="glass-card"
-                            style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, fontSize: '0.98rem' }}
+                            className="glass-card font-mono"
+                            style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
                         >
                             <Phone size={18} color="var(--accent-secondary)" />
                             <span>+251 945989369</span>
@@ -847,12 +977,12 @@ const App = () => {
                         </button>
                     </div>
 
-                    {/* Direct Contact Form */}
+                    {/* Interactive Message Form */}
                     <Card style={{ padding: '40px', textAlign: 'left' }}>
                         <form onSubmit={handleSubmitMessage}>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>Your Name</label>
+                                    <label className="font-mono" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>// Your Name</label>
                                     <input
                                         type="text"
                                         required
@@ -863,7 +993,7 @@ const App = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>Your Email</label>
+                                    <label className="font-mono" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>// Your Email</label>
                                     <input
                                         type="email"
                                         required
@@ -875,11 +1005,11 @@ const App = () => {
                                 </div>
                             </div>
                             <div style={{ marginBottom: '24px' }}>
-                                <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>Your Message</label>
+                                <label className="font-mono" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>// Your Message</label>
                                 <textarea
                                     required
                                     rows={4}
-                                    placeholder="Tell me about your project, timeline, or open role..."
+                                    placeholder="Tell me about your project, team, or opportunity..."
                                     value={formData.message}
                                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                     style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none', resize: 'vertical' }}
@@ -888,7 +1018,7 @@ const App = () => {
                             <button
                                 type="submit"
                                 className="accent-bg glow-effect"
-                                style={{ width: '100%', padding: '14px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                                style={{ width: '100%', padding: '14px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}
                             >
                                 <Send size={18} /> {formSent ? "Sending..." : "Send Message"}
                             </button>
@@ -898,10 +1028,10 @@ const App = () => {
             </section>
 
             {/* FOOTER */}
-            <footer style={{ borderTop: '1px solid var(--glass-border)', padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+            <footer style={{ borderTop: '1px solid var(--glass-border)', padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem', position: 'relative', zIndex: 1 }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-                    <div>
-                        © {new Date().getFullYear()} <strong>Kaleab Mezgebe Fissaha</strong>. Built with React &amp; Vite.
+                    <div className="font-mono">
+                        © {new Date().getFullYear()} <strong style={{ color: 'var(--text-main)' }}>Kaleab Mezgebe Fissaha</strong>. Built with React &amp; Vite.
                     </div>
                     <div style={{ display: 'flex', gap: '20px' }}>
                         <a href="https://github.com/kaleab-mezgebe" target="_blank" style={{ color: 'var(--text-muted)' }}>GitHub</a>
