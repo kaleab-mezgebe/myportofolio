@@ -38,7 +38,6 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import ParticleBackground from './components/ParticleBackground';
-import { CustomCursor } from './components/CustomCursor';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
 import { EngineeringMetrics } from './components/EngineeringMetrics';
 import { PageLoader } from './components/PageLoader';
@@ -197,10 +196,12 @@ const App = () => {
                     name: formData.name,
                     email: formData.email,
                     message: formData.message,
-                    _subject: `New Portfolio Message from ${formData.name}`,
-                    _template: "table"
+                    _subject: `New Portfolio Inquiry from ${formData.name}`,
+                    _captcha: "false"
                 })
             });
+
+            const result = await response.json().catch(() => null);
 
             if (response.ok) {
                 setFormStatus('success');
@@ -208,13 +209,14 @@ const App = () => {
                 showToast("Message dispatched directly to Kaleab's inbox! 🚀");
                 setFormData({ name: '', email: '', message: '' });
             } else {
-                throw new Error("API dispatch error");
+                throw new Error(result?.message || "Endpoint requires email confirmation");
             }
         } catch (err) {
+            // Instant fallback: open user's email client draft pre-filled with their message
             setFormStatus('success');
             handleConfetti();
-            showToast("Opening email client draft... 🚀");
-            const mailtoUrl = `mailto:kaleabmezgebe4@gmail.com?subject=${encodeURIComponent(`Project Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+            showToast("Opening email draft to kaleabmezgebe4@gmail.com 🚀");
+            const mailtoUrl = `mailto:kaleabmezgebe4@gmail.com?subject=${encodeURIComponent(`Project Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`Hi Kaleab,\n\n${formData.message}\n\nFrom: ${formData.name} (${formData.email})`)}`;
             window.location.href = mailtoUrl;
             setFormData({ name: '', email: '', message: '' });
         }
@@ -321,9 +323,6 @@ const App = () => {
             <AnimatePresence>
                 {isLoading && <PageLoader isDarkMode={isDarkMode} />}
             </AnimatePresence>
-
-            {/* Interactive Cyber Focus Cursor */}
-            <CustomCursor isDarkMode={isDarkMode} />
 
             {/* Dynamic Constellation Particle Field */}
             <ParticleBackground isDarkMode={isDarkMode} />
