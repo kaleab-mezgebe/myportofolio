@@ -42,6 +42,7 @@ import {
 import confetti from 'canvas-confetti';
 import { soundFx } from './utils/sound';
 import ParticleBackground from './components/ParticleBackground';
+import { CustomCursor } from './components/CustomCursor';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
 import { EngineeringMetrics } from './components/EngineeringMetrics';
 import kaleabPortrait from './assets/kaleab_portrait.jpg';
@@ -131,7 +132,12 @@ const App = () => {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             setIsDarkMode(false);
+            document.body.classList.remove('dark');
             document.body.classList.add('light');
+        } else {
+            setIsDarkMode(true);
+            document.body.classList.remove('light');
+            document.body.classList.add('dark');
         }
 
         // Global Cmd + K shortcut
@@ -348,6 +354,9 @@ const App = () => {
 
     return (
         <div className={`app-container ${isDarkMode ? 'dark' : 'light'}`}>
+            {/* Interactive Cyber Focus Cursor */}
+            <CustomCursor isDarkMode={isDarkMode} />
+
             {/* Dynamic Constellation Particle Field */}
             <ParticleBackground isDarkMode={isDarkMode} />
 
