@@ -5,8 +5,8 @@ import { soundFx } from '../utils/sound';
 
 export const InteractiveTerminal = ({ onTriggerToast }) => {
     const [history, setHistory] = useState([
-        { type: 'system', text: '⚡ Antigravity DevTerm v3.2.0 (x86_64-apple-darwin)' },
-        { type: 'system', text: 'Type "help" to see available interactive commands or click any quick chips below.' }
+        { type: 'system', text: '⚡ Kaleab Mezgebe Developer Console [zsh session]' },
+        { type: 'system', text: 'Ready. Type "help" or select any quick command below.' }
     ]);
     const [inputVal, setInputVal] = useState('');
     const [commandHistory, setCommandHistory] = useState([]);

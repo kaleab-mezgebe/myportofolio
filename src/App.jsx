@@ -572,13 +572,6 @@ const App = () => {
                                 Explore Projects <ArrowUpRight size={18} />
                             </a>
                             <a
-                                href="#architecture-demos"
-                                className="glass-card"
-                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}
-                            >
-                                <Zap size={18} color="var(--accent-secondary)" /> Live Demos
-                            </a>
-                            <a
                                 href="#contact"
                                 className="glass-card"
                                 style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
