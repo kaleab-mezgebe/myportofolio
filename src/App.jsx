@@ -38,6 +38,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import ParticleBackground from './components/ParticleBackground';
+import { CustomCursor } from './components/CustomCursor';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
 import { EngineeringMetrics } from './components/EngineeringMetrics';
 import { PageLoader } from './components/PageLoader';
@@ -323,6 +324,9 @@ const App = () => {
             <AnimatePresence>
                 {isLoading && <PageLoader isDarkMode={isDarkMode} />}
             </AnimatePresence>
+
+            {/* Interactive Cyber Focus Cursor */}
+            <CustomCursor isDarkMode={isDarkMode} />
 
             {/* Dynamic Constellation Particle Field */}
             <ParticleBackground isDarkMode={isDarkMode} />
