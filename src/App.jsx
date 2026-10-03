@@ -44,7 +44,6 @@ import { soundFx } from './utils/sound';
 import ParticleBackground from './components/ParticleBackground';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
 import { EngineeringMetrics } from './components/EngineeringMetrics';
-import { CodeArchitecturePreview } from './components/CodeArchitecturePreview';
 import kaleabPortrait from './assets/kaleab_portrait.jpg';
 
 // Section Heading Component
@@ -331,7 +330,6 @@ const App = () => {
     const commandActions = [
         { label: "Navigate: Home Hero", action: () => { window.location.href = "#hero"; setIsCmdOpen(false); } },
         { label: "Navigate: Engineering Standards", action: () => { window.location.href = "#metrics"; setIsCmdOpen(false); } },
-        { label: "Navigate: Production Code Inspector", action: () => { window.location.href = "#code-standards"; setIsCmdOpen(false); } },
         { label: "Navigate: Flagship Highlights", action: () => { window.location.href = "#highlights"; setIsCmdOpen(false); } },
         { label: "Navigate: Projects Showcase", action: () => { window.location.href = "#projects"; setIsCmdOpen(false); } },
         { label: "Navigate: Technical Stack", action: () => { window.location.href = "#skills"; setIsCmdOpen(false); } },
@@ -730,10 +728,7 @@ const App = () => {
             {/* 2. ENGINEERING STANDARDS & PERFORMANCE BENCHMARKS */}
             <EngineeringMetrics />
 
-            {/* 4. PRODUCTION CODE INSPECTOR */}
-            <CodeArchitecturePreview onTriggerToast={showToast} />
-
-            {/* 5. FULL PROJECT CATALOG WITH DYNAMIC FILTERING */}
+            {/* 3. FULL PROJECT CATALOG WITH DYNAMIC FILTERING */}
             <section id="projects">
                 <SectionHeading subtitle="Filter production mobile apps, SaaS platforms, and machine learning pipelines" badge="// 05. PROVEN DELIVERY">
                     Complete Project Catalog
