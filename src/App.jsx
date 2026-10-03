@@ -490,11 +490,24 @@ const App = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
-                            style={{ marginBottom: '24px' }}
+                            style={{ marginBottom: '28px' }}
                         >
-                            <div className="status-pill">
-                                <span className="status-dot"></span>
-                                Available for High-Impact Frontend &amp; Mobile Roles
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+                                <div style={{ position: 'relative', width: '68px', height: '68px' }}>
+                                    <div style={{ width: '68px', height: '68px', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--accent-primary)', boxShadow: '0 0 25px var(--accent-glow)' }}>
+                                        <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    </div>
+                                    <span className="status-dot" style={{ position: 'absolute', bottom: '2px', right: '2px', border: '2px solid var(--bg-dark)' }}></span>
+                                </div>
+                                <div>
+                                    <div className="status-pill">
+                                        <span className="status-dot"></span>
+                                        Available for High-Impact Frontend &amp; Mobile Roles
+                                    </div>
+                                    <p className="font-mono" style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: '4px 0 0' }}>
+                                        Addis Ababa, Ethiopia • Full-Stack Mobile &amp; Web
+                                    </p>
+                                </div>
                             </div>
                         </motion.div>
 
@@ -623,11 +636,16 @@ const App = () => {
                     {/* Bento Item 2: MIT Academic Excellence */}
                     <div className="bento-col-4">
                         <Card style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.08))' }}>
-                            <div style={{ marginBottom: '16px' }}>
-                                <GraduationCap size={32} color="var(--accent-primary)" />
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
+                                <div style={{ width: '52px', height: '52px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0 }}>
+                                    <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                </div>
+                                <div>
+                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 900, margin: 0 }}>Kaleab Mezgebe</h3>
+                                    <span className="font-mono" style={{ fontSize: '0.78rem', color: 'var(--accent-secondary)' }}>MIT Graduate</span>
+                                </div>
                             </div>
-                            <h3 style={{ fontSize: '1.4rem', fontWeight: 900, marginBottom: '8px' }}>Mekelle Institute of Technology (MIT)</h3>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', marginBottom: '16px' }}>BSc in Information Technology (2018–2025)</p>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '14px' }}>BSc in Information Technology (2018–2025)</p>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <div className="tech-chip" style={{ justifyContent: 'space-between' }}>
                                     <span>Cumulative GPA:</span>
