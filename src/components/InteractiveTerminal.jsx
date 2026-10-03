@@ -42,14 +42,7 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
         if (cmd === 'help') {
             newEntries.push({
                 type: 'output',
-                text: `[AVAILABLE COMMANDS]
-  • skills    - Production mobile, web, API & FinTech tech stack
-  • projects  - 5 Flagship production mobile & web platforms
-  • stats     - Academic & performance benchmarks (MIT CGPA 3.88)
-  • contact   - Direct email, phone, GitHub & LinkedIn profiles
-  • curl cv   - Download verified resume PDF
-  • sudo hire - Launch direct interview invitation
-  • clear     - Clear terminal history`
+                text: `Available commands: skills  •  projects  •  stats  •  contact  •  sudo hire  •  clear`
             });
         } else if (cmd === 'skills') {
             newEntries.push({

@@ -543,7 +543,7 @@ const App = () => {
                             transition={{ duration: 0.6, delay: 0.1 }}
                             className="hero-title"
                         >
-                            Engineering <span className="accent-text">High-Velocity</span> Mobile &amp; Modern Web Architectures.
+                            Frontend &amp; Mobile <span className="accent-text">Software Engineer</span>.
                         </motion.h1>
 
                         <motion.p
