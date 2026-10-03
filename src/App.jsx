@@ -42,7 +42,6 @@ import {
 import confetti from 'canvas-confetti';
 import { soundFx } from './utils/sound';
 import ParticleBackground from './components/ParticleBackground';
-import { InteractiveLab } from './components/InteractiveLab';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
 import { EngineeringMetrics } from './components/EngineeringMetrics';
 import { CodeArchitecturePreview } from './components/CodeArchitecturePreview';
@@ -331,7 +330,6 @@ const App = () => {
     // Command palette actions
     const commandActions = [
         { label: "Navigate: Home Hero", action: () => { window.location.href = "#hero"; setIsCmdOpen(false); } },
-        { label: "Navigate: Architecture Demos", action: () => { window.location.href = "#architecture-demos"; setIsCmdOpen(false); } },
         { label: "Navigate: Engineering Standards", action: () => { window.location.href = "#metrics"; setIsCmdOpen(false); } },
         { label: "Navigate: Production Code Inspector", action: () => { window.location.href = "#code-standards"; setIsCmdOpen(false); } },
         { label: "Navigate: Flagship Highlights", action: () => { window.location.href = "#highlights"; setIsCmdOpen(false); } },
@@ -472,7 +470,6 @@ const App = () => {
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }} className="hidden md:flex">
                         <a href="#hero" className="nav-link">Home</a>
                         <a href="#highlights" className="nav-link">Highlights</a>
-                        <a href="#architecture-demos" className="nav-link">Architecture</a>
                         <a href="#projects" className="nav-link">Projects</a>
                         <a href="#skills" className="nav-link">Skills</a>
                         <a href="#experience" className="nav-link">Experience</a>
@@ -730,10 +727,7 @@ const App = () => {
                 </div>
             </section>
 
-            {/* 2. INTERACTIVE SYSTEM ARCHITECTURE LAB */}
-            <InteractiveLab />
-
-            {/* 3. ENGINEERING STANDARDS & PERFORMANCE BENCHMARKS */}
+            {/* 2. ENGINEERING STANDARDS & PERFORMANCE BENCHMARKS */}
             <EngineeringMetrics />
 
             {/* 4. PRODUCTION CODE INSPECTOR */}

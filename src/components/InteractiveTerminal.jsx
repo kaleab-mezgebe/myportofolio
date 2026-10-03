@@ -7,8 +7,8 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
     const [history, setHistory] = useState([
         { type: 'system', text: '⚡ Kaleab Mezgebe Developer Console [zsh session]' },
         { 
-            type: 'help_intro', 
-            text: 'Type a command or click any quick action below:' 
+            type: 'prompt_hint', 
+            text: 'Type a command below or click any quick action above to inspect my engineering background.' 
         }
     ]);
     const [inputVal, setInputVal] = useState('');
@@ -41,33 +41,45 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
 
         if (cmd === 'help') {
             newEntries.push({
-                type: 'help_menu',
-                text: `Available interactive commands:`
+                type: 'output',
+                text: `[AVAILABLE COMMANDS]
+  • skills    - Production mobile, web, API & FinTech tech stack
+  • projects  - 5 Flagship production mobile & web platforms
+  • stats     - Academic & performance benchmarks (MIT CGPA 3.88)
+  • contact   - Direct email, phone, GitHub & LinkedIn profiles
+  • curl cv   - Download verified resume PDF
+  • sudo hire - Launch direct interview invitation
+  • clear     - Clear terminal history`
             });
         } else if (cmd === 'skills') {
             newEntries.push({
                 type: 'output',
-                text: `[CORE PRODUCTION STACK]
-  Mobile:    Flutter / Dart / BLoC / SignalR / Google Maps SDK
-  Frontend:  React.js / Next.js / TypeScript / Tailwind CSS / Redux
-  Backend:   FastAPI / Python / Node.js / Express.js / PostgreSQL
-  AI / OCR:  Tesseract OCR / OpenCV / TensorFlow Lite / Pydantic
-  FinTech:   Telebirr Payment Gateway / Chapa API / JWT Security`
+                text: `[PRODUCTION TECH STACK]
+  📱 Mobile:    Flutter • Dart • BLoC • SignalR • Google Maps SDK • Hive
+  🌐 Frontend:  React.js • Next.js • TypeScript • Tailwind CSS • Redux
+  ⚙️ Backend:   FastAPI • Python • Node.js • Express.js • PostgreSQL
+  🤖 AI / Vision: Tesseract OCR • OpenCV • TensorFlow Lite • Pydantic
+  💳 FinTech:   Telebirr Payment Gateway • Chapa API • JWT Auth`
             });
         } else if (cmd === 'projects') {
             newEntries.push({
-                type: 'projects_list',
-                text: `[PRODUCTION RELEASES]`
+                type: 'output',
+                text: `[FLAGSHIP PRODUCTION PROJECTS]
+  1. Axumite Ride       - Real-Time Fleet & Passenger App (Flutter • Play Store)
+  2. Shemeta Commerce   - Multi-Vendor Platform with Telebirr & Chapa (React/Next)
+  3. AI Dermatologist   - Skin Disease Diagnosis Mobile App (TensorFlow Lite)
+  4. OCR Receipt Engine - Financial Document & Receipt Data Pipeline (FastAPI)
+  5. EthioBeds SaaS     - Hotel & Guesthouse Booking Platform (Full-Stack)`
             });
         } else if (cmd === 'stats') {
             newEntries.push({
                 type: 'output',
-                text: `[VERIFIED PERFORMANCE METRICS]
-  • Experience:          3+ Years Production Delivery
-  • MIT University CGPA: 3.88 / 4.00 (Distinction)
-  • National Exit Exam:  86 / 100 (Top Percentile)
-  • Mobile Frame Budget: 60 FPS Jitter-Free Rendering
-  • Crash-Free Sessions: 99.8% on Production Play Store`
+                text: `[VERIFIED PERFORMANCE & ACADEMIC STATS]
+  • Professional Experience: 3+ Years Production Delivery
+  • MIT University CGPA:     3.88 / 4.00 (Distinction)
+  • National Exit Exam:      86 / 100 (Top Percentile)
+  • Mobile Frame Budget:     60 FPS Jitter-Free UI Thread
+  • Crash-Free Rate:         99.8% on Production Play Store`
             });
         } else if (cmd.includes('hire') || cmd === 'sudo hire') {
             confetti({
@@ -79,7 +91,7 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
             onTriggerToast?.("Direct contact protocol initiated! kaleabmezgebe4@gmail.com 🚀");
             newEntries.push({
                 type: 'success',
-                text: `🎉 sudo access granted! Opening email draft to kaleabmezgebe4@gmail.com...
+                text: `🎉 Opening direct email draft to kaleabmezgebe4@gmail.com...
 Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
             });
             setTimeout(() => {
@@ -111,7 +123,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
         } else {
             newEntries.push({
                 type: 'error',
-                text: `zsh: command not found: "${raw}". Type "help" to see available commands.`
+                text: `zsh: command not found: "${raw}". Type "help" to see valid commands.`
             });
         }
 
@@ -149,7 +161,8 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
     const quickActions = [
         { cmd: 'help', label: 'help', icon: <HelpCircle size={13} />, bg: '#6366f1', text: '#ffffff', glow: 'rgba(99, 102, 241, 0.45)' },
         { cmd: 'skills', label: 'skills', icon: <Code size={13} />, bg: '#06b6d4', text: '#ffffff', glow: 'rgba(6, 182, 212, 0.45)' },
-        { cmd: 'stats', label: 'stats', icon: <Award size={13} />, bg: '#10b981', text: '#ffffff', glow: 'rgba(16, 185, 129, 0.45)' },
+        { cmd: 'projects', label: 'projects', icon: <Briefcase size={13} />, bg: '#10b981', text: '#ffffff', glow: 'rgba(16, 185, 129, 0.45)' },
+        { cmd: 'stats', label: 'stats', icon: <Award size={13} />, bg: '#f59e0b', text: '#ffffff', glow: 'rgba(245, 158, 11, 0.45)' },
         { cmd: 'sudo hire', label: 'sudo hire', icon: <Zap size={13} />, bg: '#ec4899', text: '#ffffff', glow: 'rgba(236, 72, 153, 0.45)' }
     ];
 
@@ -158,7 +171,6 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
             className="terminal-window" 
             style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '390px', cursor: 'text' }}
             onClick={(e) => {
-                // Focus input without scrolling page
                 inputRef.current?.focus({ preventScroll: true });
             }}
         >
@@ -182,7 +194,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                 </div>
 
                 {/* Highly Visible, Solid-Colored Action Chips */}
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                     {quickActions.map((item) => (
                         <button
                             key={item.cmd}
@@ -197,15 +209,15 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                                 background: item.bg,
                                 border: '1px solid rgba(255,255,255,0.3)',
                                 color: item.text,
-                                padding: '5px 14px',
-                                borderRadius: '8px',
-                                fontSize: '0.82rem',
-                                fontWeight: 900,
+                                padding: '4px 10px',
+                                borderRadius: '6px',
+                                fontSize: '0.78rem',
+                                fontWeight: 800,
                                 cursor: 'pointer',
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '6px',
-                                boxShadow: `0 3px 12px ${item.glow}`,
+                                gap: '4px',
+                                boxShadow: `0 2px 8px ${item.glow}`,
                                 transition: 'all 0.15s ease'
                             }}
                             title={`Run '$ ${item.cmd}'`}
@@ -220,127 +232,18 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
             {/* Terminal Log Body */}
             <div ref={terminalBodyRef} className="terminal-body" style={{ flex: 1, overflowY: 'auto', maxHeight: '340px' }}>
                 {history.map((item, idx) => (
-                    <div key={idx} style={{ marginBottom: '10px' }}>
+                    <div key={idx} style={{ marginBottom: '8px' }}>
                         {item.type === 'user' && (
-                            <div style={{ color: '#38bdf8', fontWeight: 700, fontSize: '0.92rem' }}>{item.text}</div>
+                            <div style={{ color: '#38bdf8', fontWeight: 700, fontSize: '0.90rem' }}>{item.text}</div>
                         )}
                         {item.type === 'system' && (
-                            <div style={{ color: '#a5b4fc', fontSize: '0.88rem', fontWeight: 600 }}>{item.text}</div>
+                            <div style={{ color: '#a5b4fc', fontSize: '0.86rem', fontWeight: 600 }}>{item.text}</div>
                         )}
-                        {item.type === 'help_intro' && (
-                            <div style={{ margin: '6px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <p style={{ color: '#cbd5e1', fontSize: '0.85rem', margin: 0 }}>{item.text}</p>
-                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                    {quickActions.map((q) => (
-                                        <button
-                                            key={q.cmd}
-                                            type="button"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                executeCommand(q.cmd);
-                                            }}
-                                            style={{
-                                                background: q.bg,
-                                                border: '1px solid rgba(255,255,255,0.3)',
-                                                color: q.text,
-                                                fontFamily: 'var(--font-mono)',
-                                                fontSize: '0.80rem',
-                                                fontWeight: 800,
-                                                padding: '5px 12px',
-                                                borderRadius: '6px',
-                                                cursor: 'pointer',
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                gap: '5px',
-                                                boxShadow: `0 2px 8px ${q.glow}`
-                                            }}
-                                        >
-                                            {q.icon}
-                                            <span>{q.cmd}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        {item.type === 'help_menu' && (
-                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)' }}>
-                                <div style={{ color: '#ec4899', fontWeight: 800, marginBottom: '10px', fontSize: '0.88rem' }}>// INTERACTIVE COMMANDS MENU</div>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '8px' }}>
-                                    {[
-                                        { cmd: 'skills', desc: 'Core tech stack & framework mastery', color: '#06b6d4' },
-                                        { cmd: 'projects', desc: 'Browse live production apps', color: '#ec4899' },
-                                        { cmd: 'stats', desc: 'Academic & performance benchmarks', color: '#10b981' },
-                                        { cmd: 'contact', desc: 'Copy email & phone numbers', color: '#a5b4fc' },
-                                        { cmd: 'curl cv', desc: 'Download verified resume PDF', color: '#f59e0b' },
-                                        { cmd: 'sudo hire', desc: 'Initiate direct hiring invitation', color: '#ec4899' },
-                                        { cmd: 'clear', desc: 'Clear terminal screen', color: '#94a3b8' }
-                                    ].map((c) => (
-                                        <div
-                                            key={c.cmd}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                executeCommand(c.cmd);
-                                            }}
-                                            style={{
-                                                padding: '8px 12px',
-                                                background: 'rgba(255,255,255,0.05)',
-                                                border: `1px solid ${c.color}60`,
-                                                borderRadius: '8px',
-                                                cursor: 'pointer',
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                transition: 'all 0.15s ease'
-                                            }}
-                                        >
-                                            <strong style={{ color: c.color, fontSize: '0.85rem' }}>$ {c.cmd}</strong>
-                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.74rem' }}>{c.desc}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        {item.type === 'projects_list' && (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                <span style={{ color: '#ec4899', fontWeight: 700 }}>{item.text}</span>
-                                {[
-                                    { name: '1. Axumite Ride (Passenger & Driver App)', tag: 'Flutter • SignalR • Live Play Store' },
-                                    { name: '2. Shemeta E-Commerce Platform', tag: 'React.js • Telebirr & Chapa • Live Demo' },
-                                    { name: '3. AI Dermatologist Diagnostic App', tag: 'Flutter • TensorFlow Lite • Computer Vision' },
-                                    { name: '4. Financial Document & Receipt OCR Pipeline', tag: 'FastAPI • Tesseract • OpenCV' },
-                                    { name: '5. EthioBeds Accommodation SaaS', tag: 'React.js • Node.js • PostgreSQL' }
-                                ].map((p, pIdx) => (
-                                    <div
-                                        key={pIdx}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            executeCommand(p.name.split(' ')[1]);
-                                        }}
-                                        style={{
-                                            padding: '8px 12px',
-                                            background: 'rgba(255,255,255,0.03)',
-                                            border: '1px solid rgba(255,255,255,0.08)',
-                                            borderRadius: '6px',
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            color: '#f8fafc'
-                                        }}
-                                    >
-                                        <div>
-                                            <div style={{ fontWeight: 700, fontSize: '0.82rem' }}>{p.name}</div>
-                                            <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>{p.tag}</div>
-                                        </div>
-                                        <Code size={14} color="#06b6d4" />
-                                    </div>
-                                ))}
-                            </div>
+                        {item.type === 'prompt_hint' && (
+                            <div style={{ color: '#94a3b8', fontSize: '0.82rem', margin: '4px 0 8px' }}>{item.text}</div>
                         )}
                         {item.type === 'output' && (
-                            <pre style={{ color: '#cbd5e1', whiteSpace: 'pre-wrap', margin: '2px 0', fontSize: '0.85rem' }}>{item.text}</pre>
+                            <pre style={{ color: '#cbd5e1', whiteSpace: 'pre-wrap', margin: '2px 0', fontSize: '0.85rem', lineHeight: 1.6 }}>{item.text}</pre>
                         )}
                         {item.type === 'success' && (
                             <pre style={{ color: '#10b981', whiteSpace: 'pre-wrap', fontWeight: 700, margin: '2px 0', fontSize: '0.85rem' }}>{item.text}</pre>
@@ -361,7 +264,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                     value={inputVal}
                     onChange={(e) => setInputVal(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Type command ('help', 'projects', 'stats', 'hire')..."
+                    placeholder="Type command ('skills', 'projects', 'stats', 'hire')..."
                     style={{
                         flex: 1,
                         background: 'transparent',
