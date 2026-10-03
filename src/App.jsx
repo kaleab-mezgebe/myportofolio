@@ -36,7 +36,8 @@ import {
     Activity,
     Compass,
     Volume2,
-    VolumeX
+    VolumeX,
+    Loader2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { soundFx } from './utils/sound';
@@ -122,7 +123,7 @@ const App = () => {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [cmdSearch, setCmdSearch] = useState('');
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-    const [formSent, setFormSent] = useState(false);
+    const [formStatus, setFormStatus] = useState('idle'); // 'idle' | 'sending' | 'success' | 'error'
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -188,15 +189,45 @@ const App = () => {
         });
     };
 
-    const handleSubmitMessage = (e) => {
+    const handleSubmitMessage = async (e) => {
         e.preventDefault();
-        setFormSent(true);
-        handleConfetti();
-        showToast("Message recorded! Thanks for reaching out. 🚀");
-        setTimeout(() => {
+        soundFx.playClick();
+        setFormStatus('sending');
+
+        try {
+            // Send to FormSubmit endpoint with JSON response format
+            const response = await fetch("https://formsubmit.co/ajax/kaleabmezgebe4@gmail.com", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    message: formData.message,
+                    _subject: `New Portfolio Message from ${formData.name}`,
+                    _template: "table"
+                })
+            });
+
+            if (response.ok) {
+                setFormStatus('success');
+                handleConfetti();
+                showToast("Message dispatched directly to Kaleab's inbox! 🚀");
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                throw new Error("API dispatch error");
+            }
+        } catch (err) {
+            // Fallback: Open prefilled mailto client directly
+            setFormStatus('success');
+            handleConfetti();
+            showToast("Opening email client draft... 🚀");
+            const mailtoUrl = `mailto:kaleabmezgebe4@gmail.com?subject=${encodeURIComponent(`Project Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+            window.location.href = mailtoUrl;
             setFormData({ name: '', email: '', message: '' });
-            setFormSent(false);
-        }, 3000);
+        }
     };
 
     // Projects Dataset
@@ -427,9 +458,9 @@ const App = () => {
             {/* Navigation Bar */}
             <nav className="navbar-fixed">
                 <div className="navbar-inner">
-                    <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-                        <div style={{ width: '38px', height: '38px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)' }}>
-                            <img src="./assets/myphoto.png" alt="Kaleab" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', boxShadow: '0 0 15px var(--accent-glow)', flexShrink: 0 }}>
+                            <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                         </div>
                         <span style={{ fontWeight: 900, fontSize: '1.15rem', letterSpacing: '-0.5px', color: 'var(--text-main)' }}>
                             KALEAB<span className="accent-text">.M</span>
@@ -482,198 +513,112 @@ const App = () => {
                 </div>
             </nav>
 
-            {/* HERO SECTION - NEXT-GEN EXECUTIVE ARCHITECTURAL LAYOUT */}
-            <section id="hero" className="hero-container" style={{ paddingTop: '130px', paddingBottom: '70px' }}>
-                {/* Top Telemetry Ticker */}
-                <motion.div
-                    initial={{ opacity: 0, y: -15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid var(--glass-border)' }}
-                >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span className="status-dot"></span>
-                        <span className="font-mono" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10b981', letterSpacing: '0.5px' }}>
-                            STATUS: ACTIVE &amp; AVAILABLE FOR HIGH-IMPACT ROLES
-                        </span>
-                    </div>
-                    <div className="font-mono" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                        <span className="tech-chip" style={{ padding: '3px 8px' }}>📍 Addis Ababa, ET (UTC+3)</span>
-                        <span className="tech-chip" style={{ padding: '3px 8px' }}>⚡ 3+ Yrs Exp</span>
-                        <span className="tech-chip" style={{ padding: '3px 8px' }}>🎓 MIT 3.88 CGPA</span>
-                    </div>
-                </motion.div>
-
-                {/* Main Hero Split Showcase */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '40px', alignItems: 'center' }}>
-                    {/* Left Column: Heading & Value Proposition */}
+            {/* HERO SECTION WITH PROFILE PHOTO & CLI TERMINAL */}
+            <section id="hero" className="hero-container">
+                <div className="hero-grid">
                     <div>
+                        {/* Profile Header Badge with User Portrait */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px', flexWrap: 'wrap' }}
+                        >
+                            <div style={{ position: 'relative', width: '56px', height: '56px', borderRadius: '50%', padding: '2px', background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary))', boxShadow: '0 0 20px var(--accent-glow)' }}>
+                                <img
+                                    src="./assets/myphoto.png"
+                                    alt="Kaleab Mezgebe"
+                                    style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top' }}
+                                />
+                                <span style={{ position: 'absolute', bottom: '1px', right: '1px', width: '13px', height: '13px', borderRadius: '50%', background: '#10b981', border: '2px solid var(--bg-dark)' }} />
+                            </div>
+
+                            <div className="status-pill">
+                                <span className="status-dot"></span>
+                                Available for Senior Frontend &amp; Mobile Roles
+                            </div>
+                        </motion.div>
+
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            style={{
-                                fontSize: 'clamp(2.6rem, 5.2vw, 4.2rem)',
-                                fontWeight: 900,
-                                lineHeight: 1.1,
-                                letterSpacing: '-0.04em',
-                                marginBottom: '24px'
-                            }}
+                            className="hero-title"
                         >
-                            Engineering <span className="accent-text">High-Performance</span> Mobile &amp; Modern Web Systems.
+                            Engineering <span className="accent-text">High-Velocity</span> Mobile &amp; Modern Web Architectures.
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{
-                                fontSize: 'clamp(1.1rem, 2vw, 1.25rem)',
-                                color: 'var(--text-sub)',
-                                lineHeight: 1.75,
-                                maxWidth: '640px',
-                                marginBottom: '32px'
-                            }}
+                            style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '620px', marginBottom: '36px' }}
                         >
-                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> building production Flutter apps, React/Next.js architectures, real-time tracking (SignalR), and local FinTech integrations (Telebirr &amp; Chapa).
+                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> crafting production Flutter mobile apps, responsive React/Next.js platforms, real-time tracking (SignalR), and local FinTech payments (Telebirr &amp; Chapa).
                         </motion.p>
 
-                        {/* CTA Cluster */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.3 }}
-                            style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '40px' }}
+                            style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}
                         >
                             <a
                                 href="#projects"
                                 className="accent-bg glow-effect"
-                                style={{ padding: '14px 30px', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+                                style={{ padding: '14px 32px', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
                             >
-                                Explore Projects <ArrowUpRight size={18} />
+                                View Projects <ArrowUpRight size={18} />
                             </a>
                             <a
                                 href="#interactive-lab"
                                 className="glass-card"
-                                style={{ padding: '14px 26px', borderRadius: '16px', fontWeight: 800, fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-secondary)', borderColor: 'rgba(6,182,212,0.4)' }}
+                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-secondary)', borderColor: 'rgba(6,182,212,0.4)' }}
                             >
-                                <Zap size={18} /> System Architecture Lab
+                                <Zap size={18} /> Launch System Lab
                             </a>
                             <a
                                 href="#contact"
                                 className="glass-card"
-                                style={{ padding: '14px 24px', borderRadius: '16px', fontWeight: 800, fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                             >
                                 Contact Me <Mail size={18} />
                             </a>
                         </motion.div>
 
-                        {/* Micro Performance KPI Cards */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.4 }}
-                            style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px', maxWidth: '600px' }}
+                            className="hero-stats"
                         >
-                            <div className="glass-card" style={{ padding: '16px 20px', borderLeft: '3px solid var(--accent-primary)' }}>
-                                <div className="font-display" style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--accent-primary)' }}>3+ Yrs</div>
-                                <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>Production Track Record</div>
+                            <div>
+                                <div className="stat-number" style={{ color: 'var(--accent-primary)' }}>3+</div>
+                                <div className="stat-label">Years Experience</div>
                             </div>
-                            <div className="glass-card" style={{ padding: '16px 20px', borderLeft: '3px solid var(--accent-secondary)' }}>
-                                <div className="font-display" style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--accent-secondary)' }}>3.88</div>
-                                <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>MIT CGPA Distinction</div>
+                            <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
+                            <div>
+                                <div className="stat-number" style={{ color: 'var(--accent-secondary)' }}>3.88</div>
+                                <div className="stat-label">MIT CGPA Distinction</div>
                             </div>
-                            <div className="glass-card" style={{ padding: '16px 20px', borderLeft: '3px solid var(--accent-tertiary)' }}>
-                                <div className="font-display" style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--accent-tertiary)' }}>86/100</div>
-                                <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>National Exit Exam</div>
+                            <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
+                            <div>
+                                <div className="stat-number" style={{ color: 'var(--accent-tertiary)' }}>86/100</div>
+                                <div className="stat-label">National Exit Exam</div>
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Right Column: Executive Developer Identity Card */}
+                    {/* Interactive CLI Developer Terminal */}
                     <div>
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.96 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8 }}
-                            className="glass-card"
-                            style={{
-                                padding: '32px',
-                                background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(10, 15, 30, 0.95))',
-                                border: '1px solid rgba(99, 102, 241, 0.3)',
-                                boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.8)'
-                            }}
                         >
-                            {/* Profile Header */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '24px' }}>
-                                <div style={{ position: 'relative', width: '84px', height: '84px', flexShrink: 0 }}>
-                                    <div style={{ width: '84px', height: '84px', borderRadius: '24px', overflow: 'hidden', border: '3px solid var(--accent-primary)', boxShadow: '0 0 30px var(--accent-glow)' }}>
-                                        <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                    </div>
-                                    <span className="status-dot" style={{ position: 'absolute', bottom: '-2px', right: '-2px', border: '3px solid var(--bg-dark)' }}></span>
-                                </div>
-                                <div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                                        <h3 style={{ fontSize: '1.45rem', fontWeight: 900, margin: 0, letterSpacing: '-0.02em' }}>Kaleab Mezgebe</h3>
-                                        <ShieldCheck size={18} color="#10b981" />
-                                    </div>
-                                    <p className="font-mono" style={{ fontSize: '0.88rem', color: 'var(--accent-secondary)', fontWeight: 700, margin: 0 }}>
-                                        Frontend &amp; Mobile Software Engineer
-                                    </p>
-                                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: '4px 0 0' }}>
-                                        Mekelle Institute of Technology (MIT)
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Verified Skills Tags */}
-                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '24px' }}>
-                                {["Flutter", "React.js", "Next.js", "TypeScript", "BLoC", "SignalR", "FastAPI", "Telebirr"].map((tag, idx) => (
-                                    <span key={idx} className="tech-chip" style={{ fontSize: '0.75rem', padding: '4px 8px' }}>
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-
-                            {/* Quick Action Contact Triggers */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                <button
-                                    onClick={() => copyToClipboard("kaleabmezgebe4@gmail.com", "Email")}
-                                    className="tech-chip font-mono"
-                                    style={{ justifyContent: 'space-between', padding: '12px 16px', cursor: 'pointer', background: 'rgba(255,255,255,0.03)' }}
-                                >
-                                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Mail size={15} color="var(--accent-primary)" /> kaleabmezgebe4@gmail.com
-                                    </span>
-                                    <Copy size={14} style={{ opacity: 0.6 }} />
-                                </button>
-                                <button
-                                    onClick={() => copyToClipboard("+251945989369", "Phone")}
-                                    className="tech-chip font-mono"
-                                    style={{ justifyContent: 'space-between', padding: '12px 16px', cursor: 'pointer', background: 'rgba(255,255,255,0.03)' }}
-                                >
-                                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Phone size={15} color="var(--accent-secondary)" /> +251 945989369
-                                    </span>
-                                    <Copy size={14} style={{ opacity: 0.6 }} />
-                                </button>
-                                <a
-                                    href="./assets/Kaleab Mezgebe's cv.pdf"
-                                    target="_blank"
-                                    download
-                                    className="tech-chip font-mono"
-                                    style={{ justifyContent: 'center', padding: '12px 16px', background: 'rgba(99, 102, 241, 0.15)', borderColor: 'var(--accent-primary)', color: 'white', fontWeight: 700 }}
-                                >
-                                    <Download size={15} /> Download Verified CV (PDF)
-                                </a>
-                            </div>
+                            <InteractiveTerminal onTriggerToast={showToast} />
                         </motion.div>
                     </div>
-                </div>
-
-                {/* Interactive CLI Developer Terminal Sub-HUD */}
-                <div style={{ marginTop: '48px' }}>
-                    <InteractiveTerminal onTriggerToast={showToast} />
                 </div>
             </section>
 
@@ -687,7 +632,7 @@ const App = () => {
                     {/* Bento Item 1: Axumite Ride Live GPS Stream */}
                     <div className="bento-col-8">
                         <Card style={{ position: 'relative', overflow: 'hidden' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'gap', gap: '12px', marginBottom: '16px' }}>
                                 <div>
                                     <span className="status-pill" style={{ color: '#10b981', borderColor: 'rgba(16, 185, 129, 0.3)', background: 'rgba(16, 185, 129, 0.1)', marginBottom: '8px' }}>
                                         <Activity size={14} /> LIVE PRODUCTION GOOGLE PLAY
@@ -720,15 +665,16 @@ const App = () => {
                     <div className="bento-col-4">
                         <Card style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.08))' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
-                                <div style={{ width: '52px', height: '52px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0 }}>
-                                    <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0 }}>
+                                    <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                                 </div>
                                 <div>
-                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 900, margin: 0 }}>Kaleab Mezgebe</h3>
-                                    <span className="font-mono" style={{ fontSize: '0.78rem', color: 'var(--accent-secondary)' }}>MIT Graduate</span>
+                                    <GraduationCap size={24} color="var(--accent-primary)" />
+                                    <span className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--accent-secondary)' }}>ACADEMIC HONORS</span>
                                 </div>
                             </div>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '14px' }}>BSc in Information Technology (2018–2025)</p>
+                            <h3 style={{ fontSize: '1.35rem', fontWeight: 900, marginBottom: '6px' }}>Mekelle Institute of Technology</h3>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.90rem', marginBottom: '14px' }}>BSc in Information Technology (2018–2025)</p>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <div className="tech-chip" style={{ justifyContent: 'space-between' }}>
                                     <span>Cumulative GPA:</span>
@@ -1051,7 +997,7 @@ const App = () => {
 
             {/* 8. CONTACT & GET IN TOUCH */}
             <section id="contact" style={{ textAlign: 'center' }}>
-                <SectionHeading subtitle="Open for full-time engineering positions, senior roles, and high-impact contracts" badge="// 08. CONTACT">
+                <SectionHeading subtitle="Open for full-time engineering positions, senior roles, and high-impact contracts" badge="// 08. DIRECT INBOX CONTACT">
                     Let's Build Together
                 </SectionHeading>
 
@@ -1078,7 +1024,7 @@ const App = () => {
                         </button>
                     </div>
 
-                    {/* Interactive Message Form */}
+                    {/* Interactive Message Form (Active Direct Inbox) */}
                     <Card style={{ padding: '40px', textAlign: 'left' }}>
                         <form onSubmit={handleSubmitMessage}>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
@@ -1087,7 +1033,7 @@ const App = () => {
                                     <input
                                         type="text"
                                         required
-                                        placeholder="John Doe"
+                                        placeholder="Jane Doe"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none' }}
@@ -1098,7 +1044,7 @@ const App = () => {
                                     <input
                                         type="email"
                                         required
-                                        placeholder="john@example.com"
+                                        placeholder="jane@company.com"
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                         style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none' }}
@@ -1110,19 +1056,44 @@ const App = () => {
                                 <textarea
                                     required
                                     rows={4}
-                                    placeholder="Tell me about your project, team, or opportunity..."
+                                    placeholder="Tell me about your project, team opportunity, or engineering requirements..."
                                     value={formData.message}
                                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                     style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none', resize: 'vertical' }}
                                 />
                             </div>
-                            <button
-                                type="submit"
-                                className="accent-bg glow-effect"
-                                style={{ width: '100%', padding: '14px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}
-                            >
-                                <Send size={18} /> {formSent ? "Sending..." : "Send Message"}
-                            </button>
+
+                            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                                <button
+                                    type="submit"
+                                    disabled={formStatus === 'sending'}
+                                    className="accent-bg glow-effect"
+                                    style={{ flex: 1, padding: '14px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', border: 'none' }}
+                                >
+                                    {formStatus === 'sending' ? (
+                                        <>
+                                            <Loader2 size={18} className="animate-spin" /> Dispatching to Inbox...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send size={18} /> Send to kaleabmezgebe4@gmail.com
+                                        </>
+                                    )}
+                                </button>
+                                <a
+                                    href="mailto:kaleabmezgebe4@gmail.com"
+                                    className="glass-card font-mono"
+                                    style={{ padding: '14px 20px', borderRadius: '12px', color: 'var(--text-main)', fontWeight: 700, fontSize: '0.90rem', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
+                                >
+                                    <ExternalLink size={16} /> Open Mail App
+                                </a>
+                            </div>
+
+                            {formStatus === 'success' && (
+                                <div style={{ marginTop: '16px', padding: '12px 16px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '10px', color: '#10b981', fontWeight: 600, fontSize: '0.92rem' }}>
+                                    <CheckCircle2 size={18} /> Thank you! Your message has been sent to Kaleab's inbox.
+                                </div>
+                            )}
                         </form>
                     </Card>
                 </div>
@@ -1131,8 +1102,13 @@ const App = () => {
             {/* FOOTER */}
             <footer style={{ borderTop: '1px solid var(--glass-border)', padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem', position: 'relative', zIndex: 1 }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-                    <div className="font-mono">
-                        © {new Date().getFullYear()} <strong style={{ color: 'var(--text-main)' }}>Kaleab Mezgebe Fissaha</strong>. Built with React &amp; Vite.
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', border: '1px solid var(--accent-primary)' }}>
+                            <img src="./assets/myphoto.png" alt="Kaleab" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <span className="font-mono">
+                            © {new Date().getFullYear()} <strong style={{ color: 'var(--text-main)' }}>Kaleab Mezgebe Fissaha</strong>. Built with React &amp; Vite.
+                        </span>
                     </div>
                     <div style={{ display: 'flex', gap: '20px' }}>
                         <a href="https://github.com/kaleab-mezgebe" target="_blank" style={{ color: 'var(--text-muted)' }}>GitHub</a>

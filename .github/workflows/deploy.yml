@@ -2,7 +2,7 @@ name: Deploy Portfolio to GitHub Pages
 
 on:
   push:
-    branches: ['master', 'main', 'feat/cv-and-projects-update', 'feat/next-gen-portfolio-redesign']
+    branches: ['master', 'main', 'feat/cv-and-projects-update']
   workflow_dispatch:
 
 permissions:
