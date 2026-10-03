@@ -301,16 +301,16 @@ const App = () => {
             isWeb: true
         },
         {
-            title: "Telebirr & Chapa — FinTech Payment Microservices",
-            category: "mobile",
-            problem: "Secure, idempotent checkout transactions required encrypted hash signatures and reliable webhook callbacks.",
-            solution: "Architected standardized payment SDK wrappers with HMAC signature verification, QR-code payment generation, and automated retry policies.",
-            result: "Processed real-time payment transactions with sub-second confirmation and zero reconciliation discrepancies.",
-            tags: ["FinTech", "Telebirr", "Chapa", "Webhooks", "HMAC Security", "TypeScript"],
+            title: "Hdyat Traditional Marketplace — Cultural E-Commerce",
+            category: "web",
+            problem: "Traditional Ethiopian clothing artisans, Habesha Kemis weavers, and jewelry makers lacked direct digital storefronts to sell products without middlemen taking heavy margins.",
+            solution: "Developed a dedicated multi-vendor web marketplace with custom garment sizing forms, artisan profile dashboards, high-speed product catalogs, and local payment gateways (Telebirr & CBE Birr).",
+            result: "Empowered local traditional artisans with a direct-to-consumer digital channel, increasing artisan profitability and preserving cultural heritage fashion.",
+            tags: ["React.js", "Node.js", "Express.js", "PostgreSQL", "Telebirr & CBE Birr", "Artisan Commerce"],
             githubLink: "https://github.com/kaleab-mezgebe",
-            image: "./assets/shemeta.png",
-            badge: "FINTECH INFRASTRUCTURE",
-            isMobile: true
+            image: "./assets/hdyat.png",
+            badge: "TRADITIONAL COMMERCE & ARTISAN HUB",
+            isWeb: true
         }
     ];
 
