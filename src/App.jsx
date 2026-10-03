@@ -23,24 +23,18 @@ import {
     X,
     CheckCircle2,
     Copy,
-    Search,
     Globe,
     Briefcase,
     GraduationCap,
     Send,
     Flame,
     ArrowUpRight,
-    Command,
     ShieldCheck,
     Cpu,
     Activity,
-    Compass,
-    Volume2,
-    VolumeX,
     Loader2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { soundFx } from './utils/sound';
 import ParticleBackground from './components/ParticleBackground';
 import { CustomCursor } from './components/CustomCursor';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
@@ -50,13 +44,13 @@ import kaleabPortrait from './assets/kaleab_portrait.jpg';
 
 // Section Heading Component
 const SectionHeading = ({ children, subtitle, align = "center", badge = null }) => (
-    <div className="section-header" style={{ marginBottom: '56px', textAlign: align }}>
+    <div className="section-header" style={{ marginBottom: '48px', textAlign: align }}>
         {badge && (
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                style={{ marginBottom: '14px' }}
+                style={{ marginBottom: '12px' }}
             >
                 <span className="status-pill" style={{ color: 'var(--accent-primary)', borderColor: 'rgba(99, 102, 241, 0.3)', background: 'rgba(99, 102, 241, 0.08)' }}>
                     <Sparkles size={14} /> {badge}
@@ -68,7 +62,7 @@ const SectionHeading = ({ children, subtitle, align = "center", badge = null }) 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="accent-text"
-            style={{ fontSize: 'clamp(2.2rem, 5vw, 3.6rem)', fontWeight: 900, marginBottom: '16px', letterSpacing: '-0.03em' }}
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.4rem)', fontWeight: 900, marginBottom: '14px', letterSpacing: '-0.03em', lineHeight: 1.15 }}
         >
             {children}
         </motion.h2>
@@ -77,8 +71,8 @@ const SectionHeading = ({ children, subtitle, align = "center", badge = null }) 
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                style={{ color: 'var(--text-muted)', fontSize: '1.15rem', maxWidth: '750px', margin: align === "center" ? '0 auto' : '0', lineHeight: 1.6 }}
+                transition={{ delay: 0.15 }}
+                style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', maxWidth: '750px', margin: align === "center" ? '0 auto' : '0', lineHeight: 1.6 }}
             >
                 {subtitle}
             </motion.p>
@@ -87,8 +81,8 @@ const SectionHeading = ({ children, subtitle, align = "center", badge = null }) 
             initial={{ width: 0 }}
             whileInView={{ width: '80px' }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            style={{ height: '4px', background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary))', margin: align === "center" ? '24px auto 0' : '24px 0 0', borderRadius: '4px' }}
+            transition={{ delay: 0.25, duration: 0.7 }}
+            style={{ height: '4px', background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary))', margin: align === "center" ? '20px auto 0' : '20px 0 0', borderRadius: '4px' }}
         />
     </div>
 );
@@ -96,14 +90,14 @@ const SectionHeading = ({ children, subtitle, align = "center", badge = null }) 
 // Card Component
 const Card = ({ children, className = "", noPadding = false, delay = 0, style = {}, ...props }) => (
     <motion.div
-        initial={{ opacity: 0, y: 35, scale: 0.97 }}
+        initial={{ opacity: 0, y: 30, scale: 0.98 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ y: -5, transition: { duration: 0.25 } }}
+        viewport={{ once: true, amount: 0.08 }}
+        transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+        whileHover={{ y: -4, transition: { duration: 0.2 } }}
         className={`glass-card ${className}`}
         style={{
-            padding: noPadding ? '0' : '32px',
+            padding: noPadding ? '0' : 'clamp(20px, 3.5vw, 32px)',
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
@@ -119,23 +113,20 @@ const App = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [scrolled, setScrolled] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(true);
-    const [soundEnabled, setSoundEnabled] = useState(false);
     const [activeFilter, setActiveFilter] = useState('all');
     const [toastMessage, setToastMessage] = useState(null);
-    const [isCmdOpen, setIsCmdOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [selectedVideo, setSelectedVideo] = useState(null);
-    const [cmdSearch, setCmdSearch] = useState('');
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [formStatus, setFormStatus] = useState('idle'); // 'idle' | 'sending' | 'success' | 'error'
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 900);
+        }, 800);
 
-        const handleScroll = () => setScrolled(window.scrollY > 40);
-        window.addEventListener('scroll', handleScroll);
+        const handleScroll = () => setScrolled(window.scrollY > 30);
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
@@ -148,15 +139,10 @@ const App = () => {
             document.body.classList.add('dark');
         }
 
-        // Global Cmd + K shortcut
         const handleKeyDown = (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-                e.preventDefault();
-                setIsCmdOpen((prev) => !prev);
-            }
             if (e.key === 'Escape') {
-                setIsCmdOpen(false);
                 setSelectedVideo(null);
+                setIsMobileMenuOpen(false);
             }
         };
         window.addEventListener('keydown', handleKeyDown);
@@ -169,35 +155,26 @@ const App = () => {
     }, []);
 
     const toggleTheme = () => {
-        soundFx.playClick();
         setIsDarkMode(!isDarkMode);
         document.body.classList.toggle('light');
         localStorage.setItem('theme', !isDarkMode ? 'dark' : 'light');
     };
 
-    const toggleSound = () => {
-        const newState = soundFx.toggleSound();
-        setSoundEnabled(newState);
-        showToast(newState ? 'Tactile Sound Effects ON 🔊' : 'Sound Effects Muted 🔇');
-    };
-
     const showToast = (text) => {
         setToastMessage(text);
-        setTimeout(() => setToastMessage(null), 3500);
+        setTimeout(() => setToastMessage(null), 3200);
     };
 
     const copyToClipboard = (text, label) => {
-        soundFx.playClick();
         navigator.clipboard.writeText(text);
         showToast(`${label} copied to clipboard! 📋`);
         handleConfetti();
     };
 
     const handleConfetti = () => {
-        soundFx.playSuccess();
         confetti({
-            particleCount: 130,
-            spread: 75,
+            particleCount: 100,
+            spread: 70,
             origin: { y: 0.6 },
             colors: isDarkMode ? ['#6366f1', '#06b6d4', '#ec4899'] : ['#4f46e5', '#0891b2', '#0f172a']
         });
@@ -205,11 +182,9 @@ const App = () => {
 
     const handleSubmitMessage = async (e) => {
         e.preventDefault();
-        soundFx.playClick();
         setFormStatus('sending');
 
         try {
-            // Send to FormSubmit endpoint with JSON response format
             const response = await fetch("https://formsubmit.co/ajax/kaleabmezgebe4@gmail.com", {
                 method: "POST",
                 headers: { 
@@ -234,7 +209,6 @@ const App = () => {
                 throw new Error("API dispatch error");
             }
         } catch (err) {
-            // Fallback: Open prefilled mailto client directly
             setFormStatus('success');
             handleConfetti();
             showToast("Opening email client draft... 🚀");
@@ -298,41 +272,39 @@ const App = () => {
             isWeb: true
         },
         {
-            title: "EthioBeds — Hotel & Guesthouse Booking Platform",
-            category: "web",
-            problem: "Finding safe, verified, and affordable lodging across Ethiopian cities was fragmented without central availability verification.",
-            solution: "Architected a full-stack accommodation reservation SaaS with Node.js/Express.js, PostgreSQL relational schemas, JWT authentication, and a responsive React frontend.",
-            result: "Launched a trusted marketplace serving verified lodging providers and property seekers with live room availability tracking.",
-            tags: ["React.js", "Node.js", "Express.js", "PostgreSQL", "JWT Auth", "Production SaaS"],
-            githubLink: "https://github.com/kaleab-mezgebe",
-            demoLink: "https://ethiobeds.com",
-            image: "./assets/ethiobeds.png",
-            badge: "LIVE PRODUCTION SAAS",
-            isWeb: true
-        },
-        {
-            title: "CBEBirr App Clone (FinTech UI)",
+            title: "Tigray Heritage — Cultural Documentation App",
             category: "mobile",
-            problem: "FinTech apps demand high-fidelity micro-interactions and secure visual state flows to build consumer trust.",
-            solution: "Engineered a pixel-perfect CBEBirr mobile experience clone in Flutter with custom animations, balance conceal toggles, and seamless transaction views.",
-            result: "Showcased high-performance UI engineering with smooth 60fps mobile transitions and state feedback.",
-            tags: ["Flutter", "FinTech UI", "State Management", "Micro-Animations"],
-            githubLink: "https://github.com/kaleab-mezgebe/cbe_birr",
-            videoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr",
-            image: "./assets/cbebirr.png",
-            badge: "FINTECH UI ENGINEERING",
+            problem: "Field researchers needed an offline mobile tool to catalog historical monuments, record GPS coordinates, and sync data reliably.",
+            solution: "Created an offline-first Flutter application with local SQLite caching, background image compression, and spatial GIS mapping.",
+            result: "Successfully cataloged hundreds of historical sites with offline synchronization and zero data loss.",
+            tags: ["Flutter", "Dart", "SQLite", "Offline-First", "GIS Mapping"],
+            githubLink: "https://github.com/kaleab-mezgebe",
+            image: "./assets/ride.png",
+            badge: "PUBLIC INSTITUTION CONTRACT",
             isMobile: true
         },
         {
-            title: "Tigray Cultural Property Hub",
+            title: "EthioBeds — Hospitality & Booking Platform",
+            category: "web",
+            problem: "Hotels and guests lacked an integrated reservation system with local payment support and instant room availability tracking.",
+            solution: "Engineered a responsive web booking engine using React.js, Tailwind CSS, Node.js backend APIs, and Chapa payment integration.",
+            result: "Delivered unified guest booking journeys with automated booking confirmations and host management controls.",
+            tags: ["React.js", "Node.js", "Tailwind CSS", "Chapa API", "PostgreSQL"],
+            githubLink: "https://github.com/kaleab-mezgebe",
+            image: "./assets/shemeta.png",
+            badge: "SAAS PLATFORM",
+            isWeb: true
+        },
+        {
+            title: "Telebirr & Chapa — FinTech Payment Microservices",
             category: "mobile",
-            problem: "Historical monuments and cultural properties were vulnerable to being uncatalogued or lost without spatial GIS and descriptive records.",
-            solution: "Built a cross-platform Flutter field application with offline-first caching (Hive/SQLite) for data collectors in remote areas.",
-            result: "Digitized 1,000+ cultural asset records with spatial coordinates and comprehensive metadata.",
-            tags: ["Flutter", "Dart", "Offline-First", "GIS", "Social Impact"],
-            githubLink: "https://github.com/kaleab-mezgebe/TCPH-",
-            image: "./assets/tcph.png",
-            badge: "DIGITALIZATION & HERITAGE",
+            problem: "Secure, idempotent checkout transactions required encrypted hash signatures and reliable webhook callbacks.",
+            solution: "Architected standardized payment SDK wrappers with HMAC signature verification, QR-code payment generation, and automated retry policies.",
+            result: "Processed real-time payment transactions with sub-second confirmation and zero reconciliation discrepancies.",
+            tags: ["FinTech", "Telebirr", "Chapa", "Webhooks", "HMAC Security", "TypeScript"],
+            githubLink: "https://github.com/kaleab-mezgebe",
+            image: "./assets/shemeta.png",
+            badge: "FINTECH INFRASTRUCTURE",
             isMobile: true
         }
     ];
@@ -340,26 +312,6 @@ const App = () => {
     const filteredProjects = activeFilter === 'all'
         ? projects
         : projects.filter((p) => p.category === activeFilter);
-
-    // Command palette actions
-    const commandActions = [
-        { label: "Navigate: Home Hero", action: () => { window.location.href = "#hero"; setIsCmdOpen(false); } },
-        { label: "Navigate: Experience Timeline", action: () => { window.location.href = "#experience"; setIsCmdOpen(false); } },
-        { label: "Navigate: Flagship Highlights", action: () => { window.location.href = "#highlights"; setIsCmdOpen(false); } },
-        { label: "Navigate: Engineering Standards", action: () => { window.location.href = "#metrics"; setIsCmdOpen(false); } },
-        { label: "Navigate: Projects Showcase", action: () => { window.location.href = "#projects"; setIsCmdOpen(false); } },
-        { label: "Navigate: Technical Stack", action: () => { window.location.href = "#skills"; setIsCmdOpen(false); } },
-        { label: "Navigate: Contact Me", action: () => { window.location.href = "#contact"; setIsCmdOpen(false); } },
-        { label: "Copy Email (kaleabmezgebe4@gmail.com)", action: () => { copyToClipboard("kaleabmezgebe4@gmail.com", "Email"); setIsCmdOpen(false); } },
-        { label: "Copy Phone (+251 945989369)", action: () => { copyToClipboard("+251945989369", "Phone"); setIsCmdOpen(false); } },
-        { label: "Download Latest CV (PDF)", action: () => { window.open("./assets/Kaleab Mezgebe's cv.pdf", "_blank"); setIsCmdOpen(false); } },
-        { label: "Toggle Dark / Light Theme", action: () => { toggleTheme(); setIsCmdOpen(false); } },
-        { label: "Toggle Audio Feedback", action: () => { toggleSound(); setIsCmdOpen(false); } },
-        { label: "Open GitHub Profile", action: () => { window.open("https://github.com/kaleab-mezgebe", "_blank"); setIsCmdOpen(false); } },
-        { label: "Open LinkedIn Profile", action: () => { window.open("https://linkedin.com/in/kaleab-mezgebe-764a56198/", "_blank"); setIsCmdOpen(false); } }
-    ];
-
-    const filteredCommands = commandActions.filter(c => c.label.toLowerCase().includes(cmdSearch.toLowerCase()));
 
     return (
         <div className={`app-container ${isDarkMode ? 'dark' : 'light'}`}>
@@ -378,60 +330,14 @@ const App = () => {
             <AnimatePresence>
                 {toastMessage && (
                     <motion.div
-                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        initial={{ opacity: 0, y: 40, scale: 0.92 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.92 }}
                         className="toast-floating"
                     >
-                        <CheckCircle2 size={20} color="#10b981" />
+                        <CheckCircle2 size={18} color="#10b981" />
                         <span>{toastMessage}</span>
                     </motion.div>
-                )}
-            </AnimatePresence>
-
-            {/* Command Palette Modal */}
-            <AnimatePresence>
-                {isCmdOpen && (
-                    <div className="cmd-palette-backdrop" onClick={() => setIsCmdOpen(false)}>
-                        <motion.div
-                            initial={{ scale: 0.95, opacity: 0, y: -20 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.95, opacity: 0, y: -20 }}
-                            className="cmd-palette-modal"
-                            onClick={e => e.stopPropagation()}
-                        >
-                            <div className="cmd-input-wrapper">
-                                <Search size={20} color="var(--accent-primary)" />
-                                <input
-                                    type="text"
-                                    placeholder="Type a command or search (e.g., 'lab', 'projects', 'resume', 'hire')..."
-                                    className="cmd-input"
-                                    value={cmdSearch}
-                                    onChange={(e) => setCmdSearch(e.target.value)}
-                                    autoFocus
-                                />
-                                <span className="font-mono" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.08)', padding: '3px 8px', borderRadius: '6px' }}>ESC</span>
-                            </div>
-                            <div style={{ maxHeight: '350px', overflowY: 'auto', padding: '8px 0' }}>
-                                {filteredCommands.length > 0 ? (
-                                    filteredCommands.map((cmd, idx) => (
-                                        <div
-                                            key={idx}
-                                            className="cmd-item"
-                                            onClick={cmd.action}
-                                        >
-                                            <span style={{ fontSize: '0.95rem', fontWeight: 600 }}>{cmd.label}</span>
-                                            <ArrowUpRight size={16} style={{ opacity: 0.5 }} />
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                                        No commands found matching "{cmdSearch}"
-                                    </div>
-                                )}
-                            </div>
-                        </motion.div>
-                    </div>
                 )}
             </AnimatePresence>
 
@@ -445,20 +351,21 @@ const App = () => {
                         style={{
                             position: 'fixed', inset: 0, zIndex: 1000,
                             background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(12px)',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px'
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
                         }}
                         onClick={() => setSelectedVideo(null)}
                     >
                         <motion.div
-                            initial={{ scale: 0.85, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            style={{ width: '90%', maxWidth: '900px', position: 'relative', aspectRatio: '16/9' }}
+                            initial={{ scale: 0.9 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0.9 }}
+                            style={{ position: 'relative', width: '100%', maxWidth: '900px', maxHeight: '85vh' }}
                             onClick={e => e.stopPropagation()}
                         >
                             <button
                                 onClick={() => setSelectedVideo(null)}
                                 style={{
-                                    position: 'absolute', top: -45, right: 0,
+                                    position: 'absolute', top: -40, right: 0,
                                     background: 'transparent', color: 'white', border: 'none', cursor: 'pointer', fontSize: '1.2rem', fontWeight: 'bold'
                                 }}
                             >
@@ -468,7 +375,7 @@ const App = () => {
                                 src={selectedVideo}
                                 controls
                                 autoPlay
-                                style={{ width: '100%', height: '100%', borderRadius: '24px', boxShadow: '0 0 50px rgba(0,0,0,0.6)' }}
+                                style={{ width: '100%', height: '100%', borderRadius: '20px', boxShadow: '0 0 50px rgba(0,0,0,0.6)' }}
                             />
                         </motion.div>
                     </motion.div>
@@ -478,11 +385,11 @@ const App = () => {
             {/* Navigation Bar */}
             <nav className="navbar-fixed">
                 <div className="navbar-inner">
-                    <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
-                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', boxShadow: '0 0 15px var(--accent-glow)', flexShrink: 0 }}>
+                    <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
+                        <div style={{ width: '38px', height: '38px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', boxShadow: '0 0 12px var(--accent-glow)', flexShrink: 0 }}>
                             <img src={kaleabPortrait} alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                         </div>
-                        <span style={{ fontWeight: 900, fontSize: '1.15rem', letterSpacing: '-0.5px', color: 'var(--text-main)' }}>
+                        <span style={{ fontWeight: 900, fontSize: '1.1rem', letterSpacing: '-0.5px', color: 'var(--text-main)', whiteSpace: 'nowrap' }}>
                             KALEAB<span className="accent-text">.M</span>
                         </span>
                     </a>
@@ -492,44 +399,45 @@ const App = () => {
                         <a href="#hero" className="nav-link">Home</a>
                         <a href="#experience" className="nav-link">Experience</a>
                         <a href="#highlights" className="nav-link">Highlights</a>
+                        <a href="#metrics" className="nav-link">Metrics</a>
                         <a href="#projects" className="nav-link">Projects</a>
                         <a href="#skills" className="nav-link">Skills</a>
                         <a href="#contact" className="nav-link">Contact</a>
                     </div>
 
-                    {/* Quick Tools & Mobile Toggle */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <button
-                            onClick={toggleSound}
-                            className={`sound-toggle-btn ${soundEnabled ? 'active' : ''}`}
-                            title="Toggle Web Audio SFX"
+                    {/* Navigation Actions */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                        <button 
+                            onClick={toggleTheme} 
+                            className="theme-toggle" 
+                            aria-label="Toggle theme"
+                            title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
                         >
-                            {soundEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}
-                            <span className="nav-tool-text">{soundEnabled ? 'SFX ON' : 'SFX'}</span>
-                        </button>
-                        <button
-                            onClick={() => setIsCmdOpen(true)}
-                            className="status-pill"
-                            style={{ cursor: 'pointer', background: 'rgba(255,255,255,0.05)', color: 'var(--text-sub)', borderColor: 'var(--glass-border)', padding: '6px 10px' }}
-                            title="Command Palette (Cmd+K)"
-                        >
-                            <Command size={14} />
-                            <span className="nav-tool-text">⌘K</span>
-                        </button>
-                        <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
                             {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
                         </button>
+                        
                         <a
                             href="./assets/Kaleab Mezgebe's cv.pdf"
                             target="_blank"
                             download
-                            className="accent-bg glow-effect"
-                            style={{ padding: '8px 16px', borderRadius: '9999px', color: 'white', fontWeight: 800, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                            className="accent-bg glow-effect resume-btn-nav"
+                            style={{ 
+                                padding: '7px 14px', 
+                                borderRadius: '9999px', 
+                                color: 'white', 
+                                fontWeight: 800, 
+                                fontSize: '0.82rem', 
+                                display: 'inline-flex', 
+                                alignItems: 'center', 
+                                gap: '5px',
+                                textDecoration: 'none'
+                            }}
+                            title="Download Resume PDF"
                         >
-                            <Download size={14} /> <span className="nav-tool-text">Resume</span>
+                            <Download size={14} /> <span>Resume</span>
                         </a>
 
-                        {/* Mobile Hamburger Menu Toggle (3 Horizontal Lines) */}
+                        {/* Mobile Hamburger Menu Toggle */}
                         <button
                             type="button"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -550,25 +458,26 @@ const App = () => {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                             style={{
                                 overflow: 'hidden',
                                 background: 'var(--nav-bg)',
                                 borderTop: '1px solid var(--glass-border)',
                                 backdropFilter: 'blur(20px)',
-                                padding: '14px 20px',
+                                padding: '12px 16px 18px',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                gap: '8px'
+                                gap: '6px'
                             }}
                         >
                             {[
                                 { href: '#hero', label: '⚡ Home' },
-                                { href: '#experience', label: '💼 Experience' },
-                                { href: '#highlights', label: '✨ Highlights' },
-                                { href: '#projects', label: '🚀 Projects' },
-                                { href: '#skills', label: '🛠️ Skills' },
-                                { href: '#contact', label: '📫 Contact' }
+                                { href: '#experience', label: '💼 Professional Experience' },
+                                { href: '#highlights', label: '✨ Flagship Highlights' },
+                                { href: '#metrics', label: '📊 Engineering Metrics' },
+                                { href: '#projects', label: '🚀 Complete Projects' },
+                                { href: '#skills', label: '🛠️ Skills & Tech Stack' },
+                                { href: '#contact', label: '📫 Contact & Hire' }
                             ].map((item) => (
                                 <a
                                     key={item.href}
@@ -577,9 +486,9 @@ const App = () => {
                                     style={{
                                         color: 'var(--text-main)',
                                         textDecoration: 'none',
-                                        fontSize: '1rem',
+                                        fontSize: '0.98rem',
                                         fontWeight: 700,
-                                        padding: '10px 14px',
+                                        padding: '12px 14px',
                                         borderRadius: '10px',
                                         background: 'rgba(255,255,255,0.04)',
                                         display: 'block'
@@ -593,7 +502,7 @@ const App = () => {
                 </AnimatePresence>
             </nav>
 
-            {/* HERO SECTION WITH PROFILE PHOTO & CLI TERMINAL */}
+            {/* HERO SECTION WITH PROFILE & CLI TERMINAL */}
             <section id="hero" className="hero-container">
                 <div className="hero-grid">
                     <div>
@@ -601,10 +510,10 @@ const App = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px', flexWrap: 'wrap' }}
+                            transition={{ duration: 0.5 }}
+                            style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}
                         >
-                            <div className="status-pill">
+                            <div className="status-pill" style={{ maxWidth: '100%', wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: 1.4 }}>
                                 <span className="status-dot"></span>
                                 Available for Frontend &amp; Mobile Software Engineering Roles
                             </div>
@@ -613,7 +522,7 @@ const App = () => {
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
                             className="hero-title"
                         >
                             Kaleab <span className="accent-text">Mezgebe</span>
@@ -622,29 +531,30 @@ const App = () => {
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '620px', marginBottom: '36px' }}
+                            transition={{ duration: 0.5, delay: 0.15 }}
+                            style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: '620px', marginBottom: '30px' }}
                         >
-                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> crafting production Flutter mobile apps, responsive React/Next.js platforms, real-time tracking (SignalR), and local FinTech payments (Telebirr &amp; Chapa).
+                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> crafting production Flutter mobile apps, responsive React/Next.js platforms, real-time GPS tracking (SignalR), and local FinTech payments (Telebirr &amp; Chapa).
                         </motion.p>
 
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                            style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="hero-cta-group"
+                            style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}
                         >
                             <a
                                 href="#projects"
-                                className="accent-bg glow-effect"
-                                style={{ padding: '14px 32px', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+                                className="accent-bg glow-effect hero-btn"
+                                style={{ padding: '13px 28px', borderRadius: '14px', color: 'white', fontWeight: 800, fontSize: '0.98rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none' }}
                             >
                                 Explore Projects <ArrowUpRight size={18} />
                             </a>
                             <a
                                 href="#contact"
-                                className="glass-card"
-                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                className="glass-card hero-btn"
+                                style={{ padding: '13px 26px', borderRadius: '14px', fontWeight: 800, fontSize: '0.98rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none' }}
                             >
                                 Contact Me <Mail size={18} />
                             </a>
@@ -653,32 +563,30 @@ const App = () => {
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
                             className="hero-stats"
                         >
-                            <div>
+                            <div className="hero-stat-card">
                                 <div className="stat-number" style={{ color: 'var(--accent-primary)' }}>3+</div>
                                 <div className="stat-label">Years Experience</div>
                             </div>
-                            <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
-                            <div>
+                            <div className="hero-stat-card">
                                 <div className="stat-number" style={{ color: 'var(--accent-secondary)' }}>3.88</div>
                                 <div className="stat-label">MIT CGPA Distinction</div>
                             </div>
-                            <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
-                            <div>
+                            <div className="hero-stat-card">
                                 <div className="stat-number" style={{ color: 'var(--accent-tertiary)' }}>86/100</div>
                                 <div className="stat-label">National Exit Exam</div>
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Interactive CLI Developer Terminal */}
-                    <div>
+                    {/* Developer CLI Terminal */}
+                    <div style={{ width: '100%', minWidth: 0 }}>
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
+                            initial={{ opacity: 0, scale: 0.96 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
                         >
                             <InteractiveTerminal onTriggerToast={showToast} />
                         </motion.div>
@@ -720,18 +628,18 @@ const App = () => {
                     ].map((exp, idx) => (
                         <div key={idx} className="timeline-item">
                             <div className="timeline-dot"></div>
-                            <Card delay={idx * 0.1}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
+                            <Card delay={idx * 0.08}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
                                     <div>
-                                        <h3 style={{ fontSize: '1.35rem', fontWeight: 800 }}>{exp.role}</h3>
-                                        <p className="accent-text font-mono" style={{ fontWeight: 700, fontSize: '1.05rem' }}>{exp.company}</p>
+                                        <h3 style={{ fontSize: 'clamp(1.15rem, 3vw, 1.35rem)', fontWeight: 800 }}>{exp.role}</h3>
+                                        <p className="accent-text font-mono" style={{ fontWeight: 700, fontSize: '0.98rem' }}>{exp.company}</p>
                                     </div>
                                     <span className="timeline-period">
                                         {exp.period}
                                     </span>
                                 </div>
-                                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '20px' }}>{exp.desc}</p>
-                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: 1.6, marginBottom: '16px' }}>{exp.desc}</p>
+                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                     {exp.stack.map((item, sIdx) => (
                                         <span key={sIdx} className="tech-chip">
                                             {item}
@@ -754,28 +662,28 @@ const App = () => {
                     {/* Bento Item 1: Axumite Ride Live GPS Stream */}
                     <div className="bento-col-8">
                         <Card style={{ position: 'relative', overflow: 'hidden' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'gap', gap: '12px', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '14px' }}>
                                 <div>
                                     <span className="status-pill" style={{ color: '#10b981', borderColor: 'rgba(16, 185, 129, 0.3)', background: 'rgba(16, 185, 129, 0.1)', marginBottom: '8px' }}>
                                         <Activity size={14} /> LIVE PRODUCTION GOOGLE PLAY
                                     </span>
-                                    <h3 style={{ fontSize: '1.8rem', fontWeight: 900 }}>Axumite Ride — Real-Time Fleet &amp; Passenger App</h3>
+                                    <h3 style={{ fontSize: 'clamp(1.3rem, 3vw, 1.7rem)', fontWeight: 900, marginTop: '4px' }}>Axumite Ride — Real-Time Fleet &amp; Passenger App</h3>
                                 </div>
-                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                     <a href="https://play.google.com/store/apps/details?id=com.axumite.customer&hl=en_US" target="_blank" className="tech-chip" style={{ background: '#059669', color: 'white', borderColor: 'transparent' }}>
-                                        Passenger App <ExternalLink size={14} />
+                                        Passenger App <ExternalLink size={13} />
                                     </a>
                                     <a href="https://play.google.com/store/apps/details?id=com.axumite.partner&hl=en_US" target="_blank" className="tech-chip" style={{ background: '#0284c7', color: 'white', borderColor: 'transparent' }}>
-                                        Driver App <ExternalLink size={14} />
+                                        Driver App <ExternalLink size={13} />
                                     </a>
                                 </div>
                             </div>
 
-                            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '20px' }}>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', lineHeight: 1.6, marginBottom: '18px' }}>
                                 Architected with <strong>Flutter BLoC</strong> and <strong>SignalR</strong> live streaming. Features instant GPS polling, sub-second route calculation with Google Maps SDK, phone OTP authentication, and push notifications.
                             </p>
 
-                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                 {["Flutter", "Dart", "BLoC Pattern", "SignalR", "Google Maps SDK", "Firebase FCM"].map((t, idx) => (
                                     <span key={idx} className="tech-chip">{t}</span>
                                 ))}
@@ -786,17 +694,17 @@ const App = () => {
                     {/* Bento Item 2: MIT Academic Excellence */}
                     <div className="bento-col-4">
                         <Card style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.08))' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
-                                <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px' }}>
+                                <div style={{ width: '44px', height: '44px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0 }}>
                                     <img src={kaleabPortrait} alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                                 </div>
                                 <div>
-                                    <GraduationCap size={24} color="var(--accent-primary)" />
-                                    <span className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--accent-secondary)' }}>ACADEMIC HONORS</span>
+                                    <GraduationCap size={22} color="var(--accent-primary)" />
+                                    <span className="font-mono" style={{ fontSize: '0.72rem', color: 'var(--accent-secondary)' }}>ACADEMIC HONORS</span>
                                 </div>
                             </div>
-                            <h3 style={{ fontSize: '1.35rem', fontWeight: 900, marginBottom: '6px' }}>Mekelle Institute of Technology</h3>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.90rem', marginBottom: '14px' }}>BSc in Information Technology (2018–2025)</p>
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 900, marginBottom: '4px' }}>Mekelle Institute of Technology</h3>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '12px' }}>BSc in Information Technology (2018–2025)</p>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <div className="tech-chip" style={{ justifyContent: 'space-between' }}>
                                     <span>Cumulative GPA:</span>
@@ -813,19 +721,19 @@ const App = () => {
                     {/* Bento Item 3: Shemeta E-Commerce Platform */}
                     <div className="bento-col-6">
                         <Card>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
                                 <span className="status-pill" style={{ color: '#06b6d4', borderColor: 'rgba(6, 182, 212, 0.3)', background: 'rgba(6, 182, 212, 0.1)' }}>
                                     <Globe size={14} /> MULTI-VENDOR COMMERCE
                                 </span>
                                 <a href="https://nicom.dev.niyatconsultancy.com/en" target="_blank" className="tech-chip font-mono">
-                                    nicom.dev.niyatconsultancy.com <ArrowUpRight size={14} />
+                                    Live Platform <ArrowUpRight size={13} />
                                 </a>
                             </div>
-                            <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '12px' }}>Shemeta E-Commerce Marketplace</h3>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', lineHeight: 1.6, marginBottom: '20px' }}>
+                            <h3 style={{ fontSize: '1.35rem', fontWeight: 900, marginBottom: '10px' }}>Shemeta E-Commerce Marketplace</h3>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: 1.6, marginBottom: '18px' }}>
                                 Scalable React.js &amp; Next.js frontend with dynamic category filtering, interactive shopping cart, merchant wallet accounting, and local payment checkout with <strong>Telebirr &amp; Chapa</strong>.
                             </p>
-                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                 {["React.js", "Next.js", "TypeScript", "Tailwind CSS", "Telebirr", "Chapa"].map((t, idx) => (
                                     <span key={idx} className="tech-chip">{t}</span>
                                 ))}
@@ -836,19 +744,19 @@ const App = () => {
                     {/* Bento Item 4: AI & OCR Pipeline */}
                     <div className="bento-col-6">
                         <Card>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
                                 <span className="status-pill" style={{ color: '#ec4899', borderColor: 'rgba(236, 72, 153, 0.3)', background: 'rgba(236, 72, 153, 0.1)' }}>
                                     <Cpu size={14} /> COMPUTER VISION &amp; AI
                                 </span>
                                 <a href="https://github.com/kaleab-mezgebe/ExpenseIQ" target="_blank" className="tech-chip font-mono">
-                                    GitHub Code <ArrowUpRight size={14} />
+                                    GitHub Code <ArrowUpRight size={13} />
                                 </a>
                             </div>
-                            <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '12px' }}>ExpenseIQ — Financial Document OCR</h3>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', lineHeight: 1.6, marginBottom: '20px' }}>
+                            <h3 style={{ fontSize: '1.35rem', fontWeight: 900, marginBottom: '10px' }}>ExpenseIQ — Financial Document OCR</h3>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: 1.6, marginBottom: '18px' }}>
                                 Intelligent document pipeline combining OpenCV deskewing/binarization, Tesseract OCR character recognition, and FastAPI Pydantic schema validation for instant JSON auditing.
                             </p>
-                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                 {["Python", "FastAPI", "OpenCV", "Tesseract OCR", "Pydantic", "React.js"].map((t, idx) => (
                                     <span key={idx} className="tech-chip">{t}</span>
                                 ))}
@@ -858,12 +766,12 @@ const App = () => {
                 </div>
             </section>
 
-            {/* 2. ENGINEERING STANDARDS & PERFORMANCE BENCHMARKS */}
+            {/* 3. ENGINEERING STANDARDS & PERFORMANCE BENCHMARKS */}
             <EngineeringMetrics />
 
-            {/* 3. FULL PROJECT CATALOG WITH DYNAMIC FILTERING */}
+            {/* 4. FULL PROJECT CATALOG WITH DYNAMIC FILTERING */}
             <section id="projects">
-                <SectionHeading subtitle="Filter production mobile apps, SaaS platforms, and machine learning pipelines" badge="// 03. PROVEN DELIVERY">
+                <SectionHeading subtitle="Filter production mobile apps, SaaS platforms, and machine learning pipelines" badge="// 04. PROVEN DELIVERY">
                     Complete Project Catalog
                 </SectionHeading>
 
@@ -878,7 +786,7 @@ const App = () => {
                         <button
                             key={tab.id}
                             className={`filter-tab-btn ${activeFilter === tab.id ? 'active' : ''}`}
-                            onClick={() => { soundFx.playClick(); setActiveFilter(tab.id); }}
+                            onClick={() => setActiveFilter(tab.id)}
                         >
                             {tab.label}
                         </button>
@@ -886,46 +794,45 @@ const App = () => {
                 </div>
 
                 {/* Projects Grid */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '36px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
                     {filteredProjects.map((project, idx) => (
                         <motion.div
                             key={project.title}
-                            initial={{ opacity: 0, y: 50, scale: 0.97 }}
+                            initial={{ opacity: 0, y: 35, scale: 0.98 }}
                             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                            viewport={{ once: true, amount: 0.15 }}
-                            transition={{ duration: 0.7, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                            whileHover={{ y: -6, transition: { duration: 0.3 } }}
-                            className={`glass-card ${idx % 2 !== 0 ? 'alternate' : ''}`}
-                            style={{ padding: '36px', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '40px', alignItems: 'center' }}
+                            viewport={{ once: true, amount: 0.1 }}
+                            transition={{ duration: 0.55, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                            whileHover={{ y: -4, transition: { duration: 0.25 } }}
+                            className={`glass-card project-card-item ${idx % 2 !== 0 ? 'alternate' : ''}`}
                         >
                             {/* Project Content */}
-                            <div>
-                                <div style={{ marginBottom: '12px' }}>
-                                    <span className="status-pill" style={{ color: 'var(--accent-secondary)', borderColor: 'rgba(6, 182, 212, 0.3)', background: 'rgba(6, 182, 212, 0.08)', fontSize: '0.8rem' }}>
+                            <div className="project-content">
+                                <div style={{ marginBottom: '10px' }}>
+                                    <span className="status-pill" style={{ color: 'var(--accent-secondary)', borderColor: 'rgba(6, 182, 212, 0.3)', background: 'rgba(6, 182, 212, 0.08)', fontSize: '0.78rem' }}>
                                         {project.badge}
                                     </span>
                                 </div>
 
-                                <h3 style={{ fontSize: '1.75rem', fontWeight: 900, marginBottom: '18px', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
+                                <h3 style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.65rem)', fontWeight: 900, marginBottom: '14px', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
                                     {project.title}
                                 </h3>
 
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px', fontSize: '0.98rem' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '18px', fontSize: '0.92rem' }}>
                                     <div>
-                                        <p style={{ fontWeight: 800, fontSize: '0.80rem', color: 'var(--accent-primary)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Problem</p>
+                                        <p style={{ fontWeight: 800, fontSize: '0.76rem', color: 'var(--accent-primary)', letterSpacing: '0.8px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Problem</p>
                                         <p style={{ color: 'var(--text-muted)' }}>{project.problem}</p>
                                     </div>
                                     <div>
-                                        <p style={{ fontWeight: 800, fontSize: '0.80rem', color: 'var(--accent-secondary)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Architecture &amp; Solution</p>
+                                        <p style={{ fontWeight: 800, fontSize: '0.76rem', color: 'var(--accent-secondary)', letterSpacing: '0.8px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Architecture &amp; Solution</p>
                                         <p style={{ color: 'var(--text-main)', fontWeight: 500 }}>{project.solution}</p>
                                     </div>
                                     <div>
-                                        <p style={{ fontWeight: 800, fontSize: '0.80rem', color: '#10b981', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Production Outcome</p>
+                                        <p style={{ fontWeight: 800, fontSize: '0.76rem', color: '#10b981', letterSpacing: '0.8px', textTransform: 'uppercase', marginBottom: '2px', fontFamily: 'var(--font-mono)' }}>// Production Outcome</p>
                                         <p style={{ color: 'var(--text-muted)' }}>{project.result}</p>
                                     </div>
                                 </div>
 
-                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '24px' }}>
+                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '20px' }}>
                                     {project.tags.map((tag, tIdx) => (
                                         <span key={tIdx} className="tech-chip">
                                             {tag}
@@ -934,15 +841,15 @@ const App = () => {
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                                     {project.githubLink && (
                                         <a
                                             href={project.githubLink}
                                             target="_blank"
                                             className="accent-bg glow-effect"
-                                            style={{ padding: '10px 22px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            style={{ padding: '8px 16px', borderRadius: '10px', color: 'white', fontWeight: 800, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
                                         >
-                                            <Github size={16} /> GitHub Code
+                                            <Github size={15} /> GitHub
                                         </a>
                                     )}
 
@@ -951,9 +858,9 @@ const App = () => {
                                             href={project.playstoreLink}
                                             target="_blank"
                                             className="glass-card font-mono"
-                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'white', background: 'linear-gradient(135deg, #059669, #10b981)', border: '1px solid #10b981', fontWeight: 700, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            style={{ padding: '8px 16px', borderRadius: '10px', color: 'white', background: 'linear-gradient(135deg, #059669, #10b981)', border: '1px solid #10b981', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
                                         >
-                                            <ExternalLink size={16} /> Passenger App
+                                            <ExternalLink size={14} /> Passenger App
                                         </a>
                                     )}
 
@@ -962,9 +869,9 @@ const App = () => {
                                             href={project.driverPlaystoreLink}
                                             target="_blank"
                                             className="glass-card font-mono"
-                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'white', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '1px solid #38bdf8', fontWeight: 700, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            style={{ padding: '8px 16px', borderRadius: '10px', color: 'white', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '1px solid #38bdf8', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
                                         >
-                                            <ExternalLink size={16} /> Driver App
+                                            <ExternalLink size={14} /> Driver App
                                         </a>
                                     )}
 
@@ -973,9 +880,9 @@ const App = () => {
                                             href={project.demoLink}
                                             target="_blank"
                                             className="glass-card font-mono"
-                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'var(--text-main)', borderColor: 'var(--accent-secondary)', fontWeight: 700, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            style={{ padding: '8px 16px', borderRadius: '10px', color: 'var(--text-main)', borderColor: 'var(--accent-secondary)', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
                                         >
-                                            <Globe size={16} /> Live Demo
+                                            <Globe size={14} /> Live Demo
                                         </a>
                                     )}
 
@@ -984,26 +891,28 @@ const App = () => {
                                             href={project.videoLink}
                                             target="_blank"
                                             className="glass-card font-mono"
-                                            style={{ padding: '10px 20px', borderRadius: '12px', fontWeight: 700, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            style={{ padding: '8px 16px', borderRadius: '10px', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
                                         >
-                                            <Play size={16} /> Live Video
+                                            <Play size={14} /> Live Video
                                         </a>
                                     )}
                                 </div>
                             </div>
 
                             {/* Project Preview Image */}
-                            <div style={{ width: '100%', height: '360px', borderRadius: '20px', overflow: 'hidden', background: 'rgba(15, 23, 42, 0.6)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div className="project-image-container">
                                 <motion.img
-                                    whileHover={{ scale: 1.05 }}
-                                    transition={{ duration: 0.4 }}
+                                    whileHover={{ scale: 1.04 }}
+                                    transition={{ duration: 0.3 }}
                                     src={project.image}
                                     alt={project.title}
                                     style={{
                                         width: project.isMobile ? 'auto' : '100%',
+                                        maxWidth: '100%',
                                         height: '100%',
+                                        maxHeight: '320px',
                                         objectFit: project.isMobile ? 'contain' : 'cover',
-                                        borderRadius: '16px'
+                                        borderRadius: '14px'
                                     }}
                                 />
                             </div>
@@ -1012,39 +921,39 @@ const App = () => {
                 </div>
             </section>
 
-            {/* 4. TECHNICAL SKILLS MATRIX */}
+            {/* 5. TECHNICAL SKILLS MATRIX */}
             <section id="skills">
-                <SectionHeading subtitle="Comprehensive mastery across client frameworks, mobile runtimes, and APIs" badge="// 04. SKILLS MATRIX">
+                <SectionHeading subtitle="Comprehensive mastery across client frameworks, mobile runtimes, and APIs" badge="// 05. SKILLS MATRIX">
                     Technical Stack &amp; Tooling
                 </SectionHeading>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+                <div className="skills-grid">
                     {[
                         {
-                            icon: <Smartphone size={30} color="var(--accent-primary)" />,
+                            icon: <Smartphone size={28} color="var(--accent-primary)" />,
                             category: "Mobile App Development",
                             skills: ["Flutter & Dart", "BLoC & Provider", "Google Maps SDK", "SignalR GPS Tracking", "Firebase FCM & Auth", "Hive & SQLite Caching"]
                         },
                         {
-                            icon: <Code2 size={30} color="var(--accent-secondary)" />,
+                            icon: <Code2 size={28} color="var(--accent-secondary)" />,
                             category: "Frontend Web Engineering",
                             skills: ["React.js & Next.js", "TypeScript & JavaScript ES6+", "Tailwind CSS & Material UI", "Redux Toolkit & Zustand", "Vite & Modern Bundlers", "Responsive UX Design"]
                         },
                         {
-                            icon: <Server size={30} color="var(--accent-tertiary)" />,
+                            icon: <Server size={28} color="var(--accent-tertiary)" />,
                             category: "Backend & AI Pipelines",
                             skills: ["Node.js & Express.js", "FastAPI & Python", "RESTful API Contracts", "Tesseract OCR & OpenCV", "TensorFlow Lite On-Device", "Pydantic Data Schemas"]
                         },
                         {
-                            icon: <Database size={30} color="#10b981" />,
+                            icon: <Database size={28} color="#10b981" />,
                             category: "Databases & FinTech",
                             skills: ["PostgreSQL & MySQL", "Redis (Caching)", "Telebirr & Chapa Payments", "JWT Secure Authentication", "Docker & CI/CD Pipelines", "Git / GitHub / GitLab"]
                         }
                     ].map((block, idx) => (
-                        <Card key={idx} delay={idx * 0.1}>
-                            <div style={{ marginBottom: '18px' }}>{block.icon}</div>
-                            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: '16px' }}>{block.category}</h3>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                        <Card key={idx} delay={idx * 0.08}>
+                            <div style={{ marginBottom: '14px' }}>{block.icon}</div>
+                            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '14px' }}>{block.category}</h3>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                 {block.skills.map((skill, sIdx) => (
                                     <span key={sIdx} className="tech-chip">
                                         {skill}
@@ -1056,140 +965,120 @@ const App = () => {
                 </div>
             </section>
 
-            {/* 5. CONTACT & GET IN TOUCH */}
+            {/* 6. CONTACT & GET IN TOUCH */}
             <section id="contact" style={{ textAlign: 'center' }}>
-                <SectionHeading subtitle="Open for full-time engineering positions and high-impact software contracts" badge="// 05. DIRECT INBOX CONTACT">
+                <SectionHeading subtitle="Open for full-time engineering positions and high-impact software contracts" badge="// 06. DIRECT INBOX CONTACT">
                     Let's Build Together
                 </SectionHeading>
 
-                <div style={{ maxWidth: '750px', margin: '0 auto' }}>
-                    {/* One-Click Copy Badges with High Visibility & Contrast */}
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '36px' }}>
+                <div style={{ maxWidth: '750px', margin: '0 auto', width: '100%' }}>
+                    {/* One-Click Copy Badges */}
+                    <div className="contact-badges-group">
                         <button
                             type="button"
                             onClick={() => copyToClipboard("kaleabmezgebe4@gmail.com", "Email")}
-                            className="font-mono"
+                            className="font-mono contact-copy-btn"
                             style={{
-                                padding: '14px 22px',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                                fontWeight: 800,
-                                fontSize: '0.95rem',
-                                cursor: 'pointer',
-                                color: '#ffffff',
                                 background: isDarkMode 
                                     ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(15, 23, 42, 0.95))' 
                                     : 'linear-gradient(135deg, #4f46e5, #4338ca)',
                                 border: '1.5px solid #6366f1',
-                                borderRadius: '16px',
-                                boxShadow: '0 6px 20px rgba(99, 102, 241, 0.35)',
-                                maxWidth: '100%',
-                                wordBreak: 'break-all'
+                                boxShadow: '0 6px 20px rgba(99, 102, 241, 0.3)'
                             }}
                             title="Click to copy email address"
                         >
-                            <Mail size={18} color={isDarkMode ? "#818cf8" : "#ffffff"} />
-                            <span style={{ color: '#ffffff', fontWeight: 800 }}>kaleabmezgebe4@gmail.com</span>
-                            <Copy size={15} style={{ opacity: 0.85, color: '#38bdf8' }} />
+                            <Mail size={17} color={isDarkMode ? "#818cf8" : "#ffffff"} />
+                            <span>kaleabmezgebe4@gmail.com</span>
+                            <Copy size={14} style={{ opacity: 0.85, color: '#38bdf8' }} />
                         </button>
+                        
                         <button
                             type="button"
                             onClick={() => copyToClipboard("+251945989369", "Phone")}
-                            className="font-mono"
+                            className="font-mono contact-copy-btn"
                             style={{
-                                padding: '14px 22px',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                                fontWeight: 800,
-                                fontSize: '0.95rem',
-                                cursor: 'pointer',
-                                color: '#ffffff',
                                 background: isDarkMode 
                                     ? 'linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(15, 23, 42, 0.95))' 
                                     : 'linear-gradient(135deg, #0891b2, #0e7490)',
                                 border: '1.5px solid #06b6d4',
-                                borderRadius: '16px',
-                                boxShadow: '0 6px 20px rgba(6, 182, 212, 0.35)',
-                                maxWidth: '100%'
+                                boxShadow: '0 6px 20px rgba(6, 182, 212, 0.3)'
                             }}
                             title="Click to copy phone number"
                         >
-                            <Phone size={18} color={isDarkMode ? "#22d3ee" : "#ffffff"} />
-                            <span style={{ color: '#ffffff', fontWeight: 800 }}>+251 945989369</span>
-                            <Copy size={15} style={{ opacity: 0.85, color: '#38bdf8' }} />
+                            <Phone size={17} color={isDarkMode ? "#22d3ee" : "#ffffff"} />
+                            <span>+251 945989369</span>
+                            <Copy size={14} style={{ opacity: 0.85, color: '#38bdf8' }} />
                         </button>
                     </div>
 
-                    {/* Interactive Message Form (Active Direct Inbox) */}
-                    <Card style={{ padding: 'clamp(20px, 4vw, 40px)', textAlign: 'left' }}>
+                    {/* Interactive Message Form */}
+                    <Card style={{ padding: 'clamp(18px, 4vw, 36px)', textAlign: 'left' }}>
                         <form onSubmit={handleSubmitMessage}>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '20px' }}>
+                            <div className="contact-form-grid">
                                 <div>
-                                    <label className="font-mono" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>// Your Name</label>
+                                    <label className="font-mono" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '6px', color: 'var(--text-sub)' }}>// Your Name</label>
                                     <input
                                         type="text"
                                         required
                                         placeholder="Jane Doe"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none' }}
+                                        style={{ width: '100%', padding: '12px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none', fontSize: '0.95rem' }}
                                     />
                                 </div>
                                 <div>
-                                    <label className="font-mono" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>// Your Email</label>
+                                    <label className="font-mono" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '6px', color: 'var(--text-sub)' }}>// Your Email</label>
                                     <input
                                         type="email"
                                         required
                                         placeholder="jane@company.com"
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none' }}
+                                        style={{ width: '100%', padding: '12px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none', fontSize: '0.95rem' }}
                                     />
                                 </div>
                             </div>
-                            <div style={{ marginBottom: '24px' }}>
-                                <label className="font-mono" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>// Your Message</label>
+                            <div style={{ marginBottom: '20px' }}>
+                                <label className="font-mono" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '6px', color: 'var(--text-sub)' }}>// Your Message</label>
                                 <textarea
                                     required
                                     rows={4}
                                     placeholder="Tell me about your project, team opportunity, or engineering requirements..."
                                     value={formData.message}
                                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                    style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none', resize: 'vertical' }}
+                                    style={{ width: '100%', padding: '12px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none', resize: 'vertical', fontSize: '0.95rem' }}
                                 />
                             </div>
 
-                            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                            <div className="contact-form-actions">
                                 <button
                                     type="submit"
                                     disabled={formStatus === 'sending'}
-                                    className="accent-bg glow-effect"
-                                    style={{ flex: 1, padding: '14px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', border: 'none' }}
+                                    className="accent-bg glow-effect contact-submit-btn"
+                                    style={{ padding: '13px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '0.98rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', border: 'none' }}
                                 >
                                     {formStatus === 'sending' ? (
                                         <>
-                                            <Loader2 size={18} className="animate-spin" /> Dispatching to Inbox...
+                                            <Loader2 size={17} className="animate-spin" /> Dispatching...
                                         </>
                                     ) : (
                                         <>
-                                            <Send size={18} /> Send to kaleabmezgebe4@gmail.com
+                                            <Send size={17} /> Send Message Directly
                                         </>
                                     )}
                                 </button>
                                 <a
                                     href="mailto:kaleabmezgebe4@gmail.com"
-                                    className="glass-card font-mono"
-                                    style={{ padding: '14px 20px', borderRadius: '12px', color: 'var(--text-main)', fontWeight: 700, fontSize: '0.90rem', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
+                                    className="glass-card font-mono contact-mail-btn"
+                                    style={{ padding: '13px 18px', borderRadius: '12px', color: 'var(--text-main)', fontWeight: 700, fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', textDecoration: 'none' }}
                                 >
-                                    <ExternalLink size={16} /> Open Mail App
+                                    <ExternalLink size={15} /> Open Mail App
                                 </a>
                             </div>
 
                             {formStatus === 'success' && (
-                                <div style={{ marginTop: '16px', padding: '12px 16px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '10px', color: '#10b981', fontWeight: 600, fontSize: '0.92rem' }}>
-                                    <CheckCircle2 size={18} /> Thank you! Your message has been sent to Kaleab's inbox.
+                                <div style={{ marginTop: '14px', padding: '10px 14px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981', fontWeight: 600, fontSize: '0.88rem' }}>
+                                    <CheckCircle2 size={16} /> Thank you! Your message has been sent to Kaleab's inbox.
                                 </div>
                             )}
                         </form>
@@ -1198,20 +1087,20 @@ const App = () => {
             </section>
 
             {/* FOOTER */}
-            <footer style={{ borderTop: '1px solid var(--glass-border)', padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem', position: 'relative', zIndex: 1 }}>
-                <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+            <footer className="footer-container">
+                <div className="footer-inner">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', border: '1px solid var(--accent-primary)' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', border: '1px solid var(--accent-primary)', flexShrink: 0 }}>
                             <img src={kaleabPortrait} alt="Kaleab" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
-                        <span className="font-mono">
-                            © {new Date().getFullYear()} <strong style={{ color: 'var(--text-main)' }}>Kaleab Mezgebe Fissaha</strong>. Built with React &amp; Vite.
+                        <span className="font-mono" style={{ fontSize: '0.85rem' }}>
+                            © {new Date().getFullYear()} <strong style={{ color: 'var(--text-main)' }}>Kaleab Mezgebe</strong>. Built with React &amp; Vite.
                         </span>
                     </div>
-                    <div style={{ display: 'flex', gap: '20px' }}>
-                        <a href="https://github.com/kaleab-mezgebe" target="_blank" style={{ color: 'var(--text-muted)' }}>GitHub</a>
-                        <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ color: 'var(--text-muted)' }}>LinkedIn</a>
-                        <a href="mailto:kaleabmezgebe4@gmail.com" style={{ color: 'var(--text-muted)' }}>Email</a>
+                    <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap' }}>
+                        <a href="https://github.com/kaleab-mezgebe" target="_blank" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>GitHub</a>
+                        <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>LinkedIn</a>
+                        <a href="mailto:kaleabmezgebe4@gmail.com" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Email</a>
                     </div>
                 </div>
             </footer>

@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Terminal as TerminalIcon, Sparkles, Send, Copy, ArrowRight, CornerDownLeft, HelpCircle, Code, Briefcase, Award, Zap } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { soundFx } from '../utils/sound';
 
 export const InteractiveTerminal = ({ onTriggerToast }) => {
     const [history, setHistory] = useState([
         { type: 'system', text: '⚡ Kaleab Mezgebe Developer Console [zsh session]' },
         { 
             type: 'prompt_hint', 
-            text: 'Type a command below or click any quick action above to inspect my engineering background.' 
+            text: 'Type a command below or tap any quick action above to inspect engineering background.' 
         }
     ]);
     const [inputVal, setInputVal] = useState('');
@@ -32,7 +31,6 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
         if (!raw) return;
 
         const cmd = raw.toLowerCase();
-        soundFx.playClick();
 
         setCommandHistory((prev) => [...prev, raw]);
         setHistoryIndex(-1);
@@ -80,7 +78,6 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
                 spread: 80,
                 origin: { y: 0.6 }
             });
-            soundFx.playSuccess();
             onTriggerToast?.("Direct contact protocol initiated! kaleabmezgebe4@gmail.com 🚀");
             newEntries.push({
                 type: 'success',
@@ -103,7 +100,6 @@ Phone: +251 945989369 | Location: Mekelle, Tigray, Ethiopia`
   • LinkedIn:  https://linkedin.com/in/kaleab-mezgebe-764a56198/`
             });
         } else if (cmd === 'curl cv' || cmd === 'cv' || cmd === 'resume') {
-            soundFx.playBeep(1000);
             window.open("./assets/Kaleab Mezgebe's cv.pdf", '_blank');
             newEntries.push({
                 type: 'success',
@@ -163,12 +159,12 @@ Phone: +251 945989369 | Location: Mekelle, Tigray, Ethiopia`
     return (
         <div 
             className="terminal-window" 
-            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '390px', cursor: 'text' }}
-            onClick={(e) => {
+            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '340px', cursor: 'text' }}
+            onClick={() => {
                 inputRef.current?.focus({ preventScroll: true });
             }}
         >
-            {/* Terminal Header with Exact Requested Title & Vivid Visible Chips */}
+            {/* Terminal Header */}
             <div className="terminal-header" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div className="terminal-dots">
@@ -176,18 +172,17 @@ Phone: +251 945989369 | Location: Mekelle, Tigray, Ethiopia`
                         <span className="terminal-dot-btn" style={{ background: '#f59e0b' }}></span>
                         <span className="terminal-dot-btn" style={{ background: '#10b981' }}></span>
                     </div>
-                    {/* Colorful Syntax-Highlighted Prompt */}
-                    <span className="font-mono" style={{ fontSize: '0.84rem', letterSpacing: '0.3px', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    {/* Syntax-Highlighted Prompt */}
+                    <span className="font-mono" style={{ fontSize: '0.82rem', letterSpacing: '0.2px', display: 'flex', alignItems: 'center', gap: '2px' }}>
                         <span style={{ color: '#4ade80', fontWeight: 800 }}>kaleab</span>
                         <span style={{ color: '#94a3b8' }}>@</span>
-                        <span style={{ color: '#38bdf8', fontWeight: 800 }}>macbook-pro</span>
+                        <span style={{ color: '#38bdf8', fontWeight: 800 }}>macbook</span>
                         <span style={{ color: '#94a3b8' }}>:</span>
                         <span style={{ color: '#c084fc', fontWeight: 700 }}>~/portfolio</span>
-                        <span style={{ color: '#fbbf24', fontWeight: 700, marginLeft: '4px' }}>(zsh)</span>
                     </span>
                 </div>
 
-                {/* Highly Visible, Solid-Colored Action Chips */}
+                {/* Visible Action Chips */}
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                     {quickActions.map((item) => (
                         <button
@@ -203,14 +198,14 @@ Phone: +251 945989369 | Location: Mekelle, Tigray, Ethiopia`
                                 background: item.bg,
                                 border: '1px solid rgba(255,255,255,0.3)',
                                 color: item.text,
-                                padding: '4px 10px',
+                                padding: '4px 8px',
                                 borderRadius: '6px',
-                                fontSize: '0.78rem',
+                                fontSize: '0.74rem',
                                 fontWeight: 800,
                                 cursor: 'pointer',
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '4px',
+                                gap: '3px',
                                 boxShadow: `0 2px 8px ${item.glow}`,
                                 transition: 'all 0.15s ease'
                             }}
@@ -224,33 +219,33 @@ Phone: +251 945989369 | Location: Mekelle, Tigray, Ethiopia`
             </div>
 
             {/* Terminal Log Body */}
-            <div ref={terminalBodyRef} className="terminal-body" style={{ flex: 1, overflowY: 'auto', maxHeight: '340px' }}>
+            <div ref={terminalBodyRef} className="terminal-body" style={{ flex: 1, overflowY: 'auto', maxHeight: '320px', padding: '16px' }}>
                 {history.map((item, idx) => (
-                    <div key={idx} style={{ marginBottom: '8px' }}>
+                    <div key={idx} style={{ marginBottom: '8px', wordBreak: 'break-word' }}>
                         {item.type === 'user' && (
-                            <div style={{ color: '#38bdf8', fontWeight: 700, fontSize: '0.90rem' }}>{item.text}</div>
+                            <div style={{ color: '#38bdf8', fontWeight: 700, fontSize: '0.88rem' }}>{item.text}</div>
                         )}
                         {item.type === 'system' && (
-                            <div style={{ color: '#a5b4fc', fontSize: '0.86rem', fontWeight: 600 }}>{item.text}</div>
+                            <div style={{ color: '#a5b4fc', fontSize: '0.84rem', fontWeight: 600 }}>{item.text}</div>
                         )}
                         {item.type === 'prompt_hint' && (
-                            <div style={{ color: '#94a3b8', fontSize: '0.82rem', margin: '4px 0 8px' }}>{item.text}</div>
+                            <div style={{ color: '#94a3b8', fontSize: '0.80rem', margin: '4px 0 8px' }}>{item.text}</div>
                         )}
                         {item.type === 'output' && (
-                            <pre style={{ color: '#cbd5e1', whiteSpace: 'pre-wrap', margin: '2px 0', fontSize: '0.85rem', lineHeight: 1.6 }}>{item.text}</pre>
+                            <pre style={{ color: '#cbd5e1', whiteSpace: 'pre-wrap', margin: '2px 0', fontSize: '0.82rem', lineHeight: 1.55 }}>{item.text}</pre>
                         )}
                         {item.type === 'success' && (
-                            <pre style={{ color: '#10b981', whiteSpace: 'pre-wrap', fontWeight: 700, margin: '2px 0', fontSize: '0.85rem' }}>{item.text}</pre>
+                            <pre style={{ color: '#10b981', whiteSpace: 'pre-wrap', fontWeight: 700, margin: '2px 0', fontSize: '0.82rem' }}>{item.text}</pre>
                         )}
                         {item.type === 'error' && (
-                            <div style={{ color: '#f87171', fontSize: '0.85rem' }}>{item.text}</div>
+                            <div style={{ color: '#f87171', fontSize: '0.82rem' }}>{item.text}</div>
                         )}
                     </div>
                 ))}
             </div>
 
-            {/* Terminal Prompt Input with Autofocus & No Window Jump */}
-            <div style={{ padding: '12px 16px', background: 'rgba(0,0,0,0.5)', borderTop: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Terminal Prompt Input */}
+            <div style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.5)', borderTop: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ color: '#10b981', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>$</span>
                 <input
                     ref={inputRef}
@@ -266,7 +261,7 @@ Phone: +251 945989369 | Location: Mekelle, Tigray, Ethiopia`
                         outline: 'none',
                         color: 'white',
                         fontFamily: 'var(--font-mono)',
-                        fontSize: '0.9rem'
+                        fontSize: '0.85rem'
                     }}
                 />
                 <button

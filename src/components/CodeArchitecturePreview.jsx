@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Check, Copy, Sparkles, Terminal, FileCode2 } from 'lucide-react';
-import { soundFx } from '../utils/sound';
 
 export const CodeArchitecturePreview = ({ onTriggerToast }) => {
     const [activeSnippet, setActiveSnippet] = useState('bloc');
@@ -137,7 +136,6 @@ async def extract_receipt(file: UploadFile = File(...)):
     };
 
     const handleCopy = () => {
-        soundFx.playClick();
         navigator.clipboard.writeText(snippets[activeSnippet].code);
         setCopied(true);
         onTriggerToast?.('Code snippet copied to clipboard! 📋');
@@ -163,8 +161,8 @@ async def extract_receipt(file: UploadFile = File(...)):
 
             <div className="glass-card" style={{ padding: '0', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
                 {/* Code Window Header */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-terminal)', padding: '16px 24px', borderBottom: '1px solid var(--glass-border)', flexWrap: 'wrap', gap: '12px' }}>
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-terminal)', padding: '12px 18px', borderBottom: '1px solid var(--glass-border)', flexWrap: 'wrap', gap: '10px' }}>
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                         {[
                             { id: 'bloc', label: 'ride_location_bloc.dart', lang: 'Flutter / BLoC' },
                             { id: 'typescript', label: 'shemeta_payment_client.ts', lang: 'TypeScript' },
@@ -172,9 +170,9 @@ async def extract_receipt(file: UploadFile = File(...)):
                         ].map((item) => (
                             <button
                                 key={item.id}
-                                onClick={() => { soundFx.playClick(); setActiveSnippet(item.id); }}
+                                onClick={() => setActiveSnippet(item.id)}
                                 className={`terminal-tab-btn ${activeSnippet === item.id ? 'active' : ''}`}
-                                style={{ fontSize: '0.85rem' }}
+                                style={{ fontSize: '0.80rem', padding: '4px 10px' }}
                             >
                                 {item.label}
                             </button>
@@ -184,7 +182,7 @@ async def extract_receipt(file: UploadFile = File(...)):
                     <button
                         onClick={handleCopy}
                         className="tech-chip font-mono"
-                        style={{ cursor: 'pointer', padding: '6px 14px', fontSize: '0.8rem' }}
+                        style={{ cursor: 'pointer', padding: '5px 12px', fontSize: '0.78rem' }}
                     >
                         {copied ? <Check size={14} color="#10b981" /> : <Copy size={14} />}
                         <span>{copied ? 'Copied!' : 'Copy Code'}</span>
@@ -192,13 +190,13 @@ async def extract_receipt(file: UploadFile = File(...)):
                 </div>
 
                 {/* Code Viewer */}
-                <div style={{ background: 'var(--bg-terminal)', padding: '24px', overflowX: 'auto' }}>
+                <div style={{ background: 'var(--bg-terminal)', padding: '18px', overflowX: 'auto' }}>
                     <pre
                         className="font-mono"
                         style={{
                             margin: 0,
-                            fontSize: '0.9rem',
-                            lineHeight: 1.7,
+                            fontSize: '0.84rem',
+                            lineHeight: 1.6,
                             color: '#cbd5e1'
                         }}
                     >
