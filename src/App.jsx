@@ -4,43 +4,57 @@ import {
     Github,
     Linkedin,
     Mail,
-    MapPin,
     Phone,
+    MapPin,
     ExternalLink,
     Code2,
     Sparkles,
     Terminal,
     Zap,
-    Hash,
     Smartphone,
     Database,
     Layers,
-    ChevronDown,
-    Briefcase,
-    GraduationCap,
-    Loader,
-    Globe,
+    Server,
     Download,
     Sun,
     Moon,
-    Server,
     Play,
     Menu,
     X,
-    Twitter,
-    Instagram
+    CheckCircle2,
+    Copy,
+    Search,
+    Globe,
+    Briefcase,
+    GraduationCap,
+    Send,
+    Flame,
+    ArrowUpRight,
+    Command
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
-// Shared Components
-const SectionHeading = ({ children, subtitle, align = "center" }) => (
-    <div className="section-header" style={{ marginBottom: '60px', textAlign: align }}>
+// Shared Section Header Component
+const SectionHeading = ({ children, subtitle, align = "center", badge = null }) => (
+    <div className="section-header" style={{ marginBottom: '56px', textAlign: align }}>
+        {badge && (
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                style={{ marginBottom: '14px' }}
+            >
+                <span className="status-pill" style={{ color: 'var(--accent-primary)', borderColor: 'rgba(99, 102, 241, 0.3)', background: 'rgba(99, 102, 241, 0.08)' }}>
+                    <Sparkles size={14} /> {badge}
+                </span>
+            </motion.div>
+        )}
         <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="accent-text"
-            style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, marginBottom: '12px' }}
+            style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, marginBottom: '16px', letterSpacing: '-0.03em' }}
         >
             {children}
         </motion.h2>
@@ -50,7 +64,7 @@ const SectionHeading = ({ children, subtitle, align = "center" }) => (
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '700px', margin: align === "center" ? '0 auto' : '0' }}
+                style={{ color: 'var(--text-muted)', fontSize: '1.15rem', maxWidth: '750px', margin: align === "center" ? '0 auto' : '0', lineHeight: 1.6 }}
             >
                 {subtitle}
             </motion.p>
@@ -59,23 +73,23 @@ const SectionHeading = ({ children, subtitle, align = "center" }) => (
             initial={{ width: 0 }}
             whileInView={{ width: '80px' }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            style={{ height: '5px', background: 'var(--accent-primary)', margin: align === "center" ? '20px auto 0' : '20px 0 0', borderRadius: '4px' }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            style={{ height: '4px', background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))', margin: align === "center" ? '24px auto 0' : '24px 0 0', borderRadius: '4px' }}
         />
     </div>
 );
 
+// Card Component
 const Card = ({ children, className = "", noPadding = false, delay = 0, style = {}, ...props }) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.5, delay }}
-        whileHover={{ y: -10, scale: 1.02 }}
-        className={`glass-card card-hover ${className}`}
+        whileHover={{ y: -6, scale: 1.01 }}
+        className={`glass-card ${className}`}
         style={{
             padding: noPadding ? '0' : '32px',
-            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
@@ -87,56 +101,45 @@ const Card = ({ children, className = "", noPadding = false, delay = 0, style = 
     </motion.div>
 );
 
-// Project Image Component with Loading State
-const ProjectImage = ({ project }) => {
-    const [isLoading, setIsLoading] = useState(true);
-
-    return (
-        <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {isLoading && (
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-card)' }}>
-                    <Loader className="spin-animation" size={32} color="var(--accent-primary)" />
-                </div>
-            )}
-            <img
-                src={project.image}
-                alt={project.title}
-                loading="lazy"
-                decoding="async"
-                onLoad={() => setIsLoading(false)}
-                style={{
-                    width: !project.isWeb ? 'auto' : '100%',
-                    height: '100%',
-                    objectFit: project.isMobile ? 'contain' : 'cover',
-                    filter: 'desaturate(0.02) contrast(1.05)',
-                    transition: 'all 0.5s ease, opacity 0.5s ease',
-                    opacity: isLoading ? 0 : 1,
-                    borderRadius: !project.isWeb ? '12px' : 'clamp(16px, 4vw, 40px)',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-                    display: 'block'
-                }}
-                className="project-image"
-            />
-        </div>
-    );
-};
-
 const App = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(true);
+    const [activeFilter, setActiveFilter] = useState('all');
+    const [toastMessage, setToastMessage] = useState(null);
+    const [isCmdOpen, setIsCmdOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [selectedVideo, setSelectedVideo] = useState(null);
+    const [cmdSearch, setCmdSearch] = useState('');
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [formSent, setFormSent] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
+        const handleScroll = () => setScrolled(window.scrollY > 40);
         window.addEventListener('scroll', handleScroll);
 
-        // Load theme
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             setIsDarkMode(false);
             document.body.classList.add('light');
         }
 
-        return () => window.removeEventListener('scroll', handleScroll);
+        // Global Cmd + K shortcut
+        const handleKeyDown = (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                setIsCmdOpen((prev) => !prev);
+            }
+            if (e.key === 'Escape') {
+                setIsCmdOpen(false);
+                setSelectedVideo(null);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('keydown', handleKeyDown);
+        };
     }, []);
 
     const toggleTheme = () => {
@@ -145,357 +148,386 @@ const App = () => {
         localStorage.setItem('theme', !isDarkMode ? 'dark' : 'light');
     };
 
+    const showToast = (text) => {
+        setToastMessage(text);
+        setTimeout(() => setToastMessage(null), 3000);
+    };
+
+    const copyToClipboard = (text, label) => {
+        navigator.clipboard.writeText(text);
+        showToast(`${label} copied to clipboard! 📋`);
+        handleConfetti();
+    };
+
     const handleConfetti = () => {
         confetti({
-            particleCount: 150,
-            spread: 80,
+            particleCount: 120,
+            spread: 70,
             origin: { y: 0.6 },
-            colors: isDarkMode ? ['#3b82f6', '#06b6d4', '#f8fafc'] : ['#2563eb', '#0891b2', '#0f172a']
+            colors: isDarkMode ? ['#6366f1', '#06b6d4', '#a855f7'] : ['#4f46e5', '#0891b2', '#0f172a']
         });
     };
 
-    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-    const [selectedVideo, setSelectedVideo] = useState(null);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const handleSubmitMessage = (e) => {
+        e.preventDefault();
+        setFormSent(true);
+        handleConfetti();
+        showToast("Message recorded! Thanks for reaching out. 🚀");
+        setTimeout(() => {
+            setFormData({ name: '', email: '', message: '' });
+            setFormSent(false);
+        }, 3000);
+    };
 
-    const VideoModal = ({ videoSrc, onClose }) => (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-                position: 'fixed', inset: 0, zIndex: 1000,
-                background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', p: 4
-            }}
-            onClick={onClose}
-        >
-            <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                style={{ width: '90%', maxWidth: '1000px', position: 'relative', aspectRatio: '16/9' }}
-                onClick={e => e.stopPropagation()}
-            >
-                <button
-                    onClick={onClose}
-                    style={{
-                        position: 'absolute', top: -40, right: 0,
-                        background: 'transparent', color: 'white', border: 'none', cursor: 'pointer', fontSize: '1.2rem', fontWeight: 'bold'
-                    }}
-                >
-                    Close ✕
-                </button>
-                <video
-                    src={videoSrc}
-                    controls
-                    autoPlay
-                    style={{ width: '100%', height: '100%', borderRadius: '24px', boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
-                />
-            </motion.div>
-        </motion.div>
-    );
+    // Projects Dataset
+    const projects = [
+        {
+            title: "Axumite Ride — Passenger & Driver Mobile App",
+            category: "mobile",
+            problem: "Real-time state synchronization, live driver GPS tracking, and instant payment settlement in low-bandwidth network zones.",
+            solution: "Architected cross-platform Flutter applications for passengers and drivers with SignalR real-time stream synchronization, Google Maps SDK navigation, and BLoC state architecture.",
+            result: "Successfully deployed on Google Play Store with thousands of active rides and instantaneous dispatch updates.",
+            tags: ["Flutter", "Dart", "BLoC", "SignalR", "Google Maps SDK", "Play Store"],
+            githubLink: "https://github.com/kaleab-mezgebe",
+            playstoreLink: "https://play.google.com/store/apps/details?id=com.axumite.customer&hl=en_US",
+            driverPlaystoreLink: "https://play.google.com/store/apps/details?id=com.axumite.partner&hl=en_US",
+            image: "./assets/ride.png",
+            badge: "PRODUCTION GOOGLE PLAY STORE",
+            isMobile: true
+        },
+        {
+            title: "Shemeta E-Commerce — Multi-Vendor Platform",
+            category: "web",
+            problem: "Complex multi-vendor operations required synchronized customer storefronts, live order notifications, merchant wallet accounting, and ETB checkout flows.",
+            solution: "Developed high-throughput customer storefronts and vendor portals using React.js, Next.js, and TypeScript, integrating Telebirr & Chapa payment gateways with rich analytics dashboards.",
+            result: "Delivered an end-to-end commerce experience with sub-second page transitions, dynamic product discovery, and instant merchant order processing.",
+            tags: ["React.js", "Next.js", "TypeScript", "Tailwind CSS", "Telebirr & Chapa", "Vendor Dashboard"],
+            githubLink: "https://github.com/kaleab-mezgebe",
+            demoLink: "https://nicom.dev.niyatconsultancy.com/en",
+            image: "./assets/shemeta.png",
+            badge: "LIVE DEMO PLATFORM",
+            isWeb: true
+        },
+        {
+            title: "AI Dermatologist — Skin Disease Diagnostic App",
+            category: "ai",
+            problem: "Severe shortage of specialized dermatologists in remote regions leading to delayed clinical diagnoses of curable skin conditions.",
+            solution: "Built a cross-platform mobile and web application integrating on-device computer vision models (TensorFlow Lite) and cloud inference endpoints with offline triage assessment.",
+            result: "Enabled immediate symptom screening, condition probability breakdowns, and automated patient recommendation reports.",
+            tags: ["Flutter", "Dart", "TensorFlow Lite", "Computer Vision", "REST APIs", "HealthTech"],
+            githubLink: "https://github.com/kaleab-mezgebe/AI-Dermatologist",
+            image: "./assets/ai.png",
+            badge: "AI & HEALTHTECH APP",
+            isMobile: true
+        },
+        {
+            title: "Financial Document & Receipt OCR Pipeline",
+            category: "ai",
+            problem: "Manual financial data entry and unstandardized paper receipts result in slow auditing and human errors in expense logging.",
+            solution: "Engineered an automated extraction pipeline combining OpenCV image preprocessing (deskewing, binarization), Tesseract OCR detection, and FastAPI Pydantic schema validation.",
+            result: "Automated receipt data extraction with high confidence scores, structured JSON output, and instant verification status.",
+            tags: ["Python", "FastAPI", "Tesseract OCR", "OpenCV", "Pydantic", "React.js"],
+            githubLink: "https://github.com/kaleab-mezgebe",
+            image: "./assets/ocr_pipeline.png",
+            badge: "COMPUTER VISION & OCR PIPELINE",
+            isWeb: true
+        },
+        {
+            title: "EthioBeds — Hotel & Guesthouse Booking Platform",
+            category: "web",
+            problem: "Finding safe, verified, and affordable lodging across Ethiopian cities was fragmented without central availability verification.",
+            solution: "Architected a full-stack accommodation reservation SaaS with Node.js/Express.js, PostgreSQL relational schemas, JWT authentication, and a responsive React frontend.",
+            result: "Launched a trusted marketplace serving verified lodging providers and property seekers with live room availability tracking.",
+            tags: ["React.js", "Node.js", "Express.js", "PostgreSQL", "JWT Auth", "Production SaaS"],
+            githubLink: "https://github.com/kaleab-mezgebe",
+            demoLink: "https://ethiobeds.com",
+            image: "./assets/ethiobeds.png",
+            badge: "LIVE PRODUCTION SAAS",
+            isWeb: true
+        },
+        {
+            title: "CBEBirr App Clone (FinTech UI)",
+            category: "mobile",
+            problem: "FinTech apps demand high-fidelity micro-interactions and secure visual state flows to build consumer trust.",
+            solution: "Engineered a pixel-perfect CBEBirr mobile experience clone in Flutter with custom animations, balance conceal toggles, and seamless transaction views.",
+            result: "Showcased high-performance UI engineering with smooth 60fps mobile transitions and state feedback.",
+            tags: ["Flutter", "FinTech UI", "State Management", "Micro-Animations"],
+            githubLink: "https://github.com/kaleab-mezgebe/cbe_birr",
+            videoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr",
+            image: "./assets/cbebirr.png",
+            badge: "FINTECH UI ENGINEERING",
+            isMobile: true
+        },
+        {
+            title: "Tigray Cultural Property Hub",
+            category: "mobile",
+            problem: "Historical monuments and cultural properties were vulnerable to being uncatalogued or lost without spatial GIS and descriptive records.",
+            solution: "Built a cross-platform Flutter field application with offline-first caching (Hive/SQLite) for data collectors in remote areas.",
+            result: "Digitized 1,000+ cultural asset records with spatial coordinates and comprehensive metadata.",
+            tags: ["Flutter", "Dart", "Offline-First", "GIS", "Social Impact"],
+            githubLink: "https://github.com/kaleab-mezgebe/TCPH-",
+            image: "./assets/tcph.png",
+            badge: "DIGITALIZATION & HERITAGE",
+            isMobile: true
+        }
+    ];
 
+    const filteredProjects = activeFilter === 'all'
+        ? projects
+        : projects.filter((p) => p.category === activeFilter);
+
+    // Command palette actions
+    const commandActions = [
+        { label: "Navigate: Home", action: () => { window.location.href = "#hero"; setIsCmdOpen(false); } },
+        { label: "Navigate: About & Skills", action: () => { window.location.href = "#about"; setIsCmdOpen(false); } },
+        { label: "Navigate: Projects Showcase", action: () => { window.location.href = "#projects"; setIsCmdOpen(false); } },
+        { label: "Navigate: Professional Experience", action: () => { window.location.href = "#experience"; setIsCmdOpen(false); } },
+        { label: "Navigate: Contact Me", action: () => { window.location.href = "#contact"; setIsCmdOpen(false); } },
+        { label: "Copy Email (kaleabmezgebe4@gmail.com)", action: () => { copyToClipboard("kaleabmezgebe4@gmail.com", "Email"); setIsCmdOpen(false); } },
+        { label: "Copy Phone (+251 945989369)", action: () => { copyToClipboard("+251945989369", "Phone"); setIsCmdOpen(false); } },
+        { label: "Download Latest CV (PDF)", action: () => { window.open("./assets/Kaleab Mezgebe's cv.pdf", "_blank"); setIsCmdOpen(false); } },
+        { label: "Toggle Dark / Light Theme", action: () => { toggleTheme(); setIsCmdOpen(false); } },
+        { label: "Open GitHub Profile", action: () => { window.open("https://github.com/kaleab-mezgebe", "_blank"); setIsCmdOpen(false); } },
+        { label: "Open LinkedIn Profile", action: () => { window.open("https://linkedin.com/in/kaleab-mezgebe-764a56198/", "_blank"); setIsCmdOpen(false); } }
+    ];
+
+    const filteredCommands = commandActions.filter(c => c.label.toLowerCase().includes(cmdSearch.toLowerCase()));
 
     return (
         <div className={`app-container ${isDarkMode ? 'dark' : 'light'}`}>
+            {/* Toast Notification */}
             <AnimatePresence>
-                {selectedVideo && <VideoModal videoSrc={selectedVideo} onClose={() => setSelectedVideo(null)} />}
-            </AnimatePresence>
-
-            {/* Mobile Drawer */}
-            <AnimatePresence>
-                {isMenuOpen && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setIsMenuOpen(false)}
-                            style={{
-                                position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 998
-                            }}
-                        />
-                        <motion.div
-                            initial={{ x: '100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '100%' }}
-                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            style={{
-                                position: 'fixed', top: 0, right: 0, bottom: 0, width: '300px', maxWidth: '80%',
-                                background: 'var(--bg-card)', backdropFilter: 'blur(20px)',
-                                borderLeft: '1px solid var(--glass-border)', zIndex: 999,
-                                display: 'flex', flexDirection: 'column',
-                                boxShadow: '-10px 0 30px rgba(0,0,0,0.5)'
-                            }}
-                        >
-                            <div style={{
-                                padding: '32px',
-                                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                borderBottom: '1px solid var(--glass-border)',
-                                background: 'linear-gradient(to right, rgba(129, 140, 248, 0.1), transparent)'
-                            }}>
-                                <span style={{ fontWeight: 900, fontSize: '1.4rem', letterSpacing: '-0.5px' }}>
-                                    KALEAB<span className="accent-text">.M</span>
-                                </span>
-                                <button
-                                    onClick={() => setIsMenuOpen(false)}
-                                    style={{
-                                        background: 'var(--glass-border)',
-                                        color: 'var(--text-main)',
-                                        padding: '8px',
-                                        borderRadius: '50%',
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        border: '1px solid var(--glass-border)'
-                                    }}>
-                                    <X size={24} />
-                                </button>
-                            </div>
-
-                            <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1, overflowY: 'auto' }}>
-                                {[
-                                    { name: 'Home', href: '#hero' },
-                                    { name: 'Portfolio', href: '#projects' },
-                                    { name: 'Experience', href: '#experience' },
-                                    { name: 'Services', href: '#services' },
-                                    { name: 'About', href: '#about' },
-                                    { name: 'Contact', href: '#contact' }
-                                ].map((item) => (
-                                    <motion.a
-                                        key={item.name}
-                                        href={item.href}
-                                        onClick={() => setIsMenuOpen(false)}
-                                        whileTap={{ scale: 0.98 }}
-                                        style={{
-                                            color: 'var(--text-main)',
-                                            display: 'flex', alignItems: 'center', gap: '16px',
-                                            padding: '16px',
-                                            borderRadius: '12px',
-                                            fontSize: '1.1rem', fontWeight: 600,
-                                            background: 'var(--glass-border)',
-                                            border: '1px solid transparent',
-                                            transition: 'all 0.2s ease'
-                                        }}
-                                        className="drawer-link"
-                                    >
-                                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 10px var(--accent-primary)' }}></span>
-                                        {item.name}
-                                    </motion.a>
-                                ))}
-                            </div>
-
-                            <div style={{ padding: '32px', borderTop: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)' }}>
-                                <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', justifyContent: 'center' }}>
-                                    {[
-                                        { Icon: Github, link: "https://github.com/kaleab-mezgebe" },
-                                        { Icon: Linkedin, link: "https://linkedin.com/in/kaleab-mezgebe-764a56198/" },
-                                        { Icon: Mail, link: "mailto:kaleabmezgebe4@gmail.com" }
-                                    ].map(({ Icon, link }, i) => (
-                                        <a key={i} href={link} target="_blank" style={{ padding: '10px', background: 'var(--glass-border)', borderRadius: '12px', color: 'var(--text-muted)', display: 'flex' }}>
-                                            <Icon size={20} />
-                                        </a>
-                                    ))}
-                                </div>
-                                <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', opacity: 0.6 }}>
-                                    © {new Date().getFullYear()} Kaleab Mezgebe
-                                </p>
-                            </div>
-                        </motion.div>
-                    </>
+                {toastMessage && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="toast-floating"
+                    >
+                        <CheckCircle2 size={20} color="#10b981" />
+                        <span>{toastMessage}</span>
+                    </motion.div>
                 )}
             </AnimatePresence>
-            {/* Background Decor */}
-            <div style={{ position: 'fixed', top: '10%', left: '-5%', width: '600px', height: '600px', background: 'var(--accent-primary)', filter: 'blur(180px)', opacity: isDarkMode ? 0.08 : 0.05, zIndex: -1 }}></div>
-            <div style={{ position: 'fixed', bottom: '10%', right: '-5%', width: '500px', height: '500px', background: 'var(--accent-secondary)', filter: 'blur(180px)', opacity: isDarkMode ? 0.08 : 0.05, zIndex: -1 }}></div>
 
-            {/* Navigation */}
-            <nav style={{
-                position: 'fixed', top: 0, width: '100%', zIndex: 100,
-                padding: scrolled ? '12px 6%' : '24px 6%',
-                background: scrolled ? 'var(--nav-bg)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(12px)' : 'none',
-                borderBottom: scrolled ? '1px solid var(--glass-border)' : 'none',
-                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                    <div
-                        style={{
-                            width: '45px', height: '45px',
-                            overflow: 'hidden',
-                            cursor: 'pointer'
-                        }}
-                        onClick={handleConfetti}
-                    >
-                        <img src="./assets/myphoto.png" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            {/* Command Palette Modal */}
+            <AnimatePresence>
+                {isCmdOpen && (
+                    <div className="cmd-palette-backdrop" onClick={() => setIsCmdOpen(false)}>
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0, y: -20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.95, opacity: 0, y: -20 }}
+                            className="cmd-palette-modal"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div className="cmd-input-wrapper">
+                                <Search size={20} color="var(--accent-primary)" />
+                                <input
+                                    type="text"
+                                    placeholder="Type a command or search section..."
+                                    className="cmd-input"
+                                    value={cmdSearch}
+                                    onChange={(e) => setCmdSearch(e.target.value)}
+                                    autoFocus
+                                />
+                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.08)', padding: '2px 8px', borderRadius: '6px' }}>ESC</span>
+                            </div>
+                            <div style={{ maxHeight: '350px', overflowY: 'auto', padding: '8px 0' }}>
+                                {filteredCommands.length > 0 ? (
+                                    filteredCommands.map((cmd, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="cmd-item"
+                                            onClick={cmd.action}
+                                        >
+                                            <span style={{ fontSize: '0.95rem', fontWeight: 600 }}>{cmd.label}</span>
+                                            <ArrowUpRight size={16} style={{ opacity: 0.5 }} />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                        No commands found matching "{cmdSearch}"
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
                     </div>
-                    <a href="#hero" style={{ fontWeight: 900, fontSize: '1.2rem', letterSpacing: '-0.5px', color: 'var(--text-main)', textDecoration: 'none' }}>
-                        Home
-                    </a>
-                </div>
+                )}
+            </AnimatePresence>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
-                    <div style={{ display: 'flex', gap: '32px', fontWeight: 600 }} className="nav-links">
-                        <a href="#projects" className="nav-link">Portfolio</a>
-                        <a href="#experience" className="nav-link">Experience</a>
-                        <a href="#services" className="nav-link">Services</a>
+            {/* Video Modal */}
+            <AnimatePresence>
+                {selectedVideo && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed', inset: 0, zIndex: 1000,
+                            background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(12px)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px'
+                        }}
+                        onClick={() => setSelectedVideo(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.85, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            style={{ width: '90%', maxWidth: '900px', position: 'relative', aspectRatio: '16/9' }}
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <button
+                                onClick={() => setSelectedVideo(null)}
+                                style={{
+                                    position: 'absolute', top: -45, right: 0,
+                                    background: 'transparent', color: 'white', border: 'none', cursor: 'pointer', fontSize: '1.2rem', fontWeight: 'bold'
+                                }}
+                            >
+                                Close ✕
+                            </button>
+                            <video
+                                src={selectedVideo}
+                                controls
+                                autoPlay
+                                style={{ width: '100%', height: '100%', borderRadius: '24px', boxShadow: '0 0 50px rgba(0,0,0,0.6)' }}
+                            />
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Floating Navigation Header */}
+            <nav className="navbar-fixed">
+                <div className="navbar-inner">
+                    <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+                        <div style={{ width: '38px', height: '38px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)' }}>
+                            <img src="./assets/myphoto.png" alt="Kaleab" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <span style={{ fontWeight: 900, fontSize: '1.15rem', letterSpacing: '-0.5px', color: 'var(--text-main)' }}>
+                            KALEAB<span className="accent-text">.M</span>
+                        </span>
+                    </a>
+
+                    {/* Desktop Navigation Links */}
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }} className="hidden md:flex">
+                        <a href="#hero" className="nav-link">Home</a>
                         <a href="#about" className="nav-link">About</a>
+                        <a href="#skills" className="nav-link">Skills</a>
+                        <a href="#projects" className="nav-link">Projects</a>
+                        <a href="#experience" className="nav-link">Experience</a>
                         <a href="#contact" className="nav-link">Contact</a>
                     </div>
 
-                    <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme" style={{ width: '40px', height: '40px' }}>
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={isDarkMode ? 'moon' : 'sun'}
-                                initial={{ y: 10, opacity: 0, rotate: -45 }}
-                                animate={{ y: 0, opacity: 1, rotate: 0 }}
-                                exit={{ y: -10, opacity: 0, rotate: 45 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-                            </motion.div>
-                        </AnimatePresence>
-                    </button>
-
-                    <button
-                        className="menu-toggle"
-                        onClick={() => setIsMenuOpen(true)}
-                        style={{
-                            background: 'var(--bg-card)', border: '1px solid var(--glass-border)',
-                            borderRadius: '12px', width: '40px', height: '40px', display: 'none',
-                            alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        <Menu size={24} />
-                    </button>
+                    {/* Quick Tools (Command Palette Trigger & Theme Toggle) */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <button
+                            onClick={() => setIsCmdOpen(true)}
+                            className="status-pill"
+                            style={{ cursor: 'pointer', background: 'rgba(255,255,255,0.05)', color: 'var(--text-sub)', borderColor: 'var(--glass-border)' }}
+                            title="Command Palette (Cmd+K)"
+                        >
+                            <Command size={14} />
+                            <span className="hidden sm:inline">⌘K</span>
+                        </button>
+                        <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
+                            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                        </button>
+                        <a
+                            href="./assets/Kaleab Mezgebe's cv.pdf"
+                            target="_blank"
+                            download
+                            className="accent-bg glow-effect"
+                            style={{ padding: '8px 18px', borderRadius: '9999px', color: 'white', fontWeight: 800, fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                        >
+                            <Download size={15} /> Resume
+                        </a>
+                    </div>
                 </div>
             </nav>
 
+            {/* HERO SECTION */}
             <section id="hero" className="hero-container">
                 <div className="hero-grid">
-                    {/* Left Content */}
-                    <div className="hero-text-content">
+                    <div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            style={{ marginBottom: '24px' }}
+                        >
+                            <div className="status-pill">
+                                <span className="status-dot"></span>
+                                Available for High-Impact Frontend & Mobile Roles
+                            </div>
+                        </motion.div>
+
                         <motion.h1
-                            initial={{ opacity: 0, x: -30 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
                             className="hero-title"
                         >
-                            Kaleab<br />Mezgebe
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: '120px' }}
-                                transition={{ delay: 0.5, duration: 0.8 }}
-                                style={{ height: '6px', background: 'var(--accent-primary)', marginTop: '10px', borderRadius: '3px' }}
-                            />
+                            Engineering <span className="accent-text">High-Performance</span> Mobile &amp; Modern Web Systems.
                         </motion.h1>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            style={{ fontSize: 'clamp(1.1rem, 2vw, 1.3rem)', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '620px', marginBottom: '36px' }}
+                        >
+                            I'm <strong>Kaleab Mezgebe</strong>, a Software Engineer with <strong>3+ years of experience</strong> building production Flutter apps, React/Next.js architectures, real-time tracking (SignalR), and local FinTech integrations (Telebirr &amp; Chapa).
+                        </motion.p>
 
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="hero-description"
-                            style={{ marginTop: '40px', maxWidth: '550px' }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}
                         >
-                            <div style={{ marginBottom: '25px' }}>
-                                <span style={{
-                                    fontSize: '0.9rem',
-                                    fontWeight: 700,
-                                    color: 'var(--accent-primary)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '2px'
-                                }}>
-                                    <h2>Frontend &amp; Mobile Software Engineer</h2>
-                                </span>
+                            <a
+                                href="#projects"
+                                className="accent-bg glow-effect"
+                                style={{ padding: '14px 32px', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+                            >
+                                Explore Projects <ArrowUpRight size={18} />
+                            </a>
+                            <a
+                                href="#contact"
+                                className="glass-card"
+                                style={{ padding: '14px 28px', borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                            >
+                                Get in Touch <Mail size={18} />
+                            </a>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="hero-stats"
+                        >
+                            <div>
+                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-primary)', lineHeight: 1 }}>3+</div>
+                                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '6px' }}>Years Experience</div>
                             </div>
-
-                            <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', lineHeight: '1.7', marginBottom: '40px' }}>
-                                Developing scalable, high-performance <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Frontend Web Applications</span> with React.js &amp; Next.js, and cross-platform <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Mobile Apps</span> with Flutter &amp; Dart.
-                            </p>
-
-                            <div className="hero-stats">
-                                <div style={{ width: '1px', height: '60px', background: 'var(--glass-border)' }} />
-                                <div>
-                                    <div style={{ fontSize: '3rem', fontWeight: 900, color: 'var(--accent-secondary)', lineHeight: 1 }}>3+</div>
-                                    <div style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.6, marginTop: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Years Practical Exp.</div>
-                                </div>
+                            <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
+                            <div>
+                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-secondary)', lineHeight: 1 }}>3.88</div>
+                                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '6px' }}>MIT CGPA Distinction</div>
+                            </div>
+                            <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
+                            <div>
+                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-tertiary)', lineHeight: 1 }}>86/100</div>
+                                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '6px' }}>National Exit Exam</div>
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Right Image Container */}
-                    <div className="hero-image-container">
-                        {/* Background Splatter/Glows - Expanded and more visible */}
+                    {/* Hero Visual Card */}
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <motion.div
-                            animate={{
-                                scale: [1, 1.3, 1],
-                                opacity: [0.2, 0.4, 0.2],
-                                x: [0, 50, 0],
-                                y: [0, -30, 0]
-                            }}
-                            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                            className="bg-blob"
-                            style={{
-                                position: 'absolute', top: '-10%', right: '-30%',
-                                width: '500px', height: '500px',
-                                background: 'var(--accent-primary)', filter: 'blur(120px)',
-                                borderRadius: '50%', zIndex: 0,
-                                opacity: 0.3
-                            }}
-                        />
-                        <motion.div
-                            animate={{
-                                scale: [1.3, 1, 1.3],
-                                opacity: [0.15, 0.3, 0.15],
-                                x: [0, -60, 0],
-                                y: [0, 40, 0]
-                            }}
-                            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-                            style={{
-                                position: 'absolute', bottom: '-15%', left: '-35%',
-                                width: '450px', height: '450px',
-                                background: 'var(--accent-secondary)', filter: 'blur(110px)',
-                                borderRadius: '50%', zIndex: 0,
-                                opacity: 0.2
-                            }}
-                        />
-
-                        {/* Floating Symbols Splatter - Spreading Widely Around */}
-                        <div style={{ position: 'absolute', inset: -180, zIndex: 1, pointerEvents: 'none' }}>
-                            {[
-                                { Icon: Code2, top: '10%', left: '15%', delay: 0, size: 32 },
-                                { Icon: Sparkles, top: '80%', left: '10%', delay: 0.5, size: 28 },
-                                { Icon: Terminal, top: '25%', right: '10%', delay: 1, size: 30 },
-                                { Icon: Zap, bottom: '20%', right: '15%', delay: 1.5, size: 34 },
-                                { Icon: Hash, top: '55%', left: '-5%', delay: 2, size: 28 },
-                                { Icon: Code2, bottom: '5%', right: '40%', delay: 2.5, size: 24 },
-                                { Icon: Sparkles, top: '5%', right: '40%', delay: 3, size: 22 },
-                                { Icon: Terminal, bottom: '50%', right: '-15%', delay: 3.5, size: 26 },
-                                { Icon: Zap, top: '45%', left: '-10%', delay: 4, size: 24 },
-                            ].map(({ Icon, size, ...pos }, i) => (
-                                <motion.div
-                                    key={i}
-                                    initial={{ opacity: 0, scale: 0 }}
-                                    animate={{
-                                        opacity: [0.4, 0.8, 0.4],
-                                        scale: [1, 1.25, 1],
-                                        y: [0, -50, 0],
-                                        rotate: [0, 15, -15, 0]
-                                    }}
-                                    transition={{
-                                        duration: 6,
-                                        repeat: Infinity,
-                                        delay: pos.delay,
-                                        ease: "easeInOut"
-                                    }}
-                                    style={{ position: 'absolute', color: 'var(--accent-primary)', ...pos }}
-                                >
-                                    <Icon size={size || 24} />
-                                </motion.div>
-                            ))}
-                        </div>
-
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8 }}
                             className="hero-image-wrapper"
@@ -505,786 +537,379 @@ const App = () => {
                                 alt="Kaleab Mezgebe"
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
-                            {/* Integration Gradient Overlay */}
                             <div style={{
-                                position: 'absolute', inset: 0,
-                                // background: 'linear-gradient(to bottom, transparent 95%, var(--bg-dark) 100%), linear-gradient(to right, transparent 98%, var(--bg-dark) 100%), linear-gradient(to left, transparent 98%, var(--bg-dark) 100%)',
-                                pointerEvents: 'none',
-                                opacity: 0.6
-                            }} />
-                        </motion.div>
-
-
-                        {/* Floating Links Card (The big one in the middle-bottom) with Colorful Splatter */}
-                        <motion.div
-                            initial={{ y: 50, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.6 }}
-                            className="glass-card"
-                            style={{
-                                position: 'absolute', bottom: '-40px',
-                                padding: '16px 32px', display: 'flex', gap: '24px',
-                                alignItems: 'center', background: 'rgba(15, 23, 42, 0.9)',
-                                borderRadius: '16px', border: '1px solid var(--glass-border)',
-                                boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-                                zIndex: 4
-                            }}
-                        >
-                            {/* Card Splatter Effect */}
-                            <div style={{ position: 'absolute', bottom: -5, left: '20%', right: '20%', height: '5px', background: 'linear-gradient(90deg, transparent, var(--accent-primary), var(--accent-secondary), transparent)', filter: 'blur(10px)', opacity: 0.5 }} />
-
-                            <a href="https://github.com/kaleab-mezgebe" target="_blank" className="hero-social-link" style={{ background: 'white', color: 'black' }}>
-                                <Github /> GitHub
-                            </a>
-                            <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" className="hero-social-link" style={{ background: '#0077b5', color: 'white' }}>
-                                <Linkedin /> LinkedIn
-                            </a>
-                            <a href="mailto:kaleabmezgebe4@gmail.com" className="hero-social-link" style={{ background: '#ea4335', color: 'white' }}>
-                                <Mail /> Email
-                            </a>
+                                position: 'absolute', bottom: 0, left: 0, right: 0,
+                                padding: '20px', background: 'linear-gradient(to top, rgba(3, 7, 18, 0.95), transparent)',
+                                display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                            }}>
+                                <div>
+                                    <h4 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'white' }}>Kaleab Mezgebe</h4>
+                                    <p style={{ fontSize: '0.85rem', color: 'var(--accent-secondary)', fontWeight: 600 }}>Frontend &amp; Mobile Engineer</p>
+                                </div>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <a href="https://github.com/kaleab-mezgebe" target="_blank" style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px', color: 'white' }}><Github size={18} /></a>
+                                    <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px', color: 'white' }}><Linkedin size={18} /></a>
+                                </div>
+                            </div>
                         </motion.div>
                     </div>
                 </div>
             </section>
 
-            {/* About Me Section - Dribbble Style */}
+            {/* ABOUT & SKILLS MATRIX SECTION */}
             <section id="about">
-                <SectionHeading subtitle="Combining academic excellence with professional technical mastery" align="center">About Me</SectionHeading>
+                <SectionHeading subtitle="Combining engineering discipline with practical full-stack delivery" badge="Technical Foundations">
+                    Technical Mastery &amp; Expertise
+                </SectionHeading>
 
-                <div style={{ marginTop: '60px', display: 'flex', flexDirection: 'column', gap: '80px', alignItems: 'center', textAlign: 'center' }}>
-                    {/* Bio & Stats */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        style={{ maxWidth: '700px' }}
-                    >
-                        <h3 style={{ fontSize: '2.2rem', fontWeight: 900, marginBottom: '24px', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-                            IT Graduate from Mekelle Institute of Technology with <span className="accent-text">limitless creativity!</span>
-                        </h3>
-                        <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', lineHeight: '1.8', marginBottom: '40px' }}>
-                            Mastering cross-platform <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>mobile and web development</span> skills to transform ideas into attractive digital visuals.
-                            Combining academic excellence with 1.5+ years of practical technical expertise to create meaningful, high-performance works.
-                        </p>
-
-                        <div className="about-stats-container">
-                            <div className="about-stat-item">
-                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-primary)', lineHeight: 1 }}>3.88</div>
-                                <div style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.6, marginTop: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>CGPA Excellence</div>
-                            </div>
-                            <div style={{ width: '1px', height: '50px', background: 'var(--glass-border)' }} />
-                            <div className="about-stat-item">
-                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-secondary)', lineHeight: 1 }}>1.5+</div>
-                                <div style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.6, marginTop: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Years Experience</div>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Custom Skill Bars - Wide & Creative */}
-                    <div style={{ width: '100%', maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '35px' }}>
-                        {[
-                            { name: "React.js & Next.js", level: 98, icon: Code2 },
-                            { name: "Flutter & Dart", level: 95, icon: Smartphone },
-                            { name: "TypeScript & JavaScript (ES6+)", level: 96, icon: Code2 },
-                            { name: "Node.js & Express.js", level: 90, icon: Server },
-                            { name: "FastAPI & Python", level: 86, icon: Database },
-                            { name: "Tailwind CSS & UI/UX Design", level: 95, icon: Layers }
-                        ].map((skill, idx) => (
-                            <div key={idx} style={{ position: 'relative' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        {skill.icon && <skill.icon size={18} style={{ color: 'var(--accent-primary)' }} />}
-                                        <p style={{ fontWeight: 800, fontSize: '1.1rem' }}>{skill.name}</p>
-                                    </div>
-                                    <span style={{ fontWeight: 700, color: 'var(--accent-secondary)' }}>{skill.level}%</span>
-                                </div>
-                                <div style={{ height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        whileInView={{ width: `${skill.level}%` }}
-                                        transition={{ duration: 1.5, delay: idx * 0.1, ease: "easeOut" }}
+                <div className="grid-auto" id="skills">
+                    {[
+                        {
+                            icon: <Smartphone size={32} color="var(--accent-primary)" />,
+                            category: "Mobile App Development",
+                            skills: ["Flutter & Dart", "BLoC & Provider", "Google Maps SDK", "SignalR GPS Tracking", "Firebase FCM & Auth", "Hive & SQLite Caching"]
+                        },
+                        {
+                            icon: <Code2 size={32} color="var(--accent-secondary)" />,
+                            category: "Frontend Web Engineering",
+                            skills: ["React.js & Next.js", "TypeScript & JavaScript ES6+", "Tailwind CSS & Material UI", "Redux Toolkit & Zustand", "Vite & Modern Build Tools", "Responsive UX Design"]
+                        },
+                        {
+                            icon: <Server size={32} color="var(--accent-tertiary)" />,
+                            category: "Backend & AI Integration",
+                            skills: ["Node.js & Express.js", "FastAPI & Python", "RESTful API Design", "Tesseract OCR & OpenCV", "TensorFlow Lite On-Device", "Pydantic Schema Validation"]
+                        },
+                        {
+                            icon: <Database size={32} color="#10b981" />,
+                            category: "Databases & FinTech",
+                            skills: ["PostgreSQL & MySQL", "Redis Caching", "Telebirr & Chapa Payments", "JWT Secure Authentication", "Docker & CI/CD Pipelines", "Git / GitHub / GitLab"]
+                        }
+                    ].map((block, idx) => (
+                        <Card key={idx} delay={idx * 0.1}>
+                            <div style={{ marginBottom: '20px' }}>{block.icon}</div>
+                            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginBottom: '16px' }}>{block.category}</h3>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                {block.skills.map((skill, sIdx) => (
+                                    <span
+                                        key={sIdx}
                                         style={{
-                                            height: '100%',
-                                            background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))',
-                                            borderRadius: '3px',
-                                            position: 'relative',
-                                            boxShadow: '0 0 20px var(--accent-primary)'
+                                            background: 'rgba(255,255,255,0.04)',
+                                            border: '1px solid var(--glass-border)',
+                                            padding: '6px 12px',
+                                            borderRadius: '8px',
+                                            fontSize: '0.85rem',
+                                            fontWeight: 600,
+                                            color: 'var(--text-main)'
                                         }}
                                     >
-                                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)', opacity: 0.3 }} />
-                                    </motion.div>
-                                </div>
+                                        {skill}
+                                    </span>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </Card>
+                    ))}
                 </div>
             </section>
 
+            {/* PROJECTS SECTION WITH INTERACTIVE FILTERING */}
+            <section id="projects">
+                <SectionHeading subtitle="Production mobile applications, multi-vendor platforms, and AI systems" badge="Verified Works">
+                    Featured Project Showcase
+                </SectionHeading>
 
-            {/* Experience Section */}
+                {/* Filter Tabs */}
+                <div className="filter-tabs-container">
+                    {[
+                        { id: 'all', label: 'All Projects (7)' },
+                        { id: 'mobile', label: '📱 Mobile & Flutter (4)' },
+                        { id: 'web', label: '🌐 Web & Full-Stack (2)' },
+                        { id: 'ai', label: '🤖 AI & OCR Pipelines (2)' }
+                    ].map((tab) => (
+                        <button
+                            key={tab.id}
+                            className={`filter-tab-btn ${activeFilter === tab.id ? 'active' : ''}`}
+                            onClick={() => setActiveFilter(tab.id)}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Project Showcase List */}
+                <div>
+                    {filteredProjects.map((project, idx) => (
+                        <motion.div
+                            key={project.title}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: idx * 0.1 }}
+                            className={`project-card-container ${idx % 2 !== 0 ? 'alternate' : ''}`}
+                        >
+                            {/* Project Mockup Visual */}
+                            <div style={{ order: idx % 2 !== 0 ? 1 : 0 }}>
+                                <div className="project-preview-box">
+                                    <img
+                                        src={project.image}
+                                        alt={project.title}
+                                        style={{
+                                            width: project.isMobile ? 'auto' : '100%',
+                                            height: '100%',
+                                            objectFit: project.isMobile ? 'contain' : 'cover',
+                                            borderRadius: '16px'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Project Content */}
+                            <div>
+                                <div style={{ marginBottom: '12px' }}>
+                                    <span className="status-pill" style={{ color: 'var(--accent-secondary)', borderColor: 'rgba(6, 182, 212, 0.3)', background: 'rgba(6, 182, 212, 0.08)', fontSize: '0.8rem' }}>
+                                        {project.badge}
+                                    </span>
+                                </div>
+
+                                <h3 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '20px', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
+                                    {project.title}
+                                </h3>
+
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px', fontSize: '0.98rem' }}>
+                                    <div>
+                                        <p style={{ fontWeight: 800, fontSize: '0.82rem', color: 'var(--accent-primary)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>Challenge</p>
+                                        <p style={{ color: 'var(--text-muted)' }}>{project.problem}</p>
+                                    </div>
+                                    <div>
+                                        <p style={{ fontWeight: 800, fontSize: '0.82rem', color: 'var(--accent-secondary)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>Solution &amp; Architecture</p>
+                                        <p style={{ color: 'var(--text-main)', fontWeight: 500 }}>{project.solution}</p>
+                                    </div>
+                                    <div>
+                                        <p style={{ fontWeight: 800, fontSize: '0.82rem', color: '#10b981', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>Production Impact</p>
+                                        <p style={{ color: 'var(--text-muted)' }}>{project.result}</p>
+                                    </div>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '28px' }}>
+                                    {project.tags.map((tag, tIdx) => (
+                                        <span key={tIdx} style={{ background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600 }}>
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+                                    {project.githubLink && (
+                                        <a
+                                            href={project.githubLink}
+                                            target="_blank"
+                                            className="accent-bg glow-effect"
+                                            style={{ padding: '10px 22px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                        >
+                                            <Github size={16} /> GitHub Code
+                                        </a>
+                                    )}
+
+                                    {project.playstoreLink && (
+                                        <a
+                                            href={project.playstoreLink}
+                                            target="_blank"
+                                            className="glass-card"
+                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'white', background: 'linear-gradient(135deg, #059669, #10b981)', border: '1px solid #10b981', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                        >
+                                            <ExternalLink size={16} /> Passenger App
+                                        </a>
+                                    )}
+
+                                    {project.driverPlaystoreLink && (
+                                        <a
+                                            href={project.driverPlaystoreLink}
+                                            target="_blank"
+                                            className="glass-card"
+                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'white', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '1px solid #38bdf8', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                        >
+                                            <ExternalLink size={16} /> Driver App
+                                        </a>
+                                    )}
+
+                                    {project.demoLink && (
+                                        <a
+                                            href={project.demoLink}
+                                            target="_blank"
+                                            className="glass-card"
+                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'var(--text-main)', borderColor: 'var(--accent-secondary)', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                        >
+                                            <Globe size={16} /> Live Demo
+                                        </a>
+                                    )}
+
+                                    {project.videoLink && (
+                                        <a
+                                            href={project.videoLink}
+                                            target="_blank"
+                                            className="glass-card"
+                                            style={{ padding: '10px 20px', borderRadius: '12px', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                        >
+                                            <Play size={16} /> Live Video
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+
+            {/* PROFESSIONAL EXPERIENCE TIMELINE */}
             <section id="experience">
-                <SectionHeading subtitle="My professional journey and key technical contributions" align="center">Professional Experience</SectionHeading>
+                <SectionHeading subtitle="Track record of engineering robust software across logistics, SaaS, and public institutions" badge="Career Journey">
+                    Professional Experience
+                </SectionHeading>
+
                 <div className="timeline-container">
-                    {/* Vertical Line */}
                     <div className="timeline-line"></div>
 
                     {[
                         {
                             role: "Frontend & Mobile Developer",
                             company: "Niyat Consultancy PLC",
-                            period: "Sep 2025 – Present",
-                            description: "Developing and maintaining user-facing web and mobile applications using React.js, TypeScript, and Flutter. Building production dashboards, payment integrations (Telebirr, Chapa), and real-time GPS tracking.",
-                            insights: [
-                                "Built high-performance React.js dashboards with Redux Toolkit and TypeScript.",
-                                "Implemented Flutter BLoC architecture for seamless state management.",
-                                "Integrated real-time streaming with SignalR and WebSockets."
-                            ],
-                            tags: ["React.js", "TypeScript", "Flutter", "BLoC", "SignalR", "Telebirr & Chapa"]
+                            period: "Sep 2025 – Present | Addis Ababa",
+                            desc: "Developing and maintaining user-facing web and mobile applications using React.js, TypeScript, and Flutter. Building production dashboards, payment integrations (Telebirr, Chapa), and real-time GPS tracking.",
+                            stack: ["React.js", "TypeScript", "Flutter", "BLoC", "SignalR", "Telebirr & Chapa", "PostgreSQL"]
                         },
                         {
                             role: "Software Developer",
                             company: "Grand Technology Solutions",
-                            period: "Sep 2024 – Sep 2025",
-                            description: "Developed reusable UI components in React.js and mobile interfaces in Flutter. Built and tested CRUD backend endpoints with FastAPI/Node.js and PostgreSQL. Handled API documentation, testing, and debugging.",
-                            insights: [
-                                "Built reusable UI components with React.js and Tailwind CSS.",
-                                "Developed and tested RESTful endpoints using FastAPI and PostgreSQL.",
-                                "Collaborated in Agile sprints for rapid feature deployment."
-                            ],
-                            tags: ["React.js", "Flutter", "FastAPI", "PostgreSQL", "REST APIs"]
-                        },
-                        {
-                            role: "Full-Stack Developer",
-                            company: "Ethiobeds Pension Reservation System",
-                            period: "Jan 2025 – March 2025",
-                            description: "Developed a complete pension reservation platform used by real customers. Built responsive booking interfaces with React, and developed backend with Node.js/Express. Implemented full client–server data flow and database integration.",
-                            insights: [
-                                "Engineered secure JWT-based authentication workflows.",
-                                "Designed scalable MySQL schemas for reservation logic.",
-                                "Delivered a production-grade CMS for property owners."
-                            ],
-                            tags: ["React.js", "Node.js", "MySQL", "Production Delivery"]
+                            period: "Sep 2024 – Sep 2025 | Addis Ababa",
+                            desc: "Developed reusable UI components in React.js and integrated them with backend RESTful APIs. Developed and tested CRUD endpoints using FastAPI and PostgreSQL with comprehensive Postman test coverage.",
+                            stack: ["React.js", "JavaScript", "Flutter", "FastAPI", "PostgreSQL", "Postman"]
                         },
                         {
                             role: "Remote Mobile Application Developer (Contract)",
-                            company: "Tigray Culture and Tourism Bureau",
-                            period: "Jan 2024 – June 2024",
-                            description: "Built Flutter cross-platform mobile application for cultural heritage registration. Digitized manual registration processes and integrated database services with offline-first data caching.",
-                            insights: [
-                                "Translated offline paper workflows into digital mobile UX.",
-                                "Implemented local caching (Hive/SQLite) for data resilience in remote areas.",
-                                "Digitized 1000+ records with high spatial and descriptive accuracy."
-                            ],
-                            tags: ["Flutter", "Dart", "Offline-First", "Digitalization", "Contract"]
+                            company: "Tigray Culture & Tourism Bureau",
+                            period: "Jan 2024 – Jun 2024 | Mekelle (Remote)",
+                            desc: "Developed a cross-platform Flutter application for cultural heritage registration and spatial documentation. Implemented offline-first local caching (Hive/SQLite) and synchronization for robust field operation.",
+                            stack: ["Flutter", "Dart", "Hive / SQLite", "REST APIs", "Git"]
                         }
-                    ].map((exp, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className="timeline-item"
-                        >
+                    ].map((exp, idx) => (
+                        <div key={idx} className="timeline-item">
                             <div className="timeline-dot"></div>
-
-                            <Card style={{ padding: '32px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+                            <Card delay={idx * 0.1}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
                                     <div>
-                                        <h3 style={{ fontSize: '1.4rem', fontWeight: 800 }}>{exp.role}</h3>
-                                        <p className="accent-text" style={{ fontWeight: 700, fontSize: '1.1rem' }}>{exp.company}</p>
+                                        <h3 style={{ fontSize: '1.35rem', fontWeight: 800 }}>{exp.role}</h3>
+                                        <p className="accent-text" style={{ fontWeight: 700, fontSize: '1.05rem' }}>{exp.company}</p>
                                     </div>
-                                    <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '6px 16px', borderRadius: '10px', fontSize: '0.9rem', color: 'var(--accent-primary)', fontWeight: 700 }}>
+                                    <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--accent-primary)', background: 'rgba(99, 102, 241, 0.1)', padding: '4px 12px', borderRadius: '8px' }}>
                                         {exp.period}
-                                    </div>
+                                    </span>
                                 </div>
-                                <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', marginBottom: '16px', lineHeight: '1.6' }}>{exp.description}</p>
-
-                                <div style={{ marginBottom: '20px' }}>
-                                    <p style={{ fontWeight: 800, fontSize: '0.85rem', color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px' }}>Key Experiences</p>
-                                    <ul style={{ listStyle: 'none', padding: 0 }}>
-                                        {exp.insights.map((insight, idx) => (
-                                            <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-main)', fontSize: '0.95rem', marginBottom: '8px' }}>
-                                                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent-primary)' }}></div>
-                                                {insight}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                                    {exp.tags.map(tag => (
-                                        <span key={tag} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--glass-border)', padding: '4px 12px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600 }}>{tag}</span>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '20px' }}>{exp.desc}</p>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                    {exp.stack.map((item, sIdx) => (
+                                        <span key={sIdx} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', padding: '3px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600 }}>
+                                            {item}
+                                        </span>
                                     ))}
                                 </div>
                             </Card>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </section>
 
-            {/* Services Section */}
-            <section id="services">
-                <SectionHeading subtitle="Results-oriented services tailored for modern digital needs" align="center">Professional Services</SectionHeading>
-                <div className="grid-auto">
-                    {[
-                        { icon: <Smartphone />, title: "Mobile App Development", desc: "Building high-performance, native-feel iOS and Android apps using Flutter. Focused on smooth animations and robust state management." },
-                        { icon: <Globe />, title: "Modern Web Solutions", desc: "Developing scalable, responsive web architectures using React.js. Ensuring split-second load times and intuitive user journeys." },
-                        { icon: <Database />, title: "Full-Stack Engineering", desc: "Designing secure, high-throughput backend systems with Node.js and Express. Architecting data schemas that scale." },
-                        { icon: <Layers />, title: "UI/UX Technical Design", desc: "Translating complex designs into pixel-perfect code while ensuring the highest standards of accessibility and interaction design." }
-                    ].map((s, i) => (
-                        <Card key={i}>
-                            <div className="accent-text" style={{ marginBottom: '24px' }}>{React.cloneElement(s.icon, { size: 40 })}</div>
-                            <h3 style={{ marginBottom: '16px', fontSize: '1.5rem', fontWeight: 800 }}>{s.title}</h3>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: '1.6' }}>{s.desc}</p>
-                        </Card>
-                    ))}
-                </div>
-            </section>
-
-            {/* Featured Projects - Problem/Solution/Result */}
-            <section id="projects">
-                <SectionHeading subtitle="Documenting the journey from complex problems to high-impact solutions" align="center">Portfolio Showcase</SectionHeading>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '80px' }}>
-                    {/* Project Loop with staggered reveals */}
-                    {[
-                        {
-                            title: "Axumite Ride — Passenger & Driver Mobile App",
-                            problem: "The ride-sharing market requires ultra-reliable real-time state updates (trips, locations) to ensure user trust and commercial feasibility.",
-                            solution: "Architected and developed cross-platform Flutter production mobile applications for passengers and drivers with real-time tracking, live ETA, in-app checkout, and BLoC state management.",
-                            result: "Successfully launched both Passenger and Driver apps on Google Play Store, serving active users with live GPS navigation and instant notifications.",
-                            tags: ["Flutter", "Dart", "BLoC", "SignalR", "Google Maps SDK", "Play Store"],
-                            link: "https://github.com/kaleab-mezgebe",
-                            playstoreLink: "https://play.google.com/store/apps/details?id=com.axumite.customer&hl=en_US",
-                            driverPlaystoreLink: "https://play.google.com/store/apps/details?id=com.axumite.partner&hl=en_US",
-                            image: "./assets/ride.png",
-                            type: "PRODUCTION MOBILE APP",
-                            isMobile: true
-                        },
-                        {
-                            title: "CBEBirr App Clone (FinTech UI)",
-                            problem: "Modern FinTech requires extremely fluid and intuitive user interfaces to handle complex financial transactions simply.",
-                            solution: "Replicated the CBEBirr mobile experience using Flutter, focusing on high-fidelity animations and secure-feeling UI components.",
-                            result: "Demonstrated technical proficiency in creating complex, high-performance mobile interfaces for financial services.",
-                            tags: ["Flutter", "FinTech", "UI/UX", "Mobile"],
-                            link: "https://github.com/kaleab-mezgebe/cbe_birr",
-                            demoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC5t-bwBhhi4m3cAxBFDoKwSu4ZPJnGon3o", // Keeping demoLink for logic backward compatibility if needed, though videoLink is used in UI
-                            videoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC5t-bwBhhi4m3cAxBFDoKwSu4ZPJnGon3o",
-                            image: "./assets/cbebirr.png",
-                            type: "UI ENGINEERING",
-                            isMobile: true
-                        },
-                        {
-                            title: "Ethiobeds (PensionFinder)",
-                            problem: "Finding safe, verified, and affordable accommodations in Ethiopia was complex due to the lack of a centralized administrative verification system.",
-                            solution: "Architected a robust platform featuring verified property listings, safety-standard audits, and a multi-tier subscription model for providers and seekers.",
-                            result: "Established a trusted marketplace with verified safety standards and licensed providers, simplifying the search for thousands of users.",
-                            tags: ["React", "Security", "SaaS", "Trust & Safety"],
-                            link: "https://ethiobeds.com",
-                            githubLink: "https://github.com/kaleab-mezgebe",
-                            demoLink: "https://ethiobeds.com",
-                            image: "./assets/ethiobeds.png",
-                            type: "PRODUCTION SAAS",
-                            isWeb: true
-                        },
-                        {
-                            title: "TYAMMS",
-                            problem: "Tigray Youth Association faced logistical bottlenecks in managing thousands of members manually across multiple regions.",
-                            solution: "Digitized operations with a robust member management platform, enabling real-time data tracking and member engagement monitoring.",
-                            result: "Reduced operational overhead by 40% and improved data accuracy for youth initiative planning.",
-                            tags: ["Operations", "Digitization", "Data Management"],
-                            link: "https://github.com/kaleab-mezgebe/tyamms",
-                            image: "./assets/tyamms.png",
-                            type: "ENTERPRISE SOLUTION",
-                            isMobile: true
-                        },
-                        {
-                            title: "AI Dermatologist",
-                            problem: "Limited access to specialized dermatological care in rural areas leads to late diagnosis of treatable skin conditions.",
-                            solution: "Developed an AI-powered diagnostic tool (Web & Mobile) using computer vision models to provide instant skin assessment and medical guidance.",
-                            result: "Created a bridge for early medical intervention, significantly lowering the barrier to initial health screenings.",
-                            tags: ["AI", "Flutter", "Computer Vision", "HealthTech"],
-                            link: "https://github.com/kaleab-mezgebe/AI-Dermatologist",
-                            image: "./assets/ai.png",
-                            type: "INNOVATION PROJECT",
-                            isMobile: true
-                        },
-                        {
-                            title: "Tigray Cultural Property Hub",
-                            problem: "Cultural heritage sites and properties were at risk of being uncatalogued or lost due to lack of spatial and descriptive documentation.",
-                            solution: "Built a cultural heritage metadata hub with spatial tracking and detailed property documentation capabilities.",
-                            result: "Secured digital records for hundreds of sites, aiding in preservation and international recognition of cultural assets.",
-                            tags: ["GIS", "Preservation", "Metadata"],
-                            link: "https://github.com/kaleab-mezgebe/TCPH-",
-                            image: "./assets/tcph.png",
-                            type: "SOCIAL IMPACT",
-                            isMobile: true
-                        },
-
-                        {
-                            title: "Shemeta E-Commerce — Multi-Vendor Platform",
-                            problem: "Multi-vendor marketplaces require synchronized customer storefronts, real-time order notifications, vendor wallet management, and seamless local currency (ETB) transaction tracking.",
-                            solution: "Developed a multi-vendor e-commerce web platform featuring dynamic product discovery, interactive notifications modal, and a rich vendor wallet & analytics management dashboard.",
-                            result: "Delivered an end-to-end e-commerce solution enabling streamlined merchant sales tracking, withdrawal requests, and a responsive customer shopping experience.",
-                            tags: ["React.js", "TypeScript", "Next.js", "Tailwind CSS", "Vendor Dashboard", "E-Commerce"],
-                            link: "https://github.com/kaleab-mezgebe",
-                            demoLink: "https://nicom.dev.niyatconsultancy.com/en",
-                            image: "./assets/shemeta.png",
-                            type: "MULTI-VENDOR E-COMMERCE",
-                            isWeb: true,
-                        },
-                        {
-                            title: "Financial Document & Receipt OCR Pipeline",
-                            problem: "Manual financial data entry and paper receipt auditing are error-prone and time-consuming for accounting workflows.",
-                            solution: "Engineered an intelligent extraction web application leveraging OpenCV preprocessing, Tesseract OCR parsing, and FastAPI validation schemas.",
-                            result: "Automated receipt data extraction with high confidence scores, structured JSON output, and instant verification status.",
-                            tags: ["React.js", "FastAPI", "Python", "Tesseract OCR", "OpenCV", "Pydantic"],
-                            link: "https://github.com/kaleab-mezgebe",
-                            image: "./assets/ocr_pipeline.png",
-                            type: "AI & OCR PIPELINE",
-                            isWeb: true,
-                        },
-
-                    ].map((project, idx) => (
-                        <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.6, delay: idx * 0.1 }}
-                            className={`project-grid ${idx % 2 !== 0 ? 'alternate' : ''}`}
-                        >
-                            <div style={{ order: idx % 2 === 0 ? 0 : 1 }}>
-                                <motion.div
-                                    whileHover={{ scale: 1.05, rotate: idx % 2 === 0 ? 1 : -1 }}
-                                    className={`project-image-placeholder glow-effect-hover project-card-image-container ${!project.isWeb ? 'mobile-app' : ''}`}
-                                    style={{
-                                        borderRadius: '32px',
-                                        overflow: 'hidden',
-                                        padding: !project.isWeb ? '20px' : '0',
-                                        display: 'flex', justifyContent: 'center', alignItems: 'center'
-                                    }}
-                                    onClick={() => {
-                                        if (project.localVideo) {
-                                            setSelectedVideo(project.localVideo);
-                                        } else {
-                                            window.open(project.link, '_blank');
-                                        }
-                                    }}
-                                >
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        whileHover={{ opacity: 1 }}
-                                        style={{
-                                            position: 'absolute',
-                                            inset: 0,
-                                            background: 'rgba(0,0,0,0.6)',
-                                            zIndex: 10,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            flexDirection: 'column',
-                                            borderRadius: '32px'
-                                        }}
-                                    >
-                                        {project.localVideo ? (
-                                            <>
-                                                <Play size={48} color="white" style={{ marginBottom: '16px' }} />
-                                                <p style={{ color: 'white', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '1px' }}>WATCH DEMO</p>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Github size={48} color="white" style={{ marginBottom: '16px' }} />
-                                                <p style={{ color: 'white', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '1px' }}>CLICK TO VIEW</p>
-                                            </>
-                                        )}
-                                    </motion.div>
-                                    {project.image ? (
-                                        <ProjectImage project={project} />
-                                    ) : (
-                                        <div style={{ textAlign: 'center', opacity: 0.4, zIndex: 1, position: 'relative' }}>
-                                            {project.title.includes("Mobile") || project.title.includes("Ride") ? <Smartphone size={100} className="accent-text" /> : <Globe size={100} className="accent-text" />}
-                                            <p style={{ marginTop: '24px', fontWeight: 900, letterSpacing: '4px' }}>ENHANCED PREVIEW</p>
-                                        </div>
-                                    )}
-
-                                </motion.div>
-                            </div>
-                            <div>
-                                <motion.h3
-                                    initial={{ opacity: 0, x: idx % 2 === 0 ? 20 : -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.3 }}
-                                    style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '32px', letterSpacing: '-0.03em' }}
-                                >
-                                    {project.title}
-                                </motion.h3>
-
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '40px' }}>
-                                    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-                                        <p style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '4px', letterSpacing: '1px' }}>THE CHALLENGE</p>
-                                        <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>{project.problem}</p>
-                                    </motion.div>
-                                    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-                                        <p style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '4px', letterSpacing: '1px' }}>THE SOLUTION</p>
-                                        <p style={{ color: 'var(--text-main)', fontSize: '1.05rem', fontWeight: 500 }}>{project.solution}</p>
-                                    </motion.div>
-                                    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                                        <p style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '4px', letterSpacing: '1px' }}>THE IMPACT</p>
-                                        <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>{project.result}</p>
-                                    </motion.div>
-                                </div>
-
-                                <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-                                    <motion.a
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        href={project.link} target="_blank" className="accent-bg glow-effect" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', color: 'white', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        GITHUB <Github size={20} />
-                                    </motion.a>
-                                    {project.localVideo && (
-                                        <motion.button
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            onClick={() => setSelectedVideo(project.localVideo)}
-                                            className="glass-card"
-                                            style={{
-                                                padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)',
-                                                borderRadius: '16px',
-                                                color: 'var(--text-main)',
-                                                fontWeight: 800,
-                                                fontSize: 'clamp(0.8rem, 2.5vw, 1rem)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '10px',
-                                                border: '1px solid var(--accent-primary)',
-                                                cursor: 'pointer'
-                                            }}
-                                        >
-                                            WATCH DEMO <Play size={20} />
-                                        </motion.button>
-                                    )}
-                                    {project.videoLink && (
-                                        <motion.a
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            href={project.videoLink} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                            LIVE VIDEO <ExternalLink size={20} />
-                                        </motion.a>
-                                    )}
-                                    {project.playstoreLink && (
-                                        <motion.a
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            href={project.playstoreLink} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px', color: 'white', background: 'linear-gradient(135deg, #059669, #10b981)', border: '1px solid #10b981' }}>
-                                            PASSENGER APP <ExternalLink size={20} />
-                                        </motion.a>
-                                    )}
-                                    {project.driverPlaystoreLink && (
-                                        <motion.a
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            href={project.driverPlaystoreLink} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px', color: 'white', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '1px solid #38bdf8' }}>
-                                            DRIVER APP <ExternalLink size={20} />
-                                        </motion.a>
-                                    )}
-                                    {project.demoLink && (
-                                        <motion.a
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            href={project.demoLink} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                            LIVE DEMO <ExternalLink size={20} />
-                                        </motion.a>
-                                    )}
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Endorsements & References */}
-            <section id="endorsements" style={{ background: 'rgba(59, 130, 246, 0.03)', borderRadius: '60px', padding: 'clamp(40px, 8vw, 100px) clamp(20px, 5vw, 60px)' }}>
-                <SectionHeading subtitle="Verified feedback and professional references from industry leaders" align="center">Professional Endorsements</SectionHeading>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
-                    {[
-                        {
-                            quote: "Kaleab delivered an exceptional MVP for our ride-sharing platform. His technical depth in Flutter and commitment to timeline was impressive.",
-                            author: "Gebru Gidey",
-                            role: "CEO — Grand Technology Solutions",
-                            contact: "📞 +251935279104 | grandtechnology16@gmail.com"
-                        },
-                        {
-                            quote: "The cultural heritage app built by Kaleab significantly improved our operational efficiency. A truly dedicated and detail-oriented developer.",
-                            author: "Dr. Atsbiha Gebreezgabher",
-                            role: "Head — Tigray Culture and Tourism Bureau",
-                            contact: "✉️ atsbital2@gmail.com"
-                        },
-                        {
-                            quote: "One of the most detail-oriented developers I've collaborated with. His CGPA 3.88 is a clear reflection of his professional work ethics.",
-                            author: "Mekelle University MIT",
-                            role: "Faculty/Colleague Feedback",
-                            contact: "Verified Academic Achievement"
-                        }
-                    ].map((t, i) => (
-                        <Card key={i} style={{ position: 'relative', padding: 'clamp(24px, 5vw, 48px)' }}>
-                            <div style={{ fontSize: '4rem', color: 'var(--accent-primary)', opacity: 0.15, position: 'absolute', top: 'clamp(10px, 2vw, 20px)', left: 'clamp(10px, 2vw, 20px)', fontFamily: 'serif' }}>"</div>
-                            <p style={{ fontSize: '1.2rem', fontStyle: 'italic', color: 'var(--text-main)', marginBottom: '32px', position: 'relative', zIndex: 1, lineHeight: '1.6' }}>{t.quote}</p>
-                            <div>
-                                <p style={{ fontWeight: 900, fontSize: '1.2rem', color: 'var(--accent-primary)' }}>{t.author}</p>
-                                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 700, marginBottom: '8px' }}>{t.role}</p>
-                                <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', borderTop: '1px solid var(--glass-border)', paddingTop: '12px', marginTop: '12px', wordBreak: 'break-word' }}>{t.contact}</p>
-                            </div>
-                        </Card>
-                    ))}
-                </div>
-            </section>
-
-            {/* Languages */}
-            <section id="languages" style={{ padding: '80px 0', textAlign: 'center' }}>
-                <SectionHeading align="center" subtitle="Global communication proficiency">Language Mastery</SectionHeading>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto', padding: '0 clamp(20px, 5vw, 60px)' }}>
-                    {[
-                        { lang: "English", level: "Professional Working Proficiency" },
-                        { lang: "Tigrigna", level: "Native Proficiency" },
-                        { lang: "Amharic", level: "Native Proficiency" }
-                    ].map((l, i) => (
-                        <motion.div
-                            key={i}
-                            whileHover={{ scale: 1.05 }}
-                            className="glass-card"
-                            style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--accent-primary)', background: 'rgba(59, 130, 246, 0.05)' }}
-                        >
-                            <p style={{ fontWeight: 900, fontSize: '1.4rem', marginBottom: '4px' }}>{l.lang}</p>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 600 }}>{l.level}</p>
-                        </motion.div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Contact Section */}
+            {/* CONTACT & DIRECT ACTION SECTION */}
             <section id="contact" style={{ textAlign: 'center' }}>
-                <SectionHeading subtitle="Ready to translate your vision into a scalable digital product?" align="center">Let's Connect</SectionHeading>
-                <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-                        <Card>
-                            <Mail className="accent-text" style={{ marginBottom: '16px' }} size={32} />
-                            <h4 style={{ marginBottom: '8px' }}>Email</h4>
-                            <a href="mailto:kaleabmezgebe4@gmail.com" style={{ color: 'var(--text-muted)', fontWeight: 600 }}>kaleabmezgebe4@gmail.com</a>
-                        </Card>
-                        <Card>
-                            <Phone className="accent-text" style={{ marginBottom: '16px' }} size={32} />
-                            <h4 style={{ marginBottom: '8px' }}>Direct Call</h4>
-                            <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>+251945989369</p>
-                        </Card>
-                        <Card>
-                            <MapPin className="accent-text" style={{ marginBottom: '16px' }} size={32} />
-                            <h4 style={{ marginBottom: '8px' }}>Location</h4>
-                            <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Addis Ababa, Ethiopia</p>
-                        </Card>
+                <SectionHeading subtitle="Let's build something exceptional together. Feel free to reach out directly." badge="Get In Touch">
+                    Start a Conversation
+                </SectionHeading>
+
+                <div style={{ maxWidth: '750px', margin: '0 auto' }}>
+                    {/* Quick Contact Badges */}
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '40px' }}>
+                        <button
+                            onClick={() => copyToClipboard("kaleabmezgebe4@gmail.com", "Email")}
+                            className="glass-card"
+                            style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, fontSize: '0.98rem' }}
+                        >
+                            <Mail size={18} color="var(--accent-primary)" />
+                            <span>kaleabmezgebe4@gmail.com</span>
+                            <Copy size={15} style={{ opacity: 0.6 }} />
+                        </button>
+                        <button
+                            onClick={() => copyToClipboard("+251945989369", "Phone")}
+                            className="glass-card"
+                            style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, fontSize: '0.98rem' }}
+                        >
+                            <Phone size={18} color="var(--accent-secondary)" />
+                            <span>+251 945989369</span>
+                            <Copy size={15} style={{ opacity: 0.6 }} />
+                        </button>
                     </div>
 
-                    <Card style={{ padding: 'clamp(30px, 5vw, 60px)' }}>
-                        <h3 style={{ fontSize: '2rem', marginBottom: '32px' }}>Send a Quick Message</h3>
-                        <div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '20px' }}>
-                                <input
-                                    type="text"
-                                    placeholder="Name"
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="form-input"
-                                    style={{
-                                        background: 'rgba(255,255,255,0.03)',
-                                        border: '1px solid var(--glass-border)',
-                                        padding: '16px',
-                                        borderRadius: '12px',
-                                        color: 'var(--text-main)',
-                                        width: '100%',
-                                        maxWidth: '100%',
-                                        outline: 'none',
-                                        boxSizing: 'border-box',
-                                        fontSize: '1rem',
-                                        transition: 'all 0.3s ease'
-                                    }}
-                                />
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    className="form-input"
-                                    style={{
-                                        background: 'rgba(255,255,255,0.03)',
-                                        border: '1px solid var(--glass-border)',
-                                        padding: '16px',
-                                        borderRadius: '12px',
-                                        color: 'var(--text-main)',
-                                        width: '100%',
-                                        maxWidth: '100%',
-                                        outline: 'none',
-                                        boxSizing: 'border-box',
-                                        fontSize: '1rem',
-                                        transition: 'all 0.3s ease'
-                                    }}
+                    {/* Direct Contact Form */}
+                    <Card style={{ padding: '40px', textAlign: 'left' }}>
+                        <form onSubmit={handleSubmitMessage}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>Your Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="John Doe"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>Your Email</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        placeholder="john@example.com"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none' }}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ marginBottom: '24px' }}>
+                                <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-sub)' }}>Your Message</label>
+                                <textarea
+                                    required
+                                    rows={4}
+                                    placeholder="Tell me about your project, timeline, or open role..."
+                                    value={formData.message}
+                                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                    style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: '12px', color: 'var(--text-main)', outline: 'none', resize: 'vertical' }}
                                 />
                             </div>
-                            <textarea
-                                placeholder="Tell me about your project..."
-                                rows="5"
-                                value={formData.message}
-                                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                className="form-input"
-                                style={{
-                                    width: '100%',
-                                    maxWidth: '100%',
-                                    background: 'rgba(255,255,255,0.03)',
-                                    border: '1px solid var(--glass-border)',
-                                    padding: '16px',
-                                    borderRadius: '12px',
-                                    color: 'var(--text-main)',
-                                    marginBottom: '32px',
-                                    outline: 'none',
-                                    fontFamily: 'inherit',
-                                    boxSizing: 'border-box',
-                                    fontSize: '1rem',
-                                    minHeight: '150px',
-                                    resize: 'vertical',
-                                    transition: 'all 0.3s ease'
-                                }}
-                            ></textarea>
-                            <a
-                                href={`mailto:kaleabmezgebe4@gmail.com?subject=${encodeURIComponent(`Portfolio Contact from ${formData.name}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`}
+                            <button
+                                type="submit"
                                 className="accent-bg glow-effect"
-                                style={{
-                                    display: 'block',
-                                    width: '100%',
-                                    padding: 'clamp(14px, 2.5vw, 20px)',
-                                    borderRadius: '16px',
-                                    color: 'white',
-                                    fontWeight: 900,
-                                    fontSize: 'clamp(0.9rem, 2vw, 1.2rem)',
-                                    letterSpacing: '1px',
-                                    textAlign: 'center',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer'
-                                }}
+                                style={{ width: '100%', padding: '14px', borderRadius: '12px', color: 'white', fontWeight: 800, fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                             >
-                                SEND MESSAGE
-                            </a>
-                        </div>
-                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'center', marginTop: '32px' }}>
-                            <a href="https://www.linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ color: 'var(--text-muted)', padding: '10px', fontSize: '0.9rem' }}>Connect on LinkedIn</a>
-                        </div>
-                        <div className="contact-actions">
-                            <a href="mailto:kaleabmezgebe4@gmail.com" className="accent-bg glow-effect btn-primary" style={{ padding: 'clamp(14px, 3vw, 20px) clamp(24px, 5vw, 48px)', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}>
-                                Start Conversation
-                            </a>
-                            <a
-                                href="./assets/Kaleab Mezgebe's cv.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                download
-                                className="glass-card btn-secondary"
-                                style={{ padding: 'clamp(14px, 3vw, 20px) clamp(24px, 5vw, 48px)', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)' }}
-                            >
-                                <Download size={18} /> Download Resume
-                            </a>
-                        </div>
+                                <Send size={18} /> {formSent ? "Sending..." : "Send Message"}
+                            </button>
+                        </form>
                     </Card>
                 </div>
             </section>
 
-            <footer style={{ padding: '80px 6%', borderTop: '1px solid var(--glass-border)', background: 'var(--bg-dark)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', flexWrap: 'wrap', gap: '60px', maxWidth: '1200px', margin: '0 auto' }}>
-                    <div style={{ maxWidth: '400px' }}>
-                        <div style={{ fontWeight: 900, fontSize: '1.8rem', marginBottom: '20px' }}>KALEAB<span className="accent-text">.MEZGEBE</span></div>
-                        <p style={{ color: 'var(--text-muted)', lineHeight: '1.8' }}>Dedicated Frontend &amp; Mobile Software Engineer specializing in React.js, Next.js, Flutter, and TypeScript. Building scalable solutions for the global digital economy.</p>
+            {/* FOOTER */}
+            <footer style={{ borderTop: '1px solid var(--glass-border)', padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                    <div>
+                        © {new Date().getFullYear()} <strong>Kaleab Mezgebe Fissaha</strong>. Built with React &amp; Vite.
                     </div>
-                    <div style={{ display: 'flex', gap: '100px', flexWrap: 'wrap' }}>
-                        <div>
-                            <h4 style={{ marginBottom: '24px', fontWeight: 800 }}>NAVIGATION</h4>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', color: 'var(--text-muted)' }}>
-                                <a href="#hero">Home</a>
-                                <a href="#about">About</a>
-                                <a href="#projects">Portfolio</a>
-                                <a href="#contact">Contact</a>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 style={{ marginBottom: '24px', fontWeight: 800 }}>SOCIALS</h4>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', color: 'var(--text-muted)' }}>
-                                <a href="https://github.com/kaleab-mezgebe">GitHub</a>
-                                <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/">LinkedIn</a>
-                                <a href="https://www.linkedin.com/in/kaleab-mezgebe-764a56198/">Dribbble (Upcoming)</a>
-                            </div>
-                        </div>
+                    <div style={{ display: 'flex', gap: '20px' }}>
+                        <a href="https://github.com/kaleab-mezgebe" target="_blank" style={{ color: 'var(--text-muted)' }}>GitHub</a>
+                        <a href="https://linkedin.com/in/kaleab-mezgebe-764a56198/" target="_blank" style={{ color: 'var(--text-muted)' }}>LinkedIn</a>
+                        <a href="mailto:kaleabmezgebe4@gmail.com" style={{ color: 'var(--text-muted)' }}>Email</a>
                     </div>
-                </div>
-                <div style={{ marginTop: '80px', paddingTop: '40px', borderTop: '1px solid var(--glass-border)', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                    © {new Date().getFullYear()} KALEAB MEZGEBE. ALL SYSTEMS OPERATIONAL.
                 </div>
             </footer>
-
-            <style>{`
-                .nav-link { position: relative; padding: 8px 0; transition: color 0.3s ease; }
-                .nav-link:hover { color: var(--text-main); }
-                .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent-primary); transition: width 0.3s ease; }
-                .nav-link:hover::after { width: 100%; }
-                .nav-link:hover::after { width: 100%; }
-                
-                @media (max-width: 968px) {
-                    nav { padding: 12px 4% !important; }
-                    .nav-links { display: none !important; }
-                    .menu-toggle { display: flex !important; }
-                    section { padding: 80px 24px; }
-                    #hero { padding-top: 60px !important; }
-                    #hero h1 { font-size: 3rem !important; margin-top: 100px !important; }
-                    .project-image-placeholder { height: 300px !important; }
-                    footer > div:first-child { flex-direction: column !important; gap: 40px !important; }
-                }
-
-                @media (max-width: 768px) {
-                    .theme-toggle {
-                        width: 32px !important;
-                        height: 32px !important;
-                    }
-                    .theme-toggle svg {
-                        width: 18px !important;
-                        height: 18px !important;
-                    }
-                    .menu-toggle {
-                        width: 44px !important;
-                        height: 44px !important;
-                    }
-                    .menu-toggle svg {
-                        width: 24px !important;
-                        height: 24px !important;
-                    }
-                }
-
-                .project-image-placeholder { min-height: 400px; }
-                .project-image-placeholder.mobile-app {
-                    min-height: 500px !important;
-                    max-height: 70vh;
-                    aspect-ratio: 9/16;
-                    margin: 0 auto;
-                }
-                @media (max-width: 968px) {
-                    .project-image-placeholder { min-height: 300px; }
-                    .project-image-placeholder.mobile-app { min-height: 500px !important; }
-                }
-
-                /* Form Input Focus Effect */
-                .form-input:focus {
-                    border-color: var(--accent-primary) !important;
-                    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.1);
-                    background: rgba(255,255,255,0.05) !important;
-                }
-                .drawer-link:active {
-                    background: rgba(255,255,255,0.1) !important;
-                }
-            `}</style>
         </div>
     );
 };
