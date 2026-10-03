@@ -217,6 +217,33 @@ section {
   transform: rotate(15deg);
 }
 
+/* Nav Responsive System */
+.nav-desktop-links {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.nav-mobile-btn {
+  display: none !important;
+}
+
+.nav-tool-text {
+  display: inline;
+}
+
+@media (max-width: 860px) {
+  .nav-desktop-links {
+    display: none !important;
+  }
+  .nav-mobile-btn {
+    display: inline-flex !important;
+  }
+  .nav-tool-text {
+    display: none !important;
+  }
+}
+
 /* Sound Wave Animation Pill */
 .sound-toggle-btn {
   background: rgba(255, 255, 255, 0.05);

@@ -45,6 +45,7 @@ import ParticleBackground from './components/ParticleBackground';
 import { CustomCursor } from './components/CustomCursor';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
 import { EngineeringMetrics } from './components/EngineeringMetrics';
+import { PageLoader } from './components/PageLoader';
 import kaleabPortrait from './assets/kaleab_portrait.jpg';
 
 // Section Heading Component
@@ -115,6 +116,7 @@ const Card = ({ children, className = "", noPadding = false, delay = 0, style = 
 );
 
 const App = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const [scrolled, setScrolled] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(true);
     const [soundEnabled, setSoundEnabled] = useState(false);
@@ -128,6 +130,10 @@ const App = () => {
     const [formStatus, setFormStatus] = useState('idle'); // 'idle' | 'sending' | 'success' | 'error'
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 900);
+
         const handleScroll = () => setScrolled(window.scrollY > 40);
         window.addEventListener('scroll', handleScroll);
 
@@ -156,6 +162,7 @@ const App = () => {
         window.addEventListener('keydown', handleKeyDown);
 
         return () => {
+            clearTimeout(timer);
             window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('keydown', handleKeyDown);
         };
@@ -356,6 +363,11 @@ const App = () => {
 
     return (
         <div className={`app-container ${isDarkMode ? 'dark' : 'light'}`}>
+            {/* Elegant Page Entrance Preloader with Seamless Fade-Out */}
+            <AnimatePresence>
+                {isLoading && <PageLoader isDarkMode={isDarkMode} />}
+            </AnimatePresence>
+
             {/* Interactive Cyber Focus Cursor */}
             <CustomCursor isDarkMode={isDarkMode} />
 
@@ -476,7 +488,7 @@ const App = () => {
                     </a>
 
                     {/* Desktop Navigation Links */}
-                    <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }} className="hidden md:flex">
+                    <div className="nav-desktop-links">
                         <a href="#hero" className="nav-link">Home</a>
                         <a href="#highlights" className="nav-link">Highlights</a>
                         <a href="#projects" className="nav-link">Projects</a>
@@ -493,7 +505,7 @@ const App = () => {
                             title="Toggle Web Audio SFX"
                         >
                             {soundEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}
-                            <span className="hidden sm:inline">{soundEnabled ? 'SFX ON' : 'SFX'}</span>
+                            <span className="nav-tool-text">{soundEnabled ? 'SFX ON' : 'SFX'}</span>
                         </button>
                         <button
                             onClick={() => setIsCmdOpen(true)}
@@ -502,7 +514,7 @@ const App = () => {
                             title="Command Palette (Cmd+K)"
                         >
                             <Command size={14} />
-                            <span className="hidden sm:inline">⌘K</span>
+                            <span className="nav-tool-text">⌘K</span>
                         </button>
                         <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
                             {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
@@ -514,16 +526,17 @@ const App = () => {
                             className="accent-bg glow-effect"
                             style={{ padding: '8px 16px', borderRadius: '9999px', color: 'white', fontWeight: 800, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}
                         >
-                            <Download size={14} /> <span className="hidden sm:inline">Resume</span>
+                            <Download size={14} /> <span className="nav-tool-text">Resume</span>
                         </a>
 
-                        {/* Mobile Hamburger Menu Toggle */}
+                        {/* Mobile Hamburger Menu Toggle (3 Horizontal Lines) */}
                         <button
                             type="button"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="theme-toggle md:hidden"
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                            aria-label="Toggle mobile menu"
+                            className="theme-toggle nav-mobile-btn"
+                            style={{ padding: '8px', cursor: 'pointer' }}
+                            aria-label="Toggle navigation menu"
+                            title="Navigation Menu"
                         >
                             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
@@ -537,7 +550,7 @@ const App = () => {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.25 }}
+                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                             style={{
                                 overflow: 'hidden',
                                 background: 'var(--nav-bg)',
