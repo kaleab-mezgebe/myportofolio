@@ -344,11 +344,11 @@ const App = () => {
     // Command palette actions
     const commandActions = [
         { label: "Navigate: Home Hero", action: () => { window.location.href = "#hero"; setIsCmdOpen(false); } },
-        { label: "Navigate: Engineering Standards", action: () => { window.location.href = "#metrics"; setIsCmdOpen(false); } },
+        { label: "Navigate: Experience Timeline", action: () => { window.location.href = "#experience"; setIsCmdOpen(false); } },
         { label: "Navigate: Flagship Highlights", action: () => { window.location.href = "#highlights"; setIsCmdOpen(false); } },
+        { label: "Navigate: Engineering Standards", action: () => { window.location.href = "#metrics"; setIsCmdOpen(false); } },
         { label: "Navigate: Projects Showcase", action: () => { window.location.href = "#projects"; setIsCmdOpen(false); } },
         { label: "Navigate: Technical Stack", action: () => { window.location.href = "#skills"; setIsCmdOpen(false); } },
-        { label: "Navigate: Experience Timeline", action: () => { window.location.href = "#experience"; setIsCmdOpen(false); } },
         { label: "Navigate: Contact Me", action: () => { window.location.href = "#contact"; setIsCmdOpen(false); } },
         { label: "Copy Email (kaleabmezgebe4@gmail.com)", action: () => { copyToClipboard("kaleabmezgebe4@gmail.com", "Email"); setIsCmdOpen(false); } },
         { label: "Copy Phone (+251 945989369)", action: () => { copyToClipboard("+251945989369", "Phone"); setIsCmdOpen(false); } },
@@ -490,10 +490,10 @@ const App = () => {
                     {/* Desktop Navigation Links */}
                     <div className="nav-desktop-links">
                         <a href="#hero" className="nav-link">Home</a>
+                        <a href="#experience" className="nav-link">Experience</a>
                         <a href="#highlights" className="nav-link">Highlights</a>
                         <a href="#projects" className="nav-link">Projects</a>
                         <a href="#skills" className="nav-link">Skills</a>
-                        <a href="#experience" className="nav-link">Experience</a>
                         <a href="#contact" className="nav-link">Contact</a>
                     </div>
 
@@ -564,10 +564,10 @@ const App = () => {
                         >
                             {[
                                 { href: '#hero', label: '⚡ Home' },
+                                { href: '#experience', label: '💼 Experience' },
                                 { href: '#highlights', label: '✨ Highlights' },
                                 { href: '#projects', label: '🚀 Projects' },
                                 { href: '#skills', label: '🛠️ Skills' },
-                                { href: '#experience', label: '💼 Experience' },
                                 { href: '#contact', label: '📫 Contact' }
                             ].map((item) => (
                                 <a
@@ -686,9 +686,67 @@ const App = () => {
                 </div>
             </section>
 
-            {/* 1. BENTO GRID SHOWCASE */}
+            {/* 1. CAREER TIMELINE */}
+            <section id="experience">
+                <SectionHeading subtitle="Track record of engineering robust software across logistics, SaaS, and public institutions" badge="// 01. CAREER JOURNEY">
+                    Professional Experience
+                </SectionHeading>
+
+                <div className="timeline-container">
+                    <div className="timeline-line"></div>
+
+                    {[
+                        {
+                            role: "Frontend & Mobile Developer",
+                            company: "Niyat Consultancy PLC",
+                            period: "Sep 2025 – Present | Addis Ababa",
+                            desc: "Developing and maintaining user-facing web and mobile applications using React.js, TypeScript, and Flutter. Building production dashboards, payment integrations (Telebirr, Chapa), and real-time GPS tracking.",
+                            stack: ["React.js", "TypeScript", "Flutter", "BLoC", "SignalR", "Telebirr & Chapa", "PostgreSQL"]
+                        },
+                        {
+                            role: "Software Developer",
+                            company: "Grand Technology Solutions",
+                            period: "Sep 2024 – Sep 2025 | Mekelle, Tigray, Ethiopia",
+                            desc: "Developed reusable UI components in React.js and integrated them with backend RESTful APIs. Developed and tested CRUD endpoints using FastAPI and PostgreSQL with comprehensive Postman test coverage.",
+                            stack: ["React.js", "JavaScript", "Flutter", "FastAPI", "PostgreSQL", "Postman"]
+                        },
+                        {
+                            role: "Remote Mobile Application Developer (Contract)",
+                            company: "Tigray Culture & Tourism Bureau",
+                            period: "Jan 2024 – Jun 2024 | Mekelle (Remote)",
+                            desc: "Developed a cross-platform Flutter application for cultural heritage registration and spatial documentation. Implemented offline-first local caching (Hive/SQLite) and synchronization for robust field operation.",
+                            stack: ["Flutter", "Dart", "Hive / SQLite", "REST APIs", "Git"]
+                        }
+                    ].map((exp, idx) => (
+                        <div key={idx} className="timeline-item">
+                            <div className="timeline-dot"></div>
+                            <Card delay={idx * 0.1}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
+                                    <div>
+                                        <h3 style={{ fontSize: '1.35rem', fontWeight: 800 }}>{exp.role}</h3>
+                                        <p className="accent-text font-mono" style={{ fontWeight: 700, fontSize: '1.05rem' }}>{exp.company}</p>
+                                    </div>
+                                    <span className="timeline-period">
+                                        {exp.period}
+                                    </span>
+                                </div>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '20px' }}>{exp.desc}</p>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                    {exp.stack.map((item, sIdx) => (
+                                        <span key={sIdx} className="tech-chip">
+                                            {item}
+                                        </span>
+                                    ))}
+                                </div>
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* 2. BENTO GRID SHOWCASE */}
             <section id="highlights">
-                <SectionHeading subtitle="Architectural depth, production deployments, and verified metrics" badge="// 01. BENTO SHOWCASE">
+                <SectionHeading subtitle="Architectural depth, production deployments, and verified metrics" badge="// 02. BENTO SHOWCASE">
                     Flagship Architecture Highlights
                 </SectionHeading>
 
@@ -805,7 +863,7 @@ const App = () => {
 
             {/* 3. FULL PROJECT CATALOG WITH DYNAMIC FILTERING */}
             <section id="projects">
-                <SectionHeading subtitle="Filter production mobile apps, SaaS platforms, and machine learning pipelines" badge="// 05. PROVEN DELIVERY">
+                <SectionHeading subtitle="Filter production mobile apps, SaaS platforms, and machine learning pipelines" badge="// 03. PROVEN DELIVERY">
                     Complete Project Catalog
                 </SectionHeading>
 
@@ -954,9 +1012,9 @@ const App = () => {
                 </div>
             </section>
 
-            {/* 6. TECHNICAL SKILLS MATRIX */}
+            {/* 4. TECHNICAL SKILLS MATRIX */}
             <section id="skills">
-                <SectionHeading subtitle="Comprehensive mastery across client frameworks, mobile runtimes, and APIs" badge="// 06. SKILLS MATRIX">
+                <SectionHeading subtitle="Comprehensive mastery across client frameworks, mobile runtimes, and APIs" badge="// 04. SKILLS MATRIX">
                     Technical Stack &amp; Tooling
                 </SectionHeading>
 
@@ -998,67 +1056,9 @@ const App = () => {
                 </div>
             </section>
 
-            {/* 7. CAREER TIMELINE */}
-            <section id="experience">
-                <SectionHeading subtitle="Track record of engineering robust software across logistics, SaaS, and public institutions" badge="// 07. CAREER JOURNEY">
-                    Professional Experience
-                </SectionHeading>
-
-                <div className="timeline-container">
-                    <div className="timeline-line"></div>
-
-                    {[
-                        {
-                            role: "Frontend & Mobile Developer",
-                            company: "Niyat Consultancy PLC",
-                            period: "Sep 2025 – Present | Addis Ababa",
-                            desc: "Developing and maintaining user-facing web and mobile applications using React.js, TypeScript, and Flutter. Building production dashboards, payment integrations (Telebirr, Chapa), and real-time GPS tracking.",
-                            stack: ["React.js", "TypeScript", "Flutter", "BLoC", "SignalR", "Telebirr & Chapa", "PostgreSQL"]
-                        },
-                        {
-                            role: "Software Developer",
-                            company: "Grand Technology Solutions",
-                            period: "Sep 2024 – Sep 2025 | Mekelle, Tigray, Ethiopia",
-                            desc: "Developed reusable UI components in React.js and integrated them with backend RESTful APIs. Developed and tested CRUD endpoints using FastAPI and PostgreSQL with comprehensive Postman test coverage.",
-                            stack: ["React.js", "JavaScript", "Flutter", "FastAPI", "PostgreSQL", "Postman"]
-                        },
-                        {
-                            role: "Remote Mobile Application Developer (Contract)",
-                            company: "Tigray Culture & Tourism Bureau",
-                            period: "Jan 2024 – Jun 2024 | Mekelle (Remote)",
-                            desc: "Developed a cross-platform Flutter application for cultural heritage registration and spatial documentation. Implemented offline-first local caching (Hive/SQLite) and synchronization for robust field operation.",
-                            stack: ["Flutter", "Dart", "Hive / SQLite", "REST APIs", "Git"]
-                        }
-                    ].map((exp, idx) => (
-                        <div key={idx} className="timeline-item">
-                            <div className="timeline-dot"></div>
-                            <Card delay={idx * 0.1}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
-                                    <div>
-                                        <h3 style={{ fontSize: '1.35rem', fontWeight: 800 }}>{exp.role}</h3>
-                                        <p className="accent-text font-mono" style={{ fontWeight: 700, fontSize: '1.05rem' }}>{exp.company}</p>
-                                    </div>
-                                    <span className="timeline-period">
-                                        {exp.period}
-                                    </span>
-                                </div>
-                                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '20px' }}>{exp.desc}</p>
-                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                    {exp.stack.map((item, sIdx) => (
-                                        <span key={sIdx} className="tech-chip">
-                                            {item}
-                                        </span>
-                                    ))}
-                                </div>
-                            </Card>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* 8. CONTACT & GET IN TOUCH */}
+            {/* 5. CONTACT & GET IN TOUCH */}
             <section id="contact" style={{ textAlign: 'center' }}>
-                <SectionHeading subtitle="Open for full-time engineering positions and high-impact software contracts" badge="// 08. DIRECT INBOX CONTACT">
+                <SectionHeading subtitle="Open for full-time engineering positions and high-impact software contracts" badge="// 05. DIRECT INBOX CONTACT">
                     Let's Build Together
                 </SectionHeading>
 
