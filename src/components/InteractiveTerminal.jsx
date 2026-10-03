@@ -14,15 +14,17 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
     const [inputVal, setInputVal] = useState('');
     const [commandHistory, setCommandHistory] = useState([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
-    const bottomRef = useRef(null);
+    const terminalBodyRef = useRef(null);
     const inputRef = useRef(null);
 
-    const scrollToBottom = () => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const scrollToTerminalBottom = () => {
+        if (terminalBodyRef.current) {
+            terminalBodyRef.current.scrollTop = terminalBodyRef.current.scrollHeight;
+        }
     };
 
     useEffect(() => {
-        scrollToBottom();
+        scrollToTerminalBottom();
     }, [history]);
 
     const executeCommand = (cmdText) => {
@@ -104,7 +106,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
         } else if (cmd === 'clear') {
             setHistory([]);
             setInputVal('');
-            inputRef.current?.focus();
+            inputRef.current?.focus({ preventScroll: true });
             return;
         } else {
             newEntries.push({
@@ -116,10 +118,11 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
         setHistory((prev) => [...prev, ...newEntries]);
         setInputVal('');
 
-        // Focus the input immediately after clicking or running
+        // Focus the input smoothly without scrolling the page window
         setTimeout(() => {
-            inputRef.current?.focus();
-        }, 50);
+            inputRef.current?.focus({ preventScroll: true });
+            scrollToTerminalBottom();
+        }, 30);
     };
 
     const handleKeyDown = (e) => {
@@ -144,20 +147,19 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
     };
 
     const quickActions = [
-        { cmd: 'help', label: 'help', icon: <HelpCircle size={12} />, color: '#6366f1' },
-        { cmd: 'skills', label: 'skills', icon: <Code size={12} />, color: '#06b6d4' },
-        { cmd: 'projects', label: 'projects', icon: <Briefcase size={12} />, color: '#ec4899' },
-        { cmd: 'stats', label: 'stats', icon: <Award size={12} />, color: '#10b981' },
-        { cmd: 'sudo hire', label: 'hire me', icon: <Zap size={12} />, color: '#f59e0b' }
+        { cmd: 'help', label: 'help', icon: <HelpCircle size={13} />, bg: '#4f46e5', border: '#818cf8', text: '#ffffff' },
+        { cmd: 'skills', label: 'skills', icon: <Code size={13} />, bg: '#0891b2', border: '#22d3ee', text: '#ffffff' },
+        { cmd: 'stats', label: 'stats', icon: <Award size={13} />, bg: '#059669', border: '#34d399', text: '#ffffff' },
+        { cmd: 'sudo hire', label: 'sudo hire', icon: <Zap size={13} />, bg: '#d97706', border: '#fbbf24', text: '#ffffff' }
     ];
 
     return (
         <div 
             className="terminal-window" 
             style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '390px', cursor: 'text' }}
-            onClick={() => inputRef.current?.focus()}
+            onClick={() => inputRef.current?.focus({ preventScroll: true })}
         >
-            {/* Terminal Header with High-Contrast Visible Quick Chips */}
+            {/* Terminal Header with Exact Requested Title & Vivid Visible Chips */}
             <div className="terminal-header" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div className="terminal-dots">
@@ -165,50 +167,53 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                         <span className="terminal-dot-btn" style={{ background: '#f59e0b' }}></span>
                         <span className="terminal-dot-btn" style={{ background: '#10b981' }}></span>
                     </div>
-                    <span className="font-mono" style={{ fontSize: '0.80rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                        kaleab@devbox: ~/portfolio
+                    <span className="font-mono" style={{ fontSize: '0.82rem', color: '#f1f5f9', fontWeight: 700, letterSpacing: '0.3px' }}>
+                        kaleab@macbook-pro: ~/portfolio (zsh)
                     </span>
                 </div>
 
-                {/* Visible Interactive Action Chips */}
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {/* Highly Visible, Solid-Colored Action Chips */}
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     {quickActions.map((item) => (
                         <button
                             key={item.cmd}
+                            type="button"
                             onClick={(e) => {
+                                e.preventDefault();
                                 e.stopPropagation();
                                 executeCommand(item.cmd);
                             }}
                             className="font-mono"
                             style={{
-                                background: 'rgba(255,255,255,0.08)',
-                                border: `1px solid ${item.color}`,
-                                color: 'white',
-                                padding: '3px 10px',
-                                borderRadius: '6px',
-                                fontSize: '0.75rem',
-                                fontWeight: 700,
+                                background: item.bg,
+                                border: `1px solid ${item.border}`,
+                                color: item.text,
+                                padding: '4px 12px',
+                                borderRadius: '8px',
+                                fontSize: '0.80rem',
+                                fontWeight: 800,
                                 cursor: 'pointer',
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '4px',
-                                transition: 'all 0.2s ease'
+                                gap: '5px',
+                                boxShadow: `0 2px 10px ${item.bg}40`,
+                                transition: 'all 0.15s ease'
                             }}
                             title={`Run '$ ${item.cmd}'`}
                         >
                             {item.icon}
-                            <span>${item.cmd}</span>
+                            <span>{item.label}</span>
                         </button>
                     ))}
                 </div>
             </div>
 
             {/* Terminal Log Body */}
-            <div className="terminal-body" style={{ flex: 1, overflowY: 'auto', maxHeight: '340px' }}>
+            <div ref={terminalBodyRef} className="terminal-body" style={{ flex: 1, overflowY: 'auto', maxHeight: '340px' }}>
                 {history.map((item, idx) => (
                     <div key={idx} style={{ marginBottom: '10px' }}>
                         {item.type === 'user' && (
-                            <div style={{ color: '#38bdf8', fontWeight: 700, fontSize: '0.90rem' }}>{item.text}</div>
+                            <div style={{ color: '#38bdf8', fontWeight: 700, fontSize: '0.92rem' }}>{item.text}</div>
                         )}
                         {item.type === 'system' && (
                             <div style={{ color: '#a5b4fc', fontSize: '0.88rem', fontWeight: 600 }}>{item.text}</div>
@@ -220,22 +225,26 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                                     {quickActions.map((q) => (
                                         <button
                                             key={q.cmd}
+                                            type="button"
                                             onClick={(e) => {
+                                                e.preventDefault();
                                                 e.stopPropagation();
                                                 executeCommand(q.cmd);
                                             }}
                                             style={{
-                                                background: 'rgba(99, 102, 241, 0.15)',
-                                                border: '1px solid rgba(99, 102, 241, 0.4)',
-                                                color: '#e0e7ff',
+                                                background: q.bg,
+                                                border: `1px solid ${q.border}`,
+                                                color: q.text,
                                                 fontFamily: 'var(--font-mono)',
-                                                fontSize: '0.78rem',
-                                                padding: '4px 10px',
+                                                fontSize: '0.80rem',
+                                                fontWeight: 800,
+                                                padding: '5px 12px',
                                                 borderRadius: '6px',
                                                 cursor: 'pointer',
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
-                                                gap: '5px'
+                                                gap: '5px',
+                                                boxShadow: `0 2px 8px ${q.bg}40`
                                             }}
                                         >
                                             {q.icon}
@@ -246,36 +255,38 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                             </div>
                         )}
                         {item.type === 'help_menu' && (
-                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                                <div style={{ color: '#ec4899', fontWeight: 800, marginBottom: '8px', fontSize: '0.85rem' }}>// INTERACTIVE COMMANDS MENU</div>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                                <div style={{ color: '#ec4899', fontWeight: 800, marginBottom: '10px', fontSize: '0.88rem' }}>// INTERACTIVE COMMANDS MENU</div>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '8px' }}>
                                     {[
-                                        { cmd: 'skills', desc: 'Core tech stack & framework mastery' },
-                                        { cmd: 'projects', desc: 'Browse live production apps' },
-                                        { cmd: 'stats', desc: 'Academic & performance benchmarks' },
-                                        { cmd: 'contact', desc: 'Copy email & phone numbers' },
-                                        { cmd: 'curl cv', desc: 'Download verified resume PDF' },
-                                        { cmd: 'sudo hire', desc: 'Initiate direct hiring invitation' },
-                                        { cmd: 'clear', desc: 'Clear terminal screen' }
+                                        { cmd: 'skills', desc: 'Core tech stack & framework mastery', color: '#06b6d4' },
+                                        { cmd: 'projects', desc: 'Browse live production apps', color: '#ec4899' },
+                                        { cmd: 'stats', desc: 'Academic & performance benchmarks', color: '#10b981' },
+                                        { cmd: 'contact', desc: 'Copy email & phone numbers', color: '#a5b4fc' },
+                                        { cmd: 'curl cv', desc: 'Download verified resume PDF', color: '#f59e0b' },
+                                        { cmd: 'sudo hire', desc: 'Initiate direct hiring invitation', color: '#ec4899' },
+                                        { cmd: 'clear', desc: 'Clear terminal screen', color: '#94a3b8' }
                                     ].map((c) => (
                                         <div
                                             key={c.cmd}
                                             onClick={(e) => {
+                                                e.preventDefault();
                                                 e.stopPropagation();
                                                 executeCommand(c.cmd);
                                             }}
                                             style={{
-                                                padding: '6px 10px',
-                                                background: 'rgba(255,255,255,0.04)',
-                                                border: '1px solid rgba(255,255,255,0.1)',
-                                                borderRadius: '6px',
+                                                padding: '8px 12px',
+                                                background: 'rgba(255,255,255,0.05)',
+                                                border: `1px solid ${c.color}60`,
+                                                borderRadius: '8px',
                                                 cursor: 'pointer',
                                                 display: 'flex',
-                                                flexDirection: 'column'
+                                                flexDirection: 'column',
+                                                transition: 'all 0.15s ease'
                                             }}
                                         >
-                                            <strong style={{ color: '#06b6d4', fontSize: '0.82rem' }}>$ {c.cmd}</strong>
-                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>{c.desc}</span>
+                                            <strong style={{ color: c.color, fontSize: '0.85rem' }}>$ {c.cmd}</strong>
+                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.74rem' }}>{c.desc}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -329,10 +340,9 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                         )}
                     </div>
                 ))}
-                <div ref={bottomRef} />
             </div>
 
-            {/* Terminal Prompt Input with Autofocus */}
+            {/* Terminal Prompt Input with Autofocus & No Window Jump */}
             <div style={{ padding: '12px 16px', background: 'rgba(0,0,0,0.5)', borderTop: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ color: '#10b981', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>$</span>
                 <input
@@ -354,6 +364,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                 />
                 <button
                     onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         executeCommand(inputVal);
                     }}
