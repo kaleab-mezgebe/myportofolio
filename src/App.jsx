@@ -271,13 +271,13 @@ const App = () => {
             isMobile: true
         },
         {
-            title: "Financial Document & Receipt OCR Pipeline",
+            title: "ExpenseIQ — Financial Document & Receipt OCR Pipeline",
             category: "ai",
             problem: "Manual financial data entry and unstandardized paper receipts result in slow auditing and human errors in expense logging.",
             solution: "Engineered an automated extraction pipeline combining OpenCV image preprocessing (deskewing, binarization), Tesseract OCR detection, and FastAPI Pydantic schema validation.",
             result: "Automated receipt data extraction with high confidence scores, structured JSON output, and instant verification status.",
             tags: ["Python", "FastAPI", "Tesseract OCR", "OpenCV", "Pydantic", "React.js"],
-            githubLink: "https://github.com/kaleab-mezgebe",
+            githubLink: "https://github.com/kaleab-mezgebe/ExpenseIQ",
             image: "./assets/ocr_pipeline.png",
             badge: "COMPUTER VISION & OCR PIPELINE",
             isWeb: true
@@ -707,11 +707,11 @@ const App = () => {
                                 <span className="status-pill" style={{ color: '#ec4899', borderColor: 'rgba(236, 72, 153, 0.3)', background: 'rgba(236, 72, 153, 0.1)' }}>
                                     <Cpu size={14} /> COMPUTER VISION &amp; AI
                                 </span>
-                                <a href="https://github.com/kaleab-mezgebe" target="_blank" className="tech-chip font-mono">
+                                <a href="https://github.com/kaleab-mezgebe/ExpenseIQ" target="_blank" className="tech-chip font-mono">
                                     GitHub Code <ArrowUpRight size={14} />
                                 </a>
                             </div>
-                            <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '12px' }}>Financial Document OCR Extraction</h3>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '12px' }}>ExpenseIQ — Financial Document OCR</h3>
                             <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', lineHeight: 1.6, marginBottom: '20px' }}>
                                 Intelligent document pipeline combining OpenCV deskewing/binarization, Tesseract OCR character recognition, and FastAPI Pydantic schema validation for instant JSON auditing.
                             </p>
@@ -940,7 +940,7 @@ const App = () => {
                         {
                             role: "Software Developer",
                             company: "Grand Technology Solutions",
-                            period: "Sep 2024 – Sep 2025 | Addis Ababa",
+                            period: "Sep 2024 – Sep 2025 | Mekelle, Tigray, Ethiopia",
                             desc: "Developed reusable UI components in React.js and integrated them with backend RESTful APIs. Developed and tested CRUD endpoints using FastAPI and PostgreSQL with comprehensive Postman test coverage.",
                             stack: ["React.js", "JavaScript", "Flutter", "FastAPI", "PostgreSQL", "Postman"]
                         },

@@ -61,7 +61,7 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
   1. Axumite Ride       - Real-Time Fleet & Passenger App (Flutter • Play Store)
   2. Shemeta Commerce   - Multi-Vendor Platform with Telebirr & Chapa (React/Next)
   3. AI Dermatologist   - Skin Disease Diagnosis Mobile App (TensorFlow Lite)
-  4. OCR Receipt Engine - Financial Document & Receipt Data Pipeline (FastAPI)
+  4. ExpenseIQ Pipeline - Financial Document & Receipt Data Pipeline (FastAPI)
   5. EthioBeds SaaS     - Hotel & Guesthouse Booking Platform (Full-Stack)`
             });
         } else if (cmd === 'stats') {
