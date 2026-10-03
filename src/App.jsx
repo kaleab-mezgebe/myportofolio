@@ -404,22 +404,18 @@ const App = () => {
                                     textTransform: 'uppercase',
                                     letterSpacing: '2px'
                                 }}>
-                                    <h2>Mobile Application Developer</h2>
+                                    <h2>Frontend &amp; Mobile Software Engineer</h2>
                                 </span>
-                                {/* <h3 style={{ fontSize: '2.4rem', fontWeight: 900, marginTop: '10px', lineHeight: 1.1, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
-                                    Limitless creativity meets technical excellence.
-                                </h3> */}
                             </div>
 
                             <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', lineHeight: '1.7', marginBottom: '40px' }}>
-                                Mastering cross-platform <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Mobile and Web Development</span> skills to transform ideas into attractive digital visuals.
+                                Developing scalable, high-performance <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Frontend Web Applications</span> with React.js &amp; Next.js, and cross-platform <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Mobile Apps</span> with Flutter &amp; Dart.
                             </p>
 
                             <div className="hero-stats">
-
                                 <div style={{ width: '1px', height: '60px', background: 'var(--glass-border)' }} />
                                 <div>
-                                    <div style={{ fontSize: '3rem', fontWeight: 900, color: 'var(--accent-secondary)', lineHeight: 1 }}>1.5+</div>
+                                    <div style={{ fontSize: '3rem', fontWeight: 900, color: 'var(--accent-secondary)', lineHeight: 1 }}>3+</div>
                                     <div style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.6, marginTop: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Years Practical Exp.</div>
                                 </div>
                             </div>
@@ -587,11 +583,12 @@ const App = () => {
                     {/* Custom Skill Bars - Wide & Creative */}
                     <div style={{ width: '100%', maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '35px' }}>
                         {[
-                            { name: "Flutter", level: 98, icon: Smartphone },
-                            { name: "React", level: 95, icon: Code2 },
-                            { name: "Node.js", level: 90, icon: Server },
-                            { name: "PHP", level: 85, icon: Database },
-                            { name: "GitHub/GitLab", level: 92, icon: Github }
+                            { name: "React.js & Next.js", level: 98, icon: Code2 },
+                            { name: "Flutter & Dart", level: 95, icon: Smartphone },
+                            { name: "TypeScript & JavaScript (ES6+)", level: 96, icon: Code2 },
+                            { name: "Node.js & Express.js", level: 90, icon: Server },
+                            { name: "FastAPI & Python", level: 86, icon: Database },
+                            { name: "Tailwind CSS & UI/UX Design", level: 95, icon: Layers }
                         ].map((skill, idx) => (
                             <div key={idx} style={{ position: 'relative' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
@@ -633,16 +630,28 @@ const App = () => {
 
                     {[
                         {
-                            role: "Mobile App Developer",
-                            company: "Niyat Consultancy",
-                            period: "July 2025 – Present",
-                            description: "Building and maintaining scalable mobile applications using Flutter. Developing production-ready features for client-facing mobile systems. Applying clean architecture and reusable component patterns.",
+                            role: "Frontend & Mobile Developer",
+                            company: "Niyat Consultancy PLC",
+                            period: "Sep 2025 – Present",
+                            description: "Developing and maintaining user-facing web and mobile applications using React.js, TypeScript, and Flutter. Building production dashboards, payment integrations (Telebirr, Chapa), and real-time GPS tracking.",
                             insights: [
-                                "Mastered Flutter Bloc for complex state-driven UI logic.",
-                                "Implemented hexagonal architecture for better testability.",
-                                "Optimized app performance for low-bandwidth environments."
+                                "Built high-performance React.js dashboards with Redux Toolkit and TypeScript.",
+                                "Implemented Flutter BLoC architecture for seamless state management.",
+                                "Integrated real-time streaming with SignalR and WebSockets."
                             ],
-                            tags: ["Flutter", "Clean Architecture", "MVP Delivery", "Ride-Sharing"]
+                            tags: ["React.js", "TypeScript", "Flutter", "BLoC", "SignalR", "Telebirr & Chapa"]
+                        },
+                        {
+                            role: "Software Developer",
+                            company: "Grand Technology Solutions",
+                            period: "Sep 2024 – Sep 2025",
+                            description: "Developed reusable UI components in React.js and mobile interfaces in Flutter. Built and tested CRUD backend endpoints with FastAPI/Node.js and PostgreSQL. Handled API documentation, testing, and debugging.",
+                            insights: [
+                                "Built reusable UI components with React.js and Tailwind CSS.",
+                                "Developed and tested RESTful endpoints using FastAPI and PostgreSQL.",
+                                "Collaborated in Agile sprints for rapid feature deployment."
+                            ],
+                            tags: ["React.js", "Flutter", "FastAPI", "PostgreSQL", "REST APIs"]
                         },
                         {
                             role: "Full-Stack Developer",
@@ -657,28 +666,16 @@ const App = () => {
                             tags: ["React.js", "Node.js", "MySQL", "Production Delivery"]
                         },
                         {
-                            role: "Mobile App Developer (Intern)",
-                            company: "Grand Technology Solutions",
-                            period: "Nov 2024 – Feb 2025",
-                            description: "Developed Tigray Youth Association Member Management System (TYAMMS). Built mobile interfaces with Flutter and integrated backend APIs. Participated in full lifecycle development and testing.",
-                            insights: [
-                                "Collaborated in Agile sprints for rapid feature deployment.",
-                                "Bridged legacy SQL data with modern RESTful APIs.",
-                                "Enhanced UI consistency across various Android devices."
-                            ],
-                            tags: ["Flutter", "Node.js", "Express", "MySQL"]
-                        },
-                        {
-                            role: "Mobile App Developer (Contract)",
+                            role: "Remote Mobile Application Developer (Contract)",
                             company: "Tigray Culture and Tourism Bureau",
-                            period: "March 2024 – June 2024",
-                            description: "Built Flutter application for cultural heritage registration. Digitized manual registration processes and integrated MySQL backend services, significantly improving operational efficiency.",
+                            period: "Jan 2024 – June 2024",
+                            description: "Built Flutter cross-platform mobile application for cultural heritage registration. Digitized manual registration processes and integrated database services with offline-first data caching.",
                             insights: [
-                                "Translated offline paper workflows into digital UX.",
-                                "Implemented local caching for data resilience in remote areas.",
-                                "Digitized 1000+ records with high geospatial accuracy."
+                                "Translated offline paper workflows into digital mobile UX.",
+                                "Implemented local caching (Hive/SQLite) for data resilience in remote areas.",
+                                "Digitized 1000+ records with high spatial and descriptive accuracy."
                             ],
-                            tags: ["Flutter", "Digitalization", "Heritage Registration"]
+                            tags: ["Flutter", "Dart", "Offline-First", "Digitalization", "Contract"]
                         }
                     ].map((exp, i) => (
                         <motion.div
@@ -752,15 +749,16 @@ const App = () => {
                     {/* Project Loop with staggered reveals */}
                     {[
                         {
-                            title: "Niyat Ride App (MVP)",
+                            title: "Axumite Ride — Passenger & Driver Mobile App",
                             problem: "The ride-sharing market requires ultra-reliable real-time state updates (trips, locations) to ensure user trust and commercial feasibility.",
-                            solution: "Architected and developed a Flutter MVP implementing complex booking flows, trip states, and real-time UI synchronization using the Bloc pattern.",
-                            result: "Demonstrated commercial feasibility through a working prototype, enabling successful market entry and client validation.",
-                            tags: ["Flutter", "Bloc", "Architecture", "Real-time"],
-                            link: "https://github.com/kaleab-mezgebe/ride_mobile-",
+                            solution: "Architected and developed cross-platform Flutter production mobile applications for passengers and drivers with real-time tracking, live ETA, in-app checkout, and BLoC state management.",
+                            result: "Successfully launched both Passenger and Driver apps on Google Play Store, serving active users with live GPS navigation and instant notifications.",
+                            tags: ["Flutter", "Dart", "BLoC", "SignalR", "Google Maps SDK", "Play Store"],
+                            link: "https://github.com/kaleab-mezgebe",
+                            playstoreLink: "https://play.google.com/store/apps/details?id=com.axumite.customer&hl=en_US",
+                            driverPlaystoreLink: "https://play.google.com/store/apps/details?id=com.axumite.partner&hl=en_US",
                             image: "/assets/ride.png",
-                            type: "COMMERCIAL MVP",
-                            localVideo: "/assets/ride_vedio.mp4",
+                            type: "PRODUCTION MOBILE APP",
                             isMobile: true
                         },
                         {
@@ -824,17 +822,27 @@ const App = () => {
                         },
 
                         {
-                            title: "Hdyat E-Commerce",
-                            problem: "Traditional makers often lack direct access to broader markets, relying on intermediaries that reduce their profit margins.",
-                            solution: "Developed a multi-vendor web platform connecting traditional clothes and jewelry makers directly with customers.",
-                            result: "Empowered local artisans with a direct-to-consumer channel, increasing their market reach and profitability.",
-                            tags: ["React", "Node.js", "Multi-vendor", "E-commerce"],
+                            title: "Shemeta E-Commerce — Multi-Vendor Platform",
+                            problem: "Multi-vendor marketplaces require synchronized customer storefronts, real-time order notifications, vendor wallet management, and seamless local currency (ETB) transaction tracking.",
+                            solution: "Developed a multi-vendor e-commerce web platform featuring dynamic product discovery, interactive notifications modal, and a rich vendor wallet & analytics management dashboard.",
+                            result: "Delivered an end-to-end e-commerce solution enabling streamlined merchant sales tracking, withdrawal requests, and a responsive customer shopping experience.",
+                            tags: ["React.js", "TypeScript", "Next.js", "Tailwind CSS", "Vendor Dashboard", "E-Commerce"],
                             link: "https://github.com/kaleab-mezgebe",
-                            image: "/assets/hdyat.png",
-
-                            type: "E-COMMERCE PLATFORM",
+                            demoLink: "https://nicom.dev.niyatconsultancy.com/en",
+                            image: "/assets/shemeta.png",
+                            type: "MULTI-VENDOR E-COMMERCE",
                             isWeb: true,
-
+                        },
+                        {
+                            title: "Financial Document & Receipt OCR Pipeline",
+                            problem: "Manual financial data entry and paper receipt auditing are error-prone and time-consuming for accounting workflows.",
+                            solution: "Engineered an intelligent extraction web application leveraging OpenCV preprocessing, Tesseract OCR parsing, and FastAPI validation schemas.",
+                            result: "Automated receipt data extraction with high confidence scores, structured JSON output, and instant verification status.",
+                            tags: ["React.js", "FastAPI", "Python", "Tesseract OCR", "OpenCV", "Pydantic"],
+                            link: "https://github.com/kaleab-mezgebe",
+                            image: "/assets/ocr_pipeline.png",
+                            type: "AI & OCR PIPELINE",
+                            isWeb: true,
                         },
 
                     ].map((project, idx) => (
@@ -964,11 +972,27 @@ const App = () => {
                                             LIVE VIDEO <ExternalLink size={20} />
                                         </motion.a>
                                     )}
-                                    {project.title.includes("Ethiobeds") && (
+                                    {project.playstoreLink && (
                                         <motion.a
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
-                                            href={project.link} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                            href={project.playstoreLink} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px', color: 'white', background: 'linear-gradient(135deg, #059669, #10b981)', border: '1px solid #10b981' }}>
+                                            PASSENGER APP <ExternalLink size={20} />
+                                        </motion.a>
+                                    )}
+                                    {project.driverPlaystoreLink && (
+                                        <motion.a
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            href={project.driverPlaystoreLink} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px', color: 'white', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '1px solid #38bdf8' }}>
+                                            DRIVER APP <ExternalLink size={20} />
+                                        </motion.a>
+                                    )}
+                                    {project.demoLink && (
+                                        <motion.a
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            href={project.demoLink} target="_blank" className="glass-card" style={{ padding: 'clamp(10px, 1.5vw, 16px) clamp(16px, 3vw, 32px)', borderRadius: '16px', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                             LIVE DEMO <ExternalLink size={20} />
                                         </motion.a>
                                     )}
@@ -1175,7 +1199,7 @@ const App = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', flexWrap: 'wrap', gap: '60px', maxWidth: '1200px', margin: '0 auto' }}>
                     <div style={{ maxWidth: '400px' }}>
                         <div style={{ fontWeight: 900, fontSize: '1.8rem', marginBottom: '20px' }}>KALEAB<span className="accent-text">.MEZGEBE</span></div>
-                        <p style={{ color: 'var(--text-muted)', lineHeight: '1.8' }}>Dedicated Software Developer specializing in Flutter and React. Building scalable solutions for the global digital economy.</p>
+                        <p style={{ color: 'var(--text-muted)', lineHeight: '1.8' }}>Dedicated Frontend &amp; Mobile Software Engineer specializing in React.js, Next.js, Flutter, and TypeScript. Building scalable solutions for the global digital economy.</p>
                     </div>
                     <div style={{ display: 'flex', gap: '100px', flexWrap: 'wrap' }}>
                         <div>
