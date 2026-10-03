@@ -326,7 +326,7 @@ const App = () => {
                         }}
                         onClick={handleConfetti}
                     >
-                        <img src="/assets/myphoto.png" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                        <img src="./assets/myphoto.png" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                     </div>
                     <a href="#hero" style={{ fontWeight: 900, fontSize: '1.2rem', letterSpacing: '-0.5px', color: 'var(--text-main)', textDecoration: 'none' }}>
                         Home
@@ -501,7 +501,7 @@ const App = () => {
                             className="hero-image-wrapper"
                         >
                             <img
-                                src="/assets/myphoto.png"
+                                src="./assets/myphoto.png"
                                 alt="Kaleab Mezgebe"
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
@@ -757,7 +757,7 @@ const App = () => {
                             link: "https://github.com/kaleab-mezgebe",
                             playstoreLink: "https://play.google.com/store/apps/details?id=com.axumite.customer&hl=en_US",
                             driverPlaystoreLink: "https://play.google.com/store/apps/details?id=com.axumite.partner&hl=en_US",
-                            image: "/assets/ride.png",
+                            image: "./assets/ride.png",
                             type: "PRODUCTION MOBILE APP",
                             isMobile: true
                         },
@@ -770,7 +770,7 @@ const App = () => {
                             link: "https://github.com/kaleab-mezgebe/cbe_birr",
                             demoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC5t-bwBhhi4m3cAxBFDoKwSu4ZPJnGon3o", // Keeping demoLink for logic backward compatibility if needed, though videoLink is used in UI
                             videoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC5t-bwBhhi4m3cAxBFDoKwSu4ZPJnGon3o",
-                            image: "/assets/cbebirr.png",
+                            image: "./assets/cbebirr.png",
                             type: "UI ENGINEERING",
                             isMobile: true
                         },
@@ -783,7 +783,7 @@ const App = () => {
                             link: "https://ethiobeds.com",
                             githubLink: "https://github.com/kaleab-mezgebe",
                             demoLink: "https://ethiobeds.com",
-                            image: "/assets/ethiobeds.png",
+                            image: "./assets/ethiobeds.png",
                             type: "PRODUCTION SAAS",
                             isWeb: true
                         },
@@ -794,7 +794,7 @@ const App = () => {
                             result: "Reduced operational overhead by 40% and improved data accuracy for youth initiative planning.",
                             tags: ["Operations", "Digitization", "Data Management"],
                             link: "https://github.com/kaleab-mezgebe/tyamms",
-                            image: "/assets/tyamms.png",
+                            image: "./assets/tyamms.png",
                             type: "ENTERPRISE SOLUTION",
                             isMobile: true
                         },
@@ -805,7 +805,7 @@ const App = () => {
                             result: "Created a bridge for early medical intervention, significantly lowering the barrier to initial health screenings.",
                             tags: ["AI", "Flutter", "Computer Vision", "HealthTech"],
                             link: "https://github.com/kaleab-mezgebe/AI-Dermatologist",
-                            image: "/assets/ai.png",
+                            image: "./assets/ai.png",
                             type: "INNOVATION PROJECT",
                             isMobile: true
                         },
@@ -816,7 +816,7 @@ const App = () => {
                             result: "Secured digital records for hundreds of sites, aiding in preservation and international recognition of cultural assets.",
                             tags: ["GIS", "Preservation", "Metadata"],
                             link: "https://github.com/kaleab-mezgebe/TCPH-",
-                            image: "/assets/tcph.png",
+                            image: "./assets/tcph.png",
                             type: "SOCIAL IMPACT",
                             isMobile: true
                         },
@@ -829,7 +829,7 @@ const App = () => {
                             tags: ["React.js", "TypeScript", "Next.js", "Tailwind CSS", "Vendor Dashboard", "E-Commerce"],
                             link: "https://github.com/kaleab-mezgebe",
                             demoLink: "https://nicom.dev.niyatconsultancy.com/en",
-                            image: "/assets/shemeta.png",
+                            image: "./assets/shemeta.png",
                             type: "MULTI-VENDOR E-COMMERCE",
                             isWeb: true,
                         },
@@ -840,7 +840,7 @@ const App = () => {
                             result: "Automated receipt data extraction with high confidence scores, structured JSON output, and instant verification status.",
                             tags: ["React.js", "FastAPI", "Python", "Tesseract OCR", "OpenCV", "Pydantic"],
                             link: "https://github.com/kaleab-mezgebe",
-                            image: "/assets/ocr_pipeline.png",
+                            image: "./assets/ocr_pipeline.png",
                             type: "AI & OCR PIPELINE",
                             isWeb: true,
                         },
@@ -1181,7 +1181,7 @@ const App = () => {
                                 Start Conversation
                             </a>
                             <a
-                                href="/assets/Kaleab Mezgebe's cv.pdf"
+                                href="./assets/Kaleab Mezgebe's cv.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 download
