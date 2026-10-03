@@ -189,7 +189,7 @@ const App = () => {
         try {
             const response = await fetch("https://formsubmit.co/ajax/kaleabmezgebe4@gmail.com", {
                 method: "POST",
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
@@ -223,7 +223,7 @@ const App = () => {
         }
     };
 
-    // Projects Dataset
+    // Projects Dataset (Full Authentic Portfolio Catalog)
     const projects = [
         {
             title: "Axumite Ride — Passenger & Driver Mobile App",
@@ -277,46 +277,84 @@ const App = () => {
             isWeb: true
         },
         {
-            title: "Tigray Heritage — Cultural Documentation App",
-            category: "mobile",
-            problem: "Field researchers needed an offline mobile tool to catalog historical monuments, record GPS coordinates, and sync data reliably.",
-            solution: "Created an offline-first Flutter application with local SQLite caching, background image compression, and spatial GIS mapping.",
-            result: "Successfully cataloged hundreds of historical sites with offline synchronization and zero data loss.",
-            tags: ["Flutter", "Dart", "SQLite", "Offline-First", "GIS Mapping"],
+            title: "EthioBeds — Hospitality & Hotel Booking Platform",
+            category: "web",
+            problem: "Finding safe, verified, and affordable lodging across Ethiopian cities was fragmented without centralized availability verification.",
+            solution: "Architected a full-stack accommodation reservation SaaS with Node.js/Express.js, PostgreSQL relational schemas, JWT authentication, and a responsive React frontend with Chapa payments.",
+            result: "Delivered unified guest booking journeys with automated booking confirmations and host management controls.",
+            tags: ["React.js", "Node.js", "Tailwind CSS", "Chapa API", "PostgreSQL", "Production SaaS"],
             githubLink: "https://github.com/kaleab-mezgebe",
-            image: "./assets/tcph.png",
-            badge: "PUBLIC INSTITUTION CONTRACT",
+            demoLink: "https://ethiobeds.com",
+            image: "./assets/ethiobeds.png",
+            badge: "LIVE PRODUCTION SAAS",
             isWeb: true
         },
         {
-            title: "EthioBeds — Hospitality & Booking Platform",
-            category: "web",
-            problem: "Hotels and guests lacked an integrated reservation system with local payment support and instant room availability tracking.",
-            solution: "Engineered a responsive web booking engine using React.js, Tailwind CSS, Node.js backend APIs, and Chapa payment integration.",
-            result: "Delivered unified guest booking journeys with automated booking confirmations and host management controls.",
-            tags: ["React.js", "Node.js", "Tailwind CSS", "Chapa API", "PostgreSQL"],
-            githubLink: "https://github.com/kaleab-mezgebe",
-            image: "./assets/ethiobeds.png",
-            badge: "SAAS PLATFORM",
+            title: "CBEBirr App Clone (FinTech UI)",
+            category: "mobile",
+            problem: "FinTech applications require fluid micro-interactions and secure visual state flows to build consumer trust.",
+            solution: "Replicated the CBEBirr mobile experience in Flutter with high-fidelity animations, balance conceal toggles, and seamless transaction views.",
+            result: "Demonstrated technical proficiency in creating complex, high-performance mobile interfaces for financial services.",
+            tags: ["Flutter", "Dart", "FinTech UI", "State Management", "Micro-Animations"],
+            githubLink: "https://github.com/kaleab-mezgebe/cbe_birr",
+            videoLink: "https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr",
+            image: "./assets/cbebirr.png",
+            badge: "FINTECH UI ENGINEERING",
+            isMobile: true
+        },
+        {
+            title: "Tigray Cultural Property Hub (TCPH)",
+            category: "mobile",
+            problem: "Historical monuments and cultural properties were vulnerable to being uncatalogued or lost without spatial GIS and descriptive documentation.",
+            solution: "Built a cross-platform Flutter application for cultural heritage registration and spatial documentation with offline-first SQLite caching.",
+            result: "Digitized 1,000+ cultural asset records with spatial coordinates and comprehensive metadata.",
+            tags: ["Flutter", "Dart", "SQLite", "Offline-First", "GIS", "Social Impact"],
+            githubLink: "https://github.com/kaleab-mezgebe/TCPH-",
+            image: "./assets/tcph.png",
+            badge: "DIGITALIZATION & HERITAGE",
             isWeb: true
         },
         {
             title: "Hdyat Traditional Marketplace — Cultural E-Commerce",
             category: "web",
-            problem: "Traditional Ethiopian clothing artisans, Habesha Kemis weavers, and jewelry makers lacked direct digital storefronts to sell products without middlemen taking heavy margins.",
-            solution: "Developed a dedicated multi-vendor web marketplace with custom garment sizing forms, artisan profile dashboards, high-speed product catalogs, and local payment gateways (Telebirr & CBE Birr).",
-            result: "Empowered local traditional artisans with a direct-to-consumer digital channel, increasing artisan profitability and preserving cultural heritage fashion.",
+            problem: "Traditional Ethiopian clothing artisans, Habesha Kemis weavers, and jewelry makers lacked direct digital storefronts to reach customers without high intermediary cuts.",
+            solution: "Developed a specialized multi-vendor web marketplace with custom garment sizing forms, artisan profile dashboards, high-speed product catalogs, and local payment checkout.",
+            result: "Empowered local traditional artisans with a direct-to-consumer digital channel, increasing artisan profitability and cultural fashion reach.",
             tags: ["React.js", "Node.js", "Express.js", "PostgreSQL", "Telebirr & CBE Birr", "Artisan Commerce"],
             githubLink: "https://github.com/kaleab-mezgebe",
             image: "./assets/hdyat.png",
             badge: "TRADITIONAL COMMERCE & ARTISAN HUB",
             isWeb: true
+        },
+        {
+            title: "TYAMMS — Youth Operations & Member Management",
+            category: "web",
+            problem: "Tigray Youth Association faced logistical bottlenecks in managing thousands of members manually across multiple regional districts.",
+            solution: "Digitized operations with a robust web member management platform, enabling real-time data tracking and member engagement monitoring.",
+            result: "Reduced operational overhead by 40% and improved data accuracy for youth initiative planning.",
+            tags: ["React.js", "Node.js", "Digitization", "Data Management", "Operations"],
+            githubLink: "https://github.com/kaleab-mezgebe/tyamms",
+            image: "./assets/tyamms.png",
+            badge: "ENTERPRISE SOLUTION",
+            isWeb: true
         }
     ];
 
+    const filterCounts = {
+        all: projects.length,
+        mobile: projects.filter(p => p.category === 'mobile' || p.isMobile).length,
+        web: projects.filter(p => p.category === 'web' || p.isWeb).length,
+        ai: projects.filter(p => p.category === 'ai' || p.tags.some(t => t.toLowerCase().includes('ai') || t.toLowerCase().includes('ocr'))).length
+    };
+
     const filteredProjects = activeFilter === 'all'
         ? projects
-        : projects.filter((p) => p.category === activeFilter);
+        : projects.filter((p) => {
+            if (activeFilter === 'mobile') return p.category === 'mobile' || p.isMobile;
+            if (activeFilter === 'web') return p.category === 'web' || p.isWeb;
+            if (activeFilter === 'ai') return p.category === 'ai' || p.tags.some(t => t.toLowerCase().includes('ai') || t.toLowerCase().includes('ocr'));
+            return true;
+        });
 
     return (
         <div className={`app-container ${isDarkMode ? 'dark' : 'light'}`}>
@@ -412,28 +450,28 @@ const App = () => {
 
                     {/* Navigation Actions */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                        <button 
-                            onClick={toggleTheme} 
-                            className="theme-toggle" 
+                        <button
+                            onClick={toggleTheme}
+                            className="theme-toggle"
                             aria-label="Toggle theme"
                             title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
                         >
                             {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
                         </button>
-                        
+
                         <a
                             href="./assets/Kaleab Mezgebe's cv.pdf"
                             target="_blank"
                             download
                             className="accent-bg glow-effect resume-btn-nav"
-                            style={{ 
-                                padding: '7px 14px', 
-                                borderRadius: '9999px', 
-                                color: 'white', 
-                                fontWeight: 800, 
-                                fontSize: '0.82rem', 
-                                display: 'inline-flex', 
-                                alignItems: 'center', 
+                            style={{
+                                padding: '7px 14px',
+                                borderRadius: '9999px',
+                                color: 'white',
+                                fontWeight: 800,
+                                fontSize: '0.82rem',
+                                display: 'inline-flex',
+                                alignItems: 'center',
                                 gap: '5px',
                                 textDecoration: 'none'
                             }}
@@ -791,10 +829,10 @@ const App = () => {
                 {/* Filter Tabs */}
                 <div className="filter-tabs-container">
                     {[
-                        { id: 'all', label: 'All Projects (7)' },
-                        { id: 'mobile', label: '📱 Flutter & Mobile (4)' },
-                        { id: 'web', label: '🌐 Web & Full-Stack (2)' },
-                        { id: 'ai', label: '🤖 AI & OCR Pipelines (2)' }
+                        { id: 'all', label: `All Projects (${filterCounts.all})` },
+                        { id: 'mobile', label: `📱 Flutter & Mobile (${filterCounts.mobile})` },
+                        { id: 'web', label: `🌐 Web & SaaS (${filterCounts.web})` },
+                        { id: 'ai', label: `🤖 AI & OCR Pipelines (${filterCounts.ai})` }
                     ].map((tab) => (
                         <button
                             key={tab.id}
@@ -866,6 +904,17 @@ const App = () => {
                                         </a>
                                     )}
 
+                                    {project.localVideo && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setSelectedVideo(project.localVideo)}
+                                            className="accent-bg glow-effect font-mono"
+                                            style={{ padding: '8px 16px', borderRadius: '10px', color: 'white', fontWeight: 800, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer', border: 'none' }}
+                                        >
+                                            <Play size={14} /> Live Demo Video
+                                        </button>
+                                    )}
+
                                     {project.playstoreLink && (
                                         <a
                                             href={project.playstoreLink}
@@ -913,7 +962,23 @@ const App = () => {
                             </div>
 
                             {/* Project Preview Image */}
-                            <div className="project-image-container">
+                            <div 
+                                className="project-image-container"
+                                style={{
+                                    cursor: project.localVideo ? 'pointer' : (project.demoLink || project.videoLink ? 'pointer' : 'default'),
+                                    position: 'relative'
+                                }}
+                                onClick={() => {
+                                    if (project.localVideo) {
+                                        setSelectedVideo(project.localVideo);
+                                    } else if (project.demoLink) {
+                                        window.open(project.demoLink, '_blank');
+                                    } else if (project.videoLink) {
+                                        window.open(project.videoLink, '_blank');
+                                    }
+                                }}
+                                title={project.localVideo ? "Click to watch demo video" : (project.demoLink ? "Click to view live demo" : (project.videoLink ? "Click to watch video" : project.title))}
+                            >
                                 <motion.img
                                     whileHover={{ scale: 1.04 }}
                                     transition={{ duration: 0.3 }}
@@ -928,6 +993,24 @@ const App = () => {
                                         borderRadius: '14px'
                                     }}
                                 />
+                                {project.localVideo && (
+                                    <div 
+                                        style={{
+                                            position: 'absolute',
+                                            inset: 0,
+                                            background: 'rgba(0,0,0,0.3)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            borderRadius: '14px',
+                                            pointerEvents: 'none'
+                                        }}
+                                    >
+                                        <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', boxShadow: '0 0 20px var(--accent-primary)' }}>
+                                            <Play size={20} fill="white" style={{ marginLeft: '2px' }} />
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                     ))}
@@ -992,8 +1075,8 @@ const App = () => {
                             onClick={() => copyToClipboard("kaleabmezgebe4@gmail.com", "Email")}
                             className="font-mono contact-copy-btn"
                             style={{
-                                background: isDarkMode 
-                                    ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(15, 23, 42, 0.95))' 
+                                background: isDarkMode
+                                    ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(15, 23, 42, 0.95))'
                                     : 'linear-gradient(135deg, #4f46e5, #4338ca)',
                                 border: '1.5px solid #6366f1',
                                 boxShadow: '0 6px 20px rgba(99, 102, 241, 0.3)'
@@ -1004,14 +1087,14 @@ const App = () => {
                             <span>kaleabmezgebe4@gmail.com</span>
                             <Copy size={14} style={{ opacity: 0.85, color: '#38bdf8' }} />
                         </button>
-                        
+
                         <button
                             type="button"
                             onClick={() => copyToClipboard("+251945989369", "Phone")}
                             className="font-mono contact-copy-btn"
                             style={{
-                                background: isDarkMode 
-                                    ? 'linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(15, 23, 42, 0.95))' 
+                                background: isDarkMode
+                                    ? 'linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(15, 23, 42, 0.95))'
                                     : 'linear-gradient(135deg, #0891b2, #0e7490)',
                                 border: '1.5px solid #06b6d4',
                                 boxShadow: '0 6px 20px rgba(6, 182, 212, 0.3)'
