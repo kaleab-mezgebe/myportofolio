@@ -17,6 +17,8 @@
 
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Outfit', var(--font-body);
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: 'Space Grotesk', var(--font-heading);
 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -63,6 +65,27 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   letter-spacing: -0.025em;
+}
+
+/* Developer Monospace Utilities */
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+.code-badge {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: -0.2px;
+}
+
+.code-snippet-box {
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  color: #a5b4fc;
 }
 
 /* Glassmorphism Classes */
@@ -221,6 +244,7 @@ a {
   color: #10b981;
   font-size: 0.85rem;
   font-weight: 600;
+  font-family: var(--font-mono);
 }
 
 .status-dot {
@@ -279,6 +303,23 @@ a {
   margin-top: 40px;
 }
 
+.stat-number {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 6px;
+}
+
 .hero-image-wrapper {
   width: 100%;
   max-width: 440px;
@@ -302,8 +343,9 @@ a {
 .filter-tab-btn {
   padding: 10px 22px;
   border-radius: 9999px;
-  font-size: 0.92rem;
+  font-size: 0.90rem;
   font-weight: 700;
+  font-family: var(--font-mono);
   color: var(--text-muted);
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
@@ -351,6 +393,17 @@ a {
   justify-content: center;
 }
 
+.tech-chip {
+  font-family: var(--font-mono);
+  font-size: 0.80rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: var(--text-sub);
+}
+
 /* Timeline */
 .timeline-container {
   position: relative;
@@ -383,6 +436,16 @@ a {
   background: var(--bg-dark);
   border: 3px solid var(--accent-primary);
   box-shadow: 0 0 15px var(--accent-primary);
+}
+
+.timeline-period {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  background: rgba(99, 102, 241, 0.1);
+  padding: 4px 12px;
+  border-radius: 8px;
 }
 
 /* Command Palette Modal */
@@ -421,7 +484,8 @@ a {
   background: transparent;
   border: none;
   color: white;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  font-family: var(--font-mono);
   outline: none;
 }
 
@@ -456,6 +520,7 @@ a {
   align-items: center;
   gap: 12px;
   font-weight: 600;
+  font-family: var(--font-mono);
 }
 
 /* Responsive Media Queries */

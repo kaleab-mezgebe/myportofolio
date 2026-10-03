@@ -508,18 +508,18 @@ const App = () => {
                             className="hero-stats"
                         >
                             <div>
-                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-primary)', lineHeight: 1 }}>3+</div>
-                                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '6px' }}>Years Experience</div>
+                                <div className="stat-number" style={{ color: 'var(--accent-primary)' }}>3+</div>
+                                <div className="stat-label">Years Experience</div>
                             </div>
                             <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
                             <div>
-                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-secondary)', lineHeight: 1 }}>3.88</div>
-                                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '6px' }}>MIT CGPA Distinction</div>
+                                <div className="stat-number" style={{ color: 'var(--accent-secondary)' }}>3.88</div>
+                                <div className="stat-label">MIT CGPA Distinction</div>
                             </div>
                             <div style={{ width: '1px', height: '45px', background: 'var(--glass-border)' }}></div>
                             <div>
-                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--accent-tertiary)', lineHeight: 1 }}>86/100</div>
-                                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '6px' }}>National Exit Exam</div>
+                                <div className="stat-number" style={{ color: 'var(--accent-tertiary)' }}>86/100</div>
+                                <div className="stat-label">National Exit Exam</div>
                             </div>
                         </motion.div>
                     </div>
@@ -691,7 +691,7 @@ const App = () => {
 
                                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '28px' }}>
                                     {project.tags.map((tag, tIdx) => (
-                                        <span key={tIdx} style={{ background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600 }}>
+                                        <span key={tIdx} className="tech-chip">
                                             {tag}
                                         </span>
                                     ))}
@@ -714,8 +714,8 @@ const App = () => {
                                         <a
                                             href={project.playstoreLink}
                                             target="_blank"
-                                            className="glass-card"
-                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'white', background: 'linear-gradient(135deg, #059669, #10b981)', border: '1px solid #10b981', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            className="glass-card font-mono"
+                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'white', background: 'linear-gradient(135deg, #059669, #10b981)', border: '1px solid #10b981', fontWeight: 700, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                                         >
                                             <ExternalLink size={16} /> Passenger App
                                         </a>
@@ -725,8 +725,8 @@ const App = () => {
                                         <a
                                             href={project.driverPlaystoreLink}
                                             target="_blank"
-                                            className="glass-card"
-                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'white', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '1px solid #38bdf8', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            className="glass-card font-mono"
+                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'white', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '1px solid #38bdf8', fontWeight: 700, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                                         >
                                             <ExternalLink size={16} /> Driver App
                                         </a>
@@ -736,8 +736,8 @@ const App = () => {
                                         <a
                                             href={project.demoLink}
                                             target="_blank"
-                                            className="glass-card"
-                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'var(--text-main)', borderColor: 'var(--accent-secondary)', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            className="glass-card font-mono"
+                                            style={{ padding: '10px 20px', borderRadius: '12px', color: 'var(--text-main)', borderColor: 'var(--accent-secondary)', fontWeight: 700, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                                         >
                                             <Globe size={16} /> Live Demo
                                         </a>
@@ -747,8 +747,8 @@ const App = () => {
                                         <a
                                             href={project.videoLink}
                                             target="_blank"
-                                            className="glass-card"
-                                            style={{ padding: '10px 20px', borderRadius: '12px', fontWeight: 800, fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                            className="glass-card font-mono"
+                                            style={{ padding: '10px 20px', borderRadius: '12px', fontWeight: 700, fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                                         >
                                             <Play size={16} /> Live Video
                                         </a>
@@ -762,7 +762,7 @@ const App = () => {
 
             {/* PROFESSIONAL EXPERIENCE TIMELINE */}
             <section id="experience">
-                <SectionHeading subtitle="Track record of engineering robust software across logistics, SaaS, and public institutions" badge="Career Journey">
+                <SectionHeading subtitle="Track record of engineering robust software across logistics, SaaS, and public institutions" badge="// 02. CAREER TIMELINE">
                     Professional Experience
                 </SectionHeading>
 
@@ -798,16 +798,16 @@ const App = () => {
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
                                     <div>
                                         <h3 style={{ fontSize: '1.35rem', fontWeight: 800 }}>{exp.role}</h3>
-                                        <p className="accent-text" style={{ fontWeight: 700, fontSize: '1.05rem' }}>{exp.company}</p>
+                                        <p className="accent-text font-mono" style={{ fontWeight: 700, fontSize: '1.05rem' }}>{exp.company}</p>
                                     </div>
-                                    <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--accent-primary)', background: 'rgba(99, 102, 241, 0.1)', padding: '4px 12px', borderRadius: '8px' }}>
+                                    <span className="timeline-period">
                                         {exp.period}
                                     </span>
                                 </div>
                                 <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '20px' }}>{exp.desc}</p>
                                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                     {exp.stack.map((item, sIdx) => (
-                                        <span key={sIdx} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', padding: '3px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600 }}>
+                                        <span key={sIdx} className="tech-chip">
                                             {item}
                                         </span>
                                     ))}
