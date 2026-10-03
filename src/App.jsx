@@ -513,22 +513,13 @@ const App = () => {
             <section id="hero" className="hero-container">
                 <div className="hero-grid">
                     <div>
-                        {/* Profile Header Badge with User Portrait */}
+                        {/* Profile Header Status Badge */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                             style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px', flexWrap: 'wrap' }}
                         >
-                            <div style={{ position: 'relative', width: '56px', height: '56px', borderRadius: '50%', padding: '2px', background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary))', boxShadow: '0 0 20px var(--accent-glow)' }}>
-                                <img
-                                    src={kaleabPortrait}
-                                    alt="Kaleab Mezgebe"
-                                    style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top' }}
-                                />
-                                <span style={{ position: 'absolute', bottom: '1px', right: '1px', width: '13px', height: '13px', borderRadius: '50%', background: '#10b981', border: '2px solid var(--bg-dark)' }} />
-                            </div>
-
                             <div className="status-pill">
                                 <span className="status-dot"></span>
                                 Available for Frontend &amp; Mobile Software Engineering Roles
