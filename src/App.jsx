@@ -46,6 +46,7 @@ import { InteractiveLab } from './components/InteractiveLab';
 import { InteractiveTerminal } from './components/InteractiveTerminal';
 import { EngineeringMetrics } from './components/EngineeringMetrics';
 import { CodeArchitecturePreview } from './components/CodeArchitecturePreview';
+import kaleabPortrait from './assets/kaleab_portrait.jpg';
 
 // Section Heading Component
 const SectionHeading = ({ children, subtitle, align = "center", badge = null }) => (
@@ -460,7 +461,7 @@ const App = () => {
                 <div className="navbar-inner">
                     <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
                         <div style={{ width: '42px', height: '42px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', boxShadow: '0 0 15px var(--accent-glow)', flexShrink: 0 }}>
-                            <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+                            <img src={kaleabPortrait} alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                         </div>
                         <span style={{ fontWeight: 900, fontSize: '1.15rem', letterSpacing: '-0.5px', color: 'var(--text-main)' }}>
                             KALEAB<span className="accent-text">.M</span>
@@ -526,7 +527,7 @@ const App = () => {
                         >
                             <div style={{ position: 'relative', width: '56px', height: '56px', borderRadius: '50%', padding: '2px', background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary))', boxShadow: '0 0 20px var(--accent-glow)' }}>
                                 <img
-                                    src="./assets/myphoto.png"
+                                    src={kaleabPortrait}
                                     alt="Kaleab Mezgebe"
                                     style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top' }}
                                 />
@@ -666,7 +667,7 @@ const App = () => {
                         <Card style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.08))' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
                                 <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-primary)', flexShrink: 0 }}>
-                                    <img src="./assets/myphoto.png" alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+                                    <img src={kaleabPortrait} alt="Kaleab Mezgebe" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                                 </div>
                                 <div>
                                     <GraduationCap size={24} color="var(--accent-primary)" />
@@ -1104,7 +1105,7 @@ const App = () => {
                 <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', border: '1px solid var(--accent-primary)' }}>
-                            <img src="./assets/myphoto.png" alt="Kaleab" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src={kaleabPortrait} alt="Kaleab" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
                         <span className="font-mono">
                             © {new Date().getFullYear()} <strong style={{ color: 'var(--text-main)' }}>Kaleab Mezgebe Fissaha</strong>. Built with React &amp; Vite.
