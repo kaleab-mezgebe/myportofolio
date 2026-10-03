@@ -118,7 +118,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
         setHistory((prev) => [...prev, ...newEntries]);
         setInputVal('');
 
-        // Focus the input smoothly without scrolling the page window
+        // Strictly focus input without scrolling outer page
         setTimeout(() => {
             inputRef.current?.focus({ preventScroll: true });
             scrollToTerminalBottom();
@@ -147,17 +147,20 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
     };
 
     const quickActions = [
-        { cmd: 'help', label: 'help', icon: <HelpCircle size={13} />, bg: '#4f46e5', border: '#818cf8', text: '#ffffff' },
-        { cmd: 'skills', label: 'skills', icon: <Code size={13} />, bg: '#0891b2', border: '#22d3ee', text: '#ffffff' },
-        { cmd: 'stats', label: 'stats', icon: <Award size={13} />, bg: '#059669', border: '#34d399', text: '#ffffff' },
-        { cmd: 'sudo hire', label: 'sudo hire', icon: <Zap size={13} />, bg: '#d97706', border: '#fbbf24', text: '#ffffff' }
+        { cmd: 'help', label: 'help', icon: <HelpCircle size={13} />, bg: '#6366f1', text: '#ffffff', glow: 'rgba(99, 102, 241, 0.45)' },
+        { cmd: 'skills', label: 'skills', icon: <Code size={13} />, bg: '#06b6d4', text: '#ffffff', glow: 'rgba(6, 182, 212, 0.45)' },
+        { cmd: 'stats', label: 'stats', icon: <Award size={13} />, bg: '#10b981', text: '#ffffff', glow: 'rgba(16, 185, 129, 0.45)' },
+        { cmd: 'sudo hire', label: 'sudo hire', icon: <Zap size={13} />, bg: '#ec4899', text: '#ffffff', glow: 'rgba(236, 72, 153, 0.45)' }
     ];
 
     return (
         <div 
             className="terminal-window" 
             style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '390px', cursor: 'text' }}
-            onClick={() => inputRef.current?.focus({ preventScroll: true })}
+            onClick={(e) => {
+                // Focus input without scrolling page
+                inputRef.current?.focus({ preventScroll: true });
+            }}
         >
             {/* Terminal Header with Exact Requested Title & Vivid Visible Chips */}
             <div className="terminal-header" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
@@ -167,8 +170,14 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                         <span className="terminal-dot-btn" style={{ background: '#f59e0b' }}></span>
                         <span className="terminal-dot-btn" style={{ background: '#10b981' }}></span>
                     </div>
-                    <span className="font-mono" style={{ fontSize: '0.82rem', color: '#f1f5f9', fontWeight: 700, letterSpacing: '0.3px' }}>
-                        kaleab@macbook-pro: ~/portfolio (zsh)
+                    {/* Colorful Syntax-Highlighted Prompt */}
+                    <span className="font-mono" style={{ fontSize: '0.84rem', letterSpacing: '0.3px', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        <span style={{ color: '#4ade80', fontWeight: 800 }}>kaleab</span>
+                        <span style={{ color: '#94a3b8' }}>@</span>
+                        <span style={{ color: '#38bdf8', fontWeight: 800 }}>macbook-pro</span>
+                        <span style={{ color: '#94a3b8' }}>:</span>
+                        <span style={{ color: '#c084fc', fontWeight: 700 }}>~/portfolio</span>
+                        <span style={{ color: '#fbbf24', fontWeight: 700, marginLeft: '4px' }}>(zsh)</span>
                     </span>
                 </div>
 
@@ -186,17 +195,17 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                             className="font-mono"
                             style={{
                                 background: item.bg,
-                                border: `1px solid ${item.border}`,
+                                border: '1px solid rgba(255,255,255,0.3)',
                                 color: item.text,
-                                padding: '4px 12px',
+                                padding: '5px 14px',
                                 borderRadius: '8px',
-                                fontSize: '0.80rem',
-                                fontWeight: 800,
+                                fontSize: '0.82rem',
+                                fontWeight: 900,
                                 cursor: 'pointer',
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '5px',
-                                boxShadow: `0 2px 10px ${item.bg}40`,
+                                gap: '6px',
+                                boxShadow: `0 3px 12px ${item.glow}`,
                                 transition: 'all 0.15s ease'
                             }}
                             title={`Run '$ ${item.cmd}'`}
@@ -233,7 +242,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                                             }}
                                             style={{
                                                 background: q.bg,
-                                                border: `1px solid ${q.border}`,
+                                                border: '1px solid rgba(255,255,255,0.3)',
                                                 color: q.text,
                                                 fontFamily: 'var(--font-mono)',
                                                 fontSize: '0.80rem',
@@ -244,7 +253,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
                                                 gap: '5px',
-                                                boxShadow: `0 2px 8px ${q.bg}40`
+                                                boxShadow: `0 2px 8px ${q.glow}`
                                             }}
                                         >
                                             {q.icon}
@@ -296,24 +305,25 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                                 <span style={{ color: '#ec4899', fontWeight: 700 }}>{item.text}</span>
                                 {[
-                                    { name: '1. Axumite Ride (Passenger & Driver App)', tag: 'Flutter • SignalR • Live Play Store', link: '#projects' },
-                                    { name: '2. Shemeta E-Commerce Platform', tag: 'React.js • Telebirr & Chapa • Live Demo', link: '#projects' },
-                                    { name: '3. AI Dermatologist Diagnostic App', tag: 'Flutter • TensorFlow Lite • Computer Vision', link: '#projects' },
-                                    { name: '4. Financial Document & Receipt OCR Pipeline', tag: 'FastAPI • Tesseract • OpenCV', link: '#projects' },
-                                    { name: '5. EthioBeds Accommodation SaaS', tag: 'React.js • Node.js • PostgreSQL', link: '#projects' }
+                                    { name: '1. Axumite Ride (Passenger & Driver App)', tag: 'Flutter • SignalR • Live Play Store' },
+                                    { name: '2. Shemeta E-Commerce Platform', tag: 'React.js • Telebirr & Chapa • Live Demo' },
+                                    { name: '3. AI Dermatologist Diagnostic App', tag: 'Flutter • TensorFlow Lite • Computer Vision' },
+                                    { name: '4. Financial Document & Receipt OCR Pipeline', tag: 'FastAPI • Tesseract • OpenCV' },
+                                    { name: '5. EthioBeds Accommodation SaaS', tag: 'React.js • Node.js • PostgreSQL' }
                                 ].map((p, pIdx) => (
-                                    <a
+                                    <div
                                         key={pIdx}
-                                        href={p.link}
                                         onClick={(e) => {
+                                            e.preventDefault();
                                             e.stopPropagation();
+                                            executeCommand(p.name.split(' ')[1]);
                                         }}
                                         style={{
                                             padding: '8px 12px',
                                             background: 'rgba(255,255,255,0.03)',
                                             border: '1px solid rgba(255,255,255,0.08)',
                                             borderRadius: '6px',
-                                            textDecoration: 'none',
+                                            cursor: 'pointer',
                                             display: 'flex',
                                             justifyContent: 'space-between',
                                             alignItems: 'center',
@@ -324,8 +334,8 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                                             <div style={{ fontWeight: 700, fontSize: '0.82rem' }}>{p.name}</div>
                                             <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>{p.tag}</div>
                                         </div>
-                                        <ArrowRight size={14} color="#06b6d4" />
-                                    </a>
+                                        <Code size={14} color="#06b6d4" />
+                                    </div>
                                 ))}
                             </div>
                         )}
@@ -363,6 +373,7 @@ Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
                     }}
                 />
                 <button
+                    type="button"
                     onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
