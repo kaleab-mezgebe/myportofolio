@@ -95,10 +95,11 @@ const SectionHeading = ({ children, subtitle, align = "center", badge = null }) 
 // Card Component
 const Card = ({ children, className = "", noPadding = false, delay = 0, style = {}, ...props }) => (
     <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.5, delay }}
+        initial={{ opacity: 0, y: 35, scale: 0.97 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }}
+        whileHover={{ y: -5, transition: { duration: 0.25 } }}
         className={`glass-card ${className}`}
         style={{
             padding: noPadding ? '0' : '32px',
@@ -818,10 +819,11 @@ const App = () => {
                     {filteredProjects.map((project, idx) => (
                         <motion.div
                             key={project.title}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: idx * 0.1 }}
+                            initial={{ opacity: 0, y: 50, scale: 0.97 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            viewport={{ once: true, amount: 0.15 }}
+                            transition={{ duration: 0.7, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                            whileHover={{ y: -6, transition: { duration: 0.3 } }}
                             className={`glass-card ${idx % 2 !== 0 ? 'alternate' : ''}`}
                             style={{ padding: '36px', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '40px', alignItems: 'center' }}
                         >
@@ -921,7 +923,9 @@ const App = () => {
 
                             {/* Project Preview Image */}
                             <div style={{ width: '100%', height: '360px', borderRadius: '20px', overflow: 'hidden', background: 'rgba(15, 23, 42, 0.6)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <img
+                                <motion.img
+                                    whileHover={{ scale: 1.05 }}
+                                    transition={{ duration: 0.4 }}
                                     src={project.image}
                                     alt={project.title}
                                     style={{

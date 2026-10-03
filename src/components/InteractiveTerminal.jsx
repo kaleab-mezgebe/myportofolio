@@ -85,7 +85,7 @@ export const InteractiveTerminal = ({ onTriggerToast }) => {
             newEntries.push({
                 type: 'success',
                 text: `🎉 Opening direct email draft to kaleabmezgebe4@gmail.com...
-Phone: +251 945989369 | Location: Addis Ababa, Ethiopia`
+Phone: +251 945989369 | Location: Mekelle, Tigray, Ethiopia`
             });
             setTimeout(() => {
                 window.location.href = 'mailto:kaleabmezgebe4@gmail.com?subject=Engineering%20Opportunity%20for%20Kaleab%20Mezgebe';
