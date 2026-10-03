@@ -284,9 +284,9 @@ const App = () => {
             result: "Successfully cataloged hundreds of historical sites with offline synchronization and zero data loss.",
             tags: ["Flutter", "Dart", "SQLite", "Offline-First", "GIS Mapping"],
             githubLink: "https://github.com/kaleab-mezgebe",
-            image: "./assets/ride.png",
+            image: "./assets/tcph.png",
             badge: "PUBLIC INSTITUTION CONTRACT",
-            isMobile: true
+            isWeb: true
         },
         {
             title: "EthioBeds — Hospitality & Booking Platform",
@@ -296,7 +296,7 @@ const App = () => {
             result: "Delivered unified guest booking journeys with automated booking confirmations and host management controls.",
             tags: ["React.js", "Node.js", "Tailwind CSS", "Chapa API", "PostgreSQL"],
             githubLink: "https://github.com/kaleab-mezgebe",
-            image: "./assets/shemeta.png",
+            image: "./assets/ethiobeds.png",
             badge: "SAAS PLATFORM",
             isWeb: true
         },
