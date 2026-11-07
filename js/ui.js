@@ -16,6 +16,7 @@ renderStatic();
 renderFlow();
 renderExperience();
 renderProjects();
+initProjectFilters();
 renderSofof();
 renderSkills();
 boot();
@@ -215,9 +216,12 @@ function renderExperience() {
   }));
 }
 
-function renderProjects() {
-  $('#project-grid').innerHTML = PROJECTS.map((p, i) => `
-    <div class="reveal" style="--d:${i * 90}ms">
+function renderProjects(category = 'all') {
+  const grid = $('#project-grid');
+  if (!grid) return;
+  const filtered = category === 'all' ? PROJECTS : PROJECTS.filter((p) => p.category === category);
+  grid.innerHTML = filtered.map((p, i) => `
+    <div class="reveal in" style="--d:${i * 70}ms">
       <article class="project panel frame tilt">
         <div class="win-bar"><i></i><i></i><i></i><span>~/projects/${esc(p.slug)}</span></div>
         ${p.image ? `<div class="project-img-wrap"><img src="${esc(p.image)}" alt="${esc(p.name)}" class="project-img" loading="lazy"></div>` : ''}
@@ -239,6 +243,19 @@ function renderProjects() {
         <div class="glare"></div>
       </article>
     </div>`).join('');
+  tilt();
+}
+
+function initProjectFilters() {
+  const container = $('#project-filters');
+  if (!container) return;
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    $$('.filter-btn', container).forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProjects(btn.dataset.filter);
+  });
 }
 
 function renderSofof() {

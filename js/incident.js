@@ -249,3 +249,4 @@ function init() {
 function y(ms) {
   return 220 - Math.min(5000, Math.max(0, ms)) / 5000 * 210;
 }
+

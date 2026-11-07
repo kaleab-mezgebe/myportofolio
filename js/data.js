@@ -445,3 +445,4 @@ export const ANALYTICS = {
   provider: null, // Privacy-first by default
   domains: ['kaleab-mezgebe.github.io'],
 };
+

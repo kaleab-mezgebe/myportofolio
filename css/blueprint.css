@@ -349,3 +349,34 @@ html[data-theme="blueprint"] .flow-step.active .step-card {
   border-radius: 2px;
   margin-left: 6px;
 }
+
+/* Project Category Filter Tabs */
+.project-filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  background: rgba(10, 22, 38, 0.7);
+  border: 1px solid var(--bp-line, rgba(207, 224, 247, 0.2));
+  color: var(--bp-ink, #cfe0f7);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.03em;
+}
+.filter-btn:hover {
+  border-color: var(--bp-accent, #ff8a3d);
+  color: #fff;
+  background: rgba(255, 138, 61, 0.08);
+}
+.filter-btn.active {
+  background: rgba(255, 138, 61, 0.16);
+  border-color: var(--bp-accent, #ff8a3d);
+  color: var(--bp-accent, #ff8a3d);
+  box-shadow: 0 0 12px rgba(255, 138, 61, 0.2);
+}
