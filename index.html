@@ -240,12 +240,24 @@
       </div>
     </section>
 
+    <!-- ───────────── ORIGIN: mobile & IoT ───────────── -->
+    <section id="origin" class="section" data-scene="origin">
+      <header class="sec-head reveal">
+        <p class="sec-tag">// origin — mobile to full-stack</p>
+        <h2>From gesture loops to <span class="grad">full-stack pipelines</span></h2>
+        <p class="sec-sub">Before building distributed backends and merchant portals, I started at the hardware-software
+          boundary — touch event loops, GPS tracking telemetry, and on-device neural inference.</p>
+      </header>
+      <div id="origin-app"></div>
+    </section>
+
     <!-- ───────────── FLOW: follow the request ───────────── -->
     <section id="flow" class="section flow" data-scene="flow">
       <header class="sec-head reveal">
-        <p class="sec-tag">// 02 — architecture</p>
-        <h2>Follow a <span class="grad">real-time request</span></h2>
-        <p class="sec-sub">One user tap through the stack — Flutter BLoC event, real-time SignalR stream, FastAPI validation, PostgreSQL query, Telebirr payment webhook, and live client response. Scroll to trace.</p>
+        <p class="sec-tag">// 02 — request lifecycle</p>
+        <h2>Follow a <span class="grad">mobile &amp; web request</span></h2>
+        <p class="sec-sub">One user tap through the stack — Flutter BLoC event, real-time SignalR packet, FastAPI
+          validation, PostgreSQL query, Telebirr payment webhook, and live client response. Scroll to trace.</p>
       </header>
       <div class="flow-layout">
         <div class="flow-stage" aria-hidden="true">
@@ -291,6 +303,19 @@
         </div>
       </header>
       <div id="project-grid" class="project-grid"></div>
+      <div id="sofof" class="sofof"></div>
+      <div id="notes" class="notes"></div>
+    </section>
+
+    <!-- ───────────── INCIDENT DRILL ───────────── -->
+    <section id="incident" class="section" data-scene="incident">
+      <header class="sec-head reveal">
+        <p class="sec-tag">// on-call drill</p>
+        <h2>Fix the <span class="grad">incident</span></h2>
+        <p class="sec-sub">A simulated production incident: surge in ride bookings and payment webhooks. Pick the right
+          engineering fixes — the live telemetry graph responds in real time.</p>
+      </header>
+      <div id="incident-app" class="reveal"></div>
     </section>
 
     <!-- ───────────── SKILLS ───────────── -->
@@ -381,6 +406,9 @@
   <script type="module" src="js/ui.js"></script>
   <script type="module" src="js/quick.js"></script>
   <script type="module" src="js/palette.js"></script>
+  <script type="module" src="js/incident.js"></script>
+  <script type="module" src="js/notes.js"></script>
+  <script type="module" src="js/origin.js"></script>
 </body>
 
 </html>
