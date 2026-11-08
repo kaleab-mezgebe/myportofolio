@@ -2,7 +2,7 @@
 //  UI layer — content rendering, terminal, micro-interactions.
 //  Kaleab Mezgebe — Frontend & Mobile Software Engineer
 // ─────────────────────────────────────────────────────────────
-import { PROFILE, EXPERIENCE, TEAM_COUNT, PROJECTS, SKILLS, SKILL_CATEGORIES, EDUCATION, ACHIEVEMENTS, FLOW, SOFOF_PROJECTS } from './data.js';
+import { PROFILE, EXPERIENCE, TEAM_COUNT, PROJECTS, SKILLS, SKILL_CATEGORIES, EDUCATION, ACHIEVEMENTS, FLOW } from './data.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -10,14 +10,13 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(pointer: fine)').matches;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const emit = (name, detail) => window.dispatchEvent(new CustomEvent(name, { detail }));
-const SECTION_IDS = ['hero', 'about', 'origin', 'flow', 'experience', 'projects', 'incident', 'skills', 'terminal', 'contact'];
+const SECTION_IDS = ['hero', 'about', 'flow', 'experience', 'projects', 'skills', 'terminal', 'contact'];
 
 renderStatic();
 renderFlow();
 renderExperience();
 renderProjects();
 initProjectFilters();
-renderSofof();
 renderSkills();
 boot();
 typeRoles();
@@ -258,21 +257,7 @@ function initProjectFilters() {
   });
 }
 
-function renderSofof() {
-  const el = $('#sofof');
-  if (!el || !SOFOF_PROJECTS.length) return;
-  el.innerHTML = `
-    <p class="sec-tag sofof-tag">// production enterprise deployments</p>
-    <div class="sofof-grid">
-      ${SOFOF_PROJECTS.map((p, i) => `
-        <article class="sofof-card panel reveal" style="--d:${i * 70}ms">
-          <p class="kicker">${esc(p.kicker)}</p>
-          <h3>${esc(p.name)}</h3>
-          <p class="desc">${esc(p.description)}</p>
-          <a class="sofof-link" href="${esc(p.url)}" target="_blank" rel="noopener" aria-label="Visit ${esc(p.name)}">${esc(p.url.replace(/^https?:\/\//, '').replace(/\/$/, ''))} ↗</a>
-        </article>`).join('')}
-    </div>`;
-}
+
 
 function renderSkills() {
   const groups = Object.entries(SKILL_CATEGORIES).map(([key, cat]) => {
@@ -712,7 +697,7 @@ function terminal() {
     echo: (...args) => [esc(args.join(' '))],
     clear: () => { out.innerHTML = ''; return []; },
     sudo: (arg) => {
-      if (arg === 'hire-kaleab' || arg === 'hire' || arg === 'hire-faruk') {
+      if (arg === 'hire-kaleab' || arg === 'hire') {
         setTimeout(() => { location.href = `mailto:${PROFILE.email}?subject=${encodeURIComponent("Engineering Opportunity for Kaleab Mezgebe")}`; }, 1600);
         return [
           ['[sudo] password for recruiter: ********', 'dim'],

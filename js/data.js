@@ -21,11 +21,10 @@ export const PROFILE = {
     'React.js & TypeScript Architect',
     'Real-time Systems Builder (SignalR)',
     'FinTech & Payment Gateway Integrator',
-    'Computer Vision & HealthTech Developer',
   ],
   summary:
-    'Frontend & Mobile Software Engineer with 5+ years of experience crafting high-performance mobile applications, ' +
-    'responsive web architectures, and real-time systems. Specialized in Flutter/Dart, React.js, TypeScript, BLoC pattern, ' +
+    'Frontend & Mobile Software Engineer with 5+ years of experience engineering high-performance mobile apps, ' +
+    'reactive web platforms, and real-time systems. Specialized in Flutter/Dart, React.js, TypeScript, BLoC architecture, ' +
     'SignalR stream synchronization, and payment integrations with Telebirr and Chapa. ' +
     'Graduated with Academic Honors from Mekelle Institute of Technology (MIT) with a 3.88 / 4.00 CGPA.',
 };
@@ -40,11 +39,10 @@ export const EXPERIENCE = [
     type: 'Full-time',
     current: true,
     points: [
-      'Architect and build cross-platform mobile apps using Flutter and responsive web dashboards using React.js and TypeScript.',
-      'Integrated real-time SignalR hubs and Google Maps SDK navigation for live driver GPS tracking and instantaneous ride matching.',
+      'Architect and build production cross-platform mobile apps in Flutter and high-throughput web dashboards in React.js and TypeScript.',
+      'Integrated real-time SignalR hubs and Google Maps SDK for live GPS fleet tracking and sub-second ride dispatch.',
       'Engineered automated payment settlement pipelines with Telebirr and Chapa gateways for high-volume consumer transactions.',
-      'Standardized BLoC architecture for unidirectional data flow, ensuring 60 FPS mobile UI performance across diverse Android/iOS devices.',
-      'Developed high-throughput merchant portals with live order alerts, automated inventory sync, and financial analytics.',
+      'Standardized BLoC state architecture for predictable unidirectional data flow, locking mobile UI performance at 60 FPS.',
     ],
     stack: ['Flutter', 'Dart', 'React.js', 'TypeScript', 'BLoC', 'SignalR', 'Telebirr & Chapa', 'PostgreSQL', 'Tailwind CSS'],
     products: ['Axumite Ride (Play Store)', 'Shemeta E-Commerce'],
@@ -58,27 +56,25 @@ export const EXPERIENCE = [
     type: 'Full-time',
     current: false,
     points: [
-      'Developed modular, reusable UI components in React.js and integrated them with high-throughput backend RESTful APIs.',
-      'Built and documented CRUD endpoints using FastAPI and PostgreSQL with comprehensive automated Postman test coverage.',
-      'Refactored client-side state caching and API query bindings, eliminating redundant network round-trips.',
-      'Partnered with product designers to ship modern responsive user interfaces with smooth micro-interactions and accessibility.',
+      'Developed modular, reusable UI components in React.js and integrated client bindings for high-throughput business portals.',
+      'Engineered and documented RESTful CRUD services using FastAPI and PostgreSQL with automated Postman test suites.',
+      'Refactored client-side data caching and query states, eliminating redundant network calls across user sessions.',
     ],
     stack: ['React.js', 'JavaScript', 'Flutter', 'FastAPI', 'PostgreSQL', 'Postman', 'Git'],
-    products: ['EthioBeds Hospitality', 'Hdyat Marketplace'],
+    products: ['EthioBeds SaaS', 'Hdyat Marketplace'],
   },
   {
     company: 'Tigray Culture & Tourism Bureau',
-    role: 'Remote Mobile Application Developer',
+    role: 'Mobile Application Developer',
     period: 'Jan 2024 — Jun 2024',
     location: 'Mekelle, Ethiopia',
     mode: 'Remote',
     type: 'Contract',
     current: false,
     points: [
-      'Architected and delivered the cross-platform TCPH Flutter application for cultural heritage cataloging and spatial documentation.',
-      'Engineered offline-first local database caching using Hive and SQLite to enable uninterrupted field operation in remote locations without internet.',
-      'Implemented automated two-way conflict-free sync pipelines that bulk-upload queued monument data once connectivity is restored.',
-      'Optimized camera image processing, EXIF metadata extraction, and precision GPS coordinates tagging directly on device.',
+      'Architected and delivered the cross-platform TCPH Flutter application for heritage cataloging and spatial GPS mapping.',
+      'Engineered offline-first local database caching using Hive and SQLite for continuous operation in remote regions.',
+      'Implemented automated two-way conflict-free sync pipelines that bulk-upload queued monument data upon network reconnection.',
     ],
     stack: ['Flutter', 'Dart', 'Hive / SQLite', 'REST APIs', 'Offline-First Sync', 'Git'],
     products: ['TCPH Mobile Hub'],
@@ -91,18 +87,18 @@ export const PROJECTS = [
   {
     name: 'Axumite Ride — Passenger & Driver Mobile App',
     slug: 'axumite-ride',
-    kicker: 'Mobile App · Real-Time Ride Hailing',
+    kicker: 'Mobile App · Live Fleet Tracking',
     url: 'https://play.google.com/store/apps/details?id=com.axumite.customer&hl=en_US',
     driverUrl: 'https://play.google.com/store/apps/details?id=com.axumite.partner&hl=en_US',
     github: 'https://github.com/kaleab-mezgebe',
     image: 'assets/ride.png',
-    badge: 'PRODUCTION GOOGLE PLAY STORE',
+    badge: 'GOOGLE PLAY STORE',
     category: 'mobile',
     description:
-      'Cross-platform passenger and partner driver applications built with Flutter and BLoC state architecture, featuring live SignalR GPS fleet tracking and sub-second ride dispatch.',
+      'Cross-platform passenger and driver apps built with Flutter, BLoC, and real-time SignalR GPS fleet synchronization with sub-second dispatch.',
     highlights: [
-      'Deployed on Google Play Store with thousands of active completed rides',
-      'Sub-second SignalR live GPS tracking and route streaming',
+      'Live on Google Play Store with thousands of completed rides',
+      'Real-time driver location updates & polyline map routing',
       'Telebirr & Chapa automated fare settlement workflows',
     ],
     stack: ['Flutter', 'Dart', 'BLoC', 'SignalR', 'Google Maps SDK', 'Play Store'],
@@ -110,7 +106,7 @@ export const PROJECTS = [
   {
     name: 'Shemeta E-Commerce — Multi-Vendor Platform',
     slug: 'shemeta-ecommerce',
-    kicker: 'Web Platform · Multi-Vendor Commerce',
+    kicker: 'Web Platform · Digital Commerce',
     url: 'https://nicom.dev.niyatconsultancy.com/en',
     github: 'https://github.com/kaleab-mezgebe',
     image: 'assets/shemeta.png',
@@ -121,7 +117,7 @@ export const PROJECTS = [
     highlights: [
       'Multi-vendor order management & merchant digital wallets',
       'Sub-second page transitions & dynamic catalog discovery',
-      'Telebirr & Chapa payment checkout integration',
+      'Telebirr & Chapa checkout flows with instant webhook confirmation',
     ],
     stack: ['React.js', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Telebirr & Chapa'],
   },
@@ -132,14 +128,14 @@ export const PROJECTS = [
     url: 'https://github.com/kaleab-mezgebe/AI-Dermatologist',
     github: 'https://github.com/kaleab-mezgebe/AI-Dermatologist',
     image: 'assets/ai.png',
-    badge: 'AI & HEALTHTECH APP',
+    badge: 'ON-DEVICE AI INFERENCE',
     category: 'ai',
     description:
-      'Cross-platform diagnostic health application with on-device computer vision models (TensorFlow Lite) and cloud triage assessment for remote clinical screening.',
+      'Cross-platform diagnostic health application with on-device computer vision models (TensorFlow Lite) and cloud triage assessment for clinical screening.',
     highlights: [
-      'On-device TensorFlow Lite inference with offline triage',
-      'Instant lesion probability breakdown & confidence scores',
-      'Structured clinical recommendation reporting & PDF export',
+      'On-device TensorFlow Lite neural model with offline diagnostic capability',
+      'Lesion probability breakdown, confidence scoring & structured clinical reports',
+      'Zero-latency edge processing protecting patient privacy',
     ],
     stack: ['Flutter', 'Dart', 'TensorFlow Lite', 'Computer Vision', 'REST APIs'],
   },
@@ -153,11 +149,11 @@ export const PROJECTS = [
     badge: 'AI RECEIPT OCR ENGINE',
     category: 'ai',
     description:
-      'Mobile and web financial parsing application transforming paper receipts, invoices, and bank slips into structured ledger records using OCR & computer vision.',
+      'Financial parsing application converting paper receipts, invoices, and bank slips into structured ledger records using OCR & computer vision.',
     highlights: [
-      'Automated optical character recognition (OCR) parsing',
-      'Line-item extraction & tax calculation',
-      'Export to Excel, CSV & accounting APIs',
+      'Automated optical character recognition (OCR) parsing pipeline',
+      'Line-item extraction, tax calculation & currency normalization',
+      'Direct export to Excel, CSV, and accounting REST APIs',
     ],
     stack: ['Flutter', 'Python', 'FastAPI', 'OCR Engine', 'PostgreSQL'],
   },
@@ -173,8 +169,8 @@ export const PROJECTS = [
     description:
       'Hospitality booking and property management platform connecting travelers with verified accommodations, featuring interactive map search and real-time room availability.',
     highlights: [
-      'Live production booking engine across Ethiopia',
-      'Interactive map search & availability calendars',
+      'Live production booking engine with dynamic property calendars',
+      'Interactive geospatial hotel search & room category filters',
       'Chapa & Telebirr secure payment processing',
     ],
     stack: ['React.js', 'TypeScript', 'Tailwind CSS', 'Chapa API', 'PostgreSQL'],
@@ -191,9 +187,9 @@ export const PROJECTS = [
     description:
       'Pixel-perfect replication of Commercial Bank of Ethiopia mobile banking in Flutter with high-fidelity animations, balance conceal toggles, and fluid transaction flows.',
     highlights: [
-      'Fluid 60 FPS micro-interactions & custom animations',
-      'Secure visual balance toggles & PIN pad simulation',
-      'Modular Flutter component architecture',
+      'Fluid 60 FPS micro-interactions, spring curves & custom transitions',
+      'Secure balance concealment & custom cryptographic PIN keypad',
+      'Modular clean architecture with separation of UI, domain, and state',
     ],
     stack: ['Flutter', 'Dart', 'FinTech UI', 'State Management', 'Micro-Animations'],
   },
@@ -209,9 +205,9 @@ export const PROJECTS = [
     description:
       'Cross-platform field documentation app built for the Tigray Culture & Tourism Bureau with offline SQLite caching and spatial GPS coordinates recording.',
     highlights: [
-      'Offline-first field documentation with Hive & SQLite',
-      'GPS coordinates tagging & metadata photo capture',
-      'Bulk cloud synchronization when back online',
+      'Offline-first field documentation with Hive & SQLite databases',
+      'GPS coordinates tagging, camera integration & EXIF metadata extraction',
+      'Automated background queue that syncs to cloud upon network reconnection',
     ],
     stack: ['Flutter', 'Dart', 'Hive / SQLite', 'GPS SDK', 'Offline-First'],
   },
@@ -227,9 +223,9 @@ export const PROJECTS = [
     description:
       'Digital marketplace connecting traditional Ethiopian weavers, Habesha Kemis artisans, and cultural craftsmakers with local and diaspora buyers worldwide.',
     highlights: [
-      'Custom size measurement & tailoring builder',
-      'Multi-currency pricing (ETB & USD)',
-      'Merchant inventory management portal',
+      'Interactive custom tailoring and sizing configuration tool',
+      'Multi-currency pricing (ETB & USD) with localized payment gateways',
+      'Merchant inventory and order fulfillment management portal',
     ],
     stack: ['React.js', 'Tailwind CSS', 'Node.js', 'Chapa Gateway', 'MongoDB'],
   },
@@ -245,26 +241,11 @@ export const PROJECTS = [
     description:
       'Centralized organization management system streamlining membership registration, regional chapter activities, dues tracking, and event attendance.',
     highlights: [
-      'Automated digital ID card generator with QR codes',
-      'Role-based access control (RBAC) across regional hubs',
-      'Real-time participation statistics & reporting',
+      'Automated digital member ID card generator with QR codes',
+      'Role-based access control (RBAC) across regional chapter directors',
+      'Real-time operational dashboard with member attendance metrics',
     ],
     stack: ['React.js', 'FastAPI', 'PostgreSQL', 'QR Code SDK', 'Docker'],
-  },
-];
-
-export const SOFOF_PROJECTS = [
-  {
-    name: 'Axumite Partner Driver App',
-    kicker: 'Real-time driver dispatch',
-    url: 'https://play.google.com/store/apps/details?id=com.axumite.partner&hl=en_US',
-    description: 'Driver fleet management app with automated fare calculation, turn-by-turn navigation, and live daily earnings tracker.',
-  },
-  {
-    name: 'Shemeta Vendor Administration',
-    kicker: 'E-commerce merchant portal',
-    url: 'https://nicom.dev.niyatconsultancy.com/en',
-    description: 'Multi-vendor administrative suite with CSV bulk product catalog imports, order fulfillment tracking, and payout ledger.',
   },
 ];
 
@@ -273,14 +254,14 @@ export const SKILL_CATEGORIES = {
   frontend: { label: 'Frontend & Web', color: '#39ff88' },
   backend: { label: 'Backend & Real-Time', color: '#ffb800' },
   data: { label: 'Databases & Storage', color: '#ff2bd6' },
-  ai: { label: 'AI & HealthTech', color: '#9d8cff' },
+  ai: { label: 'AI & Tools', color: '#9d8cff' },
   craft: { label: 'Architecture & CI/CD', color: '#ff7a59' },
 };
 
 // node: true → appears as an interactive 3D node in the Three.js mesh
 export const SKILLS = [
-  { label: 'Flutter', cat: 'mobile', node: true, info: 'Primary mobile framework since 2021 — production apps on Google Play Store with thousands of rides.' },
-  { label: 'Dart', cat: 'mobile', node: true, info: 'Language for all mobile apps — asynchronous streams, isolates, and clean object-oriented architecture.' },
+  { label: 'Flutter', cat: 'mobile', node: true, info: 'Primary mobile framework since 2021 — production apps on Google Play Store with thousands of active rides.' },
+  { label: 'Dart', cat: 'mobile', node: true, info: 'Language for all mobile apps — async streams, isolates, and clean object-oriented architecture.' },
   { label: 'BLoC Pattern', cat: 'mobile', node: true, info: 'State management choice for predictable unidirectional data flow and 60 FPS mobile UI.' },
   { label: 'Google Maps SDK', cat: 'mobile', node: true, info: 'Live geospatial tracking, polyline route calculation, and driver location updates.' },
   { label: 'React.js', cat: 'frontend', node: true, info: 'Core web UI framework for dashboards, admin portals, and multi-vendor e-commerce platforms.' },
@@ -384,65 +365,7 @@ export const HIGHLIGHTS = [
   '5+ years engineering high-performance mobile apps (Flutter/Dart) and responsive web applications (React/TypeScript).',
 ];
 
-export const ARTICLES = [
-  {
-    platform: 'LinkedIn',
-    title: 'Architecting 60 FPS Micro-Interactions in Mobile FinTech with Flutter & BLoC',
-    summary:
-      'How we structured unidirectional state management, cached state deltas, and eliminated animation stutter across high-security financial user flows.',
-    url: 'https://www.linkedin.com/posts/kaleab-mezgebe-764a56198_cbe-birr-app-clone-in-flutter-practice-activity-7410324964827987968-PKSr',
-    tags: ['Flutter', 'BLoC', 'FinTech', 'Performance', 'Dart'],
-  },
-];
-
-export const ORIGIN_PATH = [
-  { year: '2018', label: 'MIT IT Foundations', sub: 'Mekelle Institute of Technology' },
-  { year: '2022', label: 'Mobile Engineering', sub: 'Flutter, Dart & BLoC' },
-  { year: '2024', label: 'Offline Systems & AI', sub: 'Tigray Bureau & AI HealthTech' },
-  { year: '2025', label: 'Full-Stack & Real-Time', sub: 'Niyat Consultancy PLC' },
-];
-
-export const ORIGIN = [
-  {
-    id: 'line',
-    name: 'Mobile Gesture Engine',
-    badge: 'Fluid 60 FPS Micro-Interactions',
-    what: 'Capacitive touch stream reads user finger trajectories at 120 Hz; a feedback loop recalculates physics curves continuously to deliver fluid spring animations.',
-    from: 'Touch feedback loop',
-    to: 'Responsive state streams & UI reactivity',
-    tags: ['touch sensors', 'gesture physics', 'spring curves'],
-  },
-  {
-    id: 'sumo',
-    name: 'Real-Time GPS Fleet Tracking',
-    badge: 'Axumite Ride Telemetry',
-    what: 'Device GPS reads coordinates every second; state engine validates velocity, snaps to road networks, and broadcasts live positions to nearby riders.',
-    from: 'Geospatial coordinate loop',
-    to: 'SignalR real-time stream synchronization',
-    tags: ['GPS tracking', 'SignalR', 'geospatial routing'],
-  },
-  {
-    id: 'voice',
-    name: 'On-Device AI Inference',
-    badge: 'TensorFlow Lite HealthTech',
-    what: 'Camera image is quantized, normalized, and evaluated through a mobile neural net with zero cloud latency and full offline privacy.',
-    from: 'Camera frame → tensor → classification',
-    to: 'Mobile-first edge compute & offline triage',
-    tags: ['computer vision', 'TensorFlow Lite', 'offline triage'],
-  },
-  {
-    id: 'rover',
-    name: 'High-Fidelity FinTech Engine',
-    badge: 'CBEBirr & Payment Gateways',
-    what: 'Secure balance concealment, cryptographic PIN pad keypad entry, and idempotent Telebirr/Chapa checkout orchestration.',
-    from: 'Cryptographic input & wallet reconciliation',
-    to: 'Zero-error financial transaction pipelines',
-    tags: ['FinTech UI', 'Telebirr & Chapa', 'idempotency'],
-  },
-];
-
 export const ANALYTICS = {
-  provider: null, // Privacy-first by default
+  provider: null,
   domains: ['kaleab-mezgebe.github.io'],
 };
-

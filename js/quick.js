@@ -1,9 +1,8 @@
 // ─────────────────────────────────────────────────────────────
 //  Quick view — a 30-second recruiter summary.
-//  Opens from the nav, the hero, ⌘K, or a shareable ?view=quick link.
-//  Printing the site always prints this summary (a résumé on demand).
+//  Kaleab Mezgebe — Frontend & Mobile Software Engineer
 // ─────────────────────────────────────────────────────────────
-import { PROFILE, EXPERIENCE, PROJECTS, SKILLS, SKILL_CATEGORIES, EDUCATION, HIGHLIGHTS, ORIGIN, SOFOF_PROJECTS } from './data.js';
+import { PROFILE, EXPERIENCE, PROJECTS, SKILLS, SKILL_CATEGORIES, EDUCATION, HIGHLIGHTS } from './data.js';
 import { track } from './analytics.js';
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -14,11 +13,9 @@ let lastFocus = null;
 if (panel) init();
 
 function init() {
-  const roleLine = EXPERIENCE[0].roles
-    ? `${EXPERIENCE[0].roles.map((r) => r.title).join(' & ')} · ${EXPERIENCE[0].company}`
-    : `${EXPERIENCE[0].role} · ${EXPERIENCE[0].company}`;
+  const roleLine = `${EXPERIENCE[0].role} · ${EXPERIENCE[0].company}`;
 
-  const skillRows = ['backend', 'data', 'infra', 'frontend', 'lang', 'lead']
+  const skillRows = ['mobile', 'frontend', 'backend', 'data', 'ai', 'craft']
     .filter((k) => SKILL_CATEGORIES[k])
     .map((k) => `<tr><th>${esc(SKILL_CATEGORIES[k].label)}</th><td>${SKILLS.filter((s) => s.cat === k).map((s) => esc(s.label)).join(' · ')}</td></tr>`)
     .join('');
@@ -36,7 +33,7 @@ function init() {
         <div>
           <h1 id="quick-title">${esc(PROFILE.name)}</h1>
           <p class="q-role">${esc(roleLine)}</p>
-          <p class="q-meta">${esc(PROFILE.location)} · 5+ years · backend, microservices, databases, real-time systems</p>
+          <p class="q-meta">${esc(PROFILE.location)} · 5+ years · Flutter, React, TypeScript, SignalR</p>
         </div>
         <ul class="q-contact">
           <li><a href="mailto:${esc(PROFILE.email)}">${esc(PROFILE.email)}</a></li>
@@ -47,7 +44,7 @@ function init() {
 
       <section>
         <h2>Highlights</h2>
-        <ul class="q-highlights">${HIGHLIGHTS.map((h) => `<li>${h}</li>`).join('')}</ul>
+        <ul class="q-highlights">${HIGHLIGHTS.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
       </section>
 
       <section>
@@ -55,27 +52,26 @@ function init() {
         <table class="q-exp">
           ${EXPERIENCE.map((j) => `
             <tr>
-              <td><b>${esc(j.roles ? j.roles.map((r) => r.title).join(' & ') : j.role)}</b> · ${esc(j.company)}<span>${esc(j.location)}</span></td>
+              <td><b>${esc(j.role)}</b> · ${esc(j.company)}<span>${esc(j.location)}</span></td>
               <td class="q-date">${esc(j.period)}</td>
             </tr>`).join('')}
         </table>
       </section>
 
       <section>
-        <h2>Skills</h2>
+        <h2>Technical Stack</h2>
         <table class="q-skills">${skillRows}</table>
       </section>
 
       <div class="q-two">
         <section>
-          <h2>Projects</h2>
-          <ul class="q-projects">${PROJECTS.map((p) => `<li><b>${esc(p.name)}</b> — ${esc(p.kicker)} · <a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.url.replace(/^https?:\/\//, ''))}</a></li>`).join('')}
-            <li><b>At SOFOF Tech</b> — ${SOFOF_PROJECTS.map((p) => `<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.name)}</a>`).join(' · ')}</li></ul>
+          <h2>Featured Projects</h2>
+          <ul class="q-projects">${PROJECTS.slice(0, 5).map((p) => `<li><b>${esc(p.name)}</b> — ${esc(p.kicker)} · <a href="${esc(p.url)}" target="_blank" rel="noopener">Link ↗</a></li>`).join('')}</ul>
         </section>
         <section>
-          <h2>Education</h2>
+          <h2>Education & Honors</h2>
           <p><b>${esc(EDUCATION.degree)}</b><br>${esc(EDUCATION.school)} · ${esc(EDUCATION.period)}</p>
-          <p class="q-origin"><b>Robotics & IoT:</b> ${ORIGIN.map((r) => esc(r.name)).join(', ')} — Robolution 2018 finalist.</p>
+          <p class="q-origin"><b>Academic Honors:</b> CGPA ${esc(EDUCATION.gpa)} · National Exit Exam: ${esc(EDUCATION.exitExam)}.</p>
         </section>
       </div>
     </article>`;

@@ -1,5 +1,6 @@
 // ─────────────────────────────────────────────────────────────
 //  Command palette — ⌘K / Ctrl+K anywhere, or the nav button.
+//  Kaleab Mezgebe — Frontend & Mobile Software Engineer
 // ─────────────────────────────────────────────────────────────
 import { PROFILE } from './data.js';
 
@@ -11,6 +12,17 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
 const openUrl = (url) => window.open(url, '_blank', 'noopener');
 
+const copyEmail = () => {
+  navigator.clipboard?.writeText(PROFILE.email).then(() => {
+    const el = document.getElementById('toast');
+    if (el) {
+      el.textContent = 'Copied email to clipboard: ' + PROFILE.email;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2200);
+    }
+  });
+};
+
 const COMMANDS = [
   { group: 'Do', label: 'Quick view — 30-second summary', hint: 'recruiters', run: () => emit('quick:open') },
   { group: 'Do', label: 'Print / save summary as PDF', hint: 'résumé', run: () => emit('quick:print') },
@@ -18,12 +30,11 @@ const COMMANDS = [
   { group: 'Do', label: 'Email Kaleab', hint: 'mailto', run: () => { location.href = `mailto:${PROFILE.email}`; } },
   { group: 'Do', label: 'Open LinkedIn', hint: 'in/' + PROFILE.linkedinHandle, run: () => openUrl(PROFILE.linkedin) },
   { group: 'Do', label: 'Open GitHub', hint: PROFILE.githubHandle, run: () => openUrl(PROFILE.github) },
-  { group: 'Do', label: 'Start the incident drill', hint: 'on-call', run: () => go('incident') },
-  { group: 'Do', label: 'Broadcast to all services', hint: '3D', run: () => { go('hero'); setTimeout(() => emit('scene:broadcast'), 500); } },
-  { group: 'Do', label: 'Open the terminal', hint: 'shell', run: () => { go('terminal'); setTimeout(() => document.getElementById('term-input')?.focus({ preventScroll: true }), 600); } },
+  { group: 'Do', label: 'Broadcast packets to 3D mesh', hint: '3D', run: () => { go('hero'); setTimeout(() => emit('scene:broadcast'), 500); } },
+  { group: 'Do', label: 'Open interactive terminal', hint: 'shell', run: () => { go('terminal'); setTimeout(() => document.getElementById('term-input')?.focus({ preventScroll: true }), 600); } },
   ...[
-    ['hero', 'Home'], ['about', 'About'], ['origin', 'Origin — robotics & IoT'], ['flow', 'Follow a request'], ['experience', 'Experience'],
-    ['projects', 'Projects & writing'], ['incident', 'Fix the incident'], ['skills', 'Tech stack'],
+    ['hero', 'Home'], ['about', 'About'], ['flow', 'Request Architecture'], ['experience', 'Experience'],
+    ['projects', 'Projects'], ['skills', 'Tech Stack'],
     ['terminal', 'Terminal'], ['contact', 'Contact'],
   ].map(([id, label]) => ({ group: 'Go to', label, hint: `#${id}`, run: () => go(id) })),
 ];
@@ -40,99 +51,104 @@ function init() {
           role="combobox" aria-expanded="true" aria-controls="pal-list" aria-autocomplete="list">
         <kbd>esc</kbd>
       </div>
-      <ul id="pal-list" class="pal-list" role="listbox"></ul>
-      <p class="pal-foot"><kbd>↑</kbd><kbd>↓</kbd> navigate · <kbd>↵</kbd> run · <kbd>esc</kbd> close</p>
+      <div class="pal-list" id="pal-list" role="listbox"></div>
+      <div class="pal-foot">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> select</span>
+        <span><kbd>esc</kbd> close</span>
+      </div>
     </div>`;
 
   const input = root.querySelector('#pal-q');
   const list = root.querySelector('#pal-list');
-  let items = [];
-  let sel = 0;
-  let lastFocus = null;
+  let filtered = [...COMMANDS];
+  let activeIdx = 0;
 
-  const score = (q, text) => {
-    // subsequence match: every typed char appears in order
-    q = q.toLowerCase(); text = text.toLowerCase();
-    if (!q) return 1;
-    if (text.includes(q)) return 3;
-    let i = 0;
-    for (const ch of text) if (ch === q[i]) i++;
-    return i === q.length ? 1 : 0;
-  };
-
-  const draw = () => {
-    const q = input.value.trim();
-    items = COMMANDS
-      .map((c) => ({ c, s: score(q, `${c.label} ${c.hint} ${c.group}`) }))
-      .filter((x) => x.s > 0)
-      .sort((a, b) => b.s - a.s)
-      .map((x) => x.c);
-    sel = Math.min(sel, Math.max(0, items.length - 1));
-    let group = '';
-    list.innerHTML = items.length
-      ? items.map((c, i) => {
-        const head = c.group !== group ? `<li class="pal-group" role="presentation">${esc((group = c.group))}</li>` : '';
-        return `${head}<li role="option" id="pal-${i}" data-i="${i}" class="pal-item${i === sel ? ' sel' : ''}" aria-selected="${i === sel}">
-          <span>${esc(c.label)}</span><small>${esc(c.hint)}</small></li>`;
-      }).join('')
-      : '<li class="pal-empty">No matches — try “linkedin”, “pdf” or “incident”.</li>';
-    input.setAttribute('aria-activedescendant', items.length ? `pal-${sel}` : '');
-    list.querySelector('.sel')?.scrollIntoView({ block: 'nearest' });
+  const render = () => {
+    if (!filtered.length) {
+      list.innerHTML = '<p class="pal-empty">No matching commands.</p>';
+      return;
+    }
+    let currentGroup = '';
+    list.innerHTML = filtered.map((c, i) => {
+      let head = '';
+      if (c.group !== currentGroup) {
+        currentGroup = c.group;
+        head = `<div class="pal-group" role="presentation">${esc(currentGroup)}</div>`;
+      }
+      return `${head}
+        <button type="button" class="pal-item${i === activeIdx ? ' active' : ''}" role="option" aria-selected="${i === activeIdx}" data-i="${i}">
+          <span>${esc(c.label)}</span>
+          ${c.hint ? `<span class="pal-hint">${esc(c.hint)}</span>` : ''}
+        </button>`;
+    }).join('');
+    list.querySelector('.pal-item.active')?.scrollIntoView({ block: 'nearest' });
   };
 
-  const open = () => {
-    if (!root.hidden) return;
-    lastFocus = document.activeElement;
-    root.hidden = false;
-    input.value = '';
-    sel = 0;
-    draw();
-    input.focus();
-  };
-  const close = () => {
-    if (root.hidden) return;
-    root.hidden = true;
-    lastFocus?.focus?.({ preventScroll: true });
-  };
-  const run = (i) => {
-    const c = items[i];
+  const execute = (idx) => {
+    const c = filtered[idx];
     if (!c) return;
     close();
     c.run();
   };
 
-  input.addEventListener('input', () => { sel = 0; draw(); });
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown') { e.preventDefault(); sel = (sel + 1) % Math.max(1, items.length); draw(); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); sel = (sel - 1 + items.length) % Math.max(1, items.length); draw(); }
-    else if (e.key === 'Enter') { e.preventDefault(); run(sel); }
-    else if (e.key === 'Escape') { e.preventDefault(); close(); }
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    filtered = q
+      ? COMMANDS.filter((c) => c.label.toLowerCase().includes(q) || c.hint?.toLowerCase().includes(q) || c.group.toLowerCase().includes(q))
+      : [...COMMANDS];
+    activeIdx = 0;
+    render();
   });
-  list.addEventListener('mousemove', (e) => {
-    const li = e.target.closest('.pal-item');
-    if (li && +li.dataset.i !== sel) { sel = +li.dataset.i; draw(); }
-  });
-  list.addEventListener('click', (e) => {
-    const li = e.target.closest('.pal-item');
-    if (li) run(+li.dataset.i);
-  });
-  root.querySelector('[data-close]').addEventListener('click', close);
 
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIdx = (activeIdx + 1) % (filtered.length || 1);
+      render();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIdx = (activeIdx - 1 + (filtered.length || 1)) % (filtered.length || 1);
+      render();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      execute(activeIdx);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      close();
+    }
+  });
+
+  list.addEventListener('click', (e) => {
+    const btn = e.target.closest('.pal-item');
+    if (btn) execute(Number(btn.dataset.i));
+  });
+
+  root.addEventListener('click', (e) => {
+    if (e.target.hasAttribute('data-close') || e.target === root) close();
+  });
+
+  document.querySelectorAll('[data-palette-open]').forEach((b) => b.addEventListener('click', open));
   addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
-      if (root.hidden) open(); else close();
+      root.hidden ? open() : close();
     }
   });
-  document.querySelectorAll('[data-palette-open]').forEach((b) => b.addEventListener('click', open));
-  addEventListener('palette:open', open);
 }
 
-async function copyEmail() {
-  try {
-    await navigator.clipboard.writeText(PROFILE.email);
-    emit('ui:toast', `copied → ${PROFILE.email}`);
-  } catch {
-    emit('ui:toast', PROFILE.email);
-  }
+function open() {
+  if (!root.hidden) return;
+  root.hidden = false;
+  document.body.classList.add('pal-open');
+  const input = root.querySelector('#pal-q');
+  input.value = '';
+  input.dispatchEvent(new Event('input'));
+  input.focus();
+}
+
+function close() {
+  if (root.hidden) return;
+  root.hidden = true;
+  document.body.classList.remove('pal-open');
 }

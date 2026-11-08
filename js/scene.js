@@ -19,11 +19,9 @@ import { createPipeline } from './pipeline.js';
 const KEYFRAMES = {
   hero:       { nx: 0.44,  ny: 0,     my: 0.7,  z: 0,  s: 1.0,  l: 1, p: 0, ms: 1 },
   about:      { nx: -0.55, ny: 0.05,  my: 0,    z: -5, s: 0.8,  l: 0, p: 0, ms: 0 },
-  origin:     { nx: 0.78,  ny: 0.6,   my: 0,    z: -14, s: 0.45, l: 0, p: 0, ms: 0 },
   flow:       { nx: 1.6,   ny: 0.1,   my: 0,    z: -20, s: 0.01, l: 0, p: 1, ms: 0 },
   experience: { nx: 0.62,  ny: -0.05, my: 0,    z: -7, s: 0.75, l: 0, p: 0, ms: 0 },
   projects:   { nx: 0,     ny: 0.1,   my: 0,    z: -9, s: 0.9,  l: 0, p: 0, ms: 0 },
-  incident:   { nx: 0.62,  ny: 0.62,  my: 0,    z: -12, s: 0.5,  l: 0, p: 0, ms: 0 },
   skills:     { nx: -0.47, ny: -0.2,  my: 0,    z: 0,  s: 0.84, l: 1, p: 0, ms: 0 },
   terminal:   { nx: 0.6,   ny: -0.05, my: 0,    z: -5, s: 0.8,  l: 0, p: 0, ms: 0 },
   contact:    { nx: 0,     ny: -0.95, my: -0.8, z: -3, s: 1.25, l: 0, p: 0, ms: 0 },

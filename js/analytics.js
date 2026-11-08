@@ -75,7 +75,7 @@ if (enabled) {
 }
 
 // ── section views: the denominator for "saw it" vs "used it" ──
-const WATCH = { origin: 'robotics', notes: 'notebook', incident: 'incident_drill', flow: 'request_flow' };
+const WATCH = { flow: 'request_flow', experience: 'experience', projects: 'projects', skills: 'skills', terminal: 'terminal', contact: 'contact' };
 const io = new IntersectionObserver((entries) => {
   entries.forEach((e) => {
     if (!e.isIntersecting) return;
