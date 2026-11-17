@@ -1,11 +1,11 @@
 // ─────────────────────────────────────────────────────────────
 //  Single source of truth for portfolio content.
-//  Kaleab Mezgebe — Frontend & Mobile Software Engineer
+//  Kaleab Mezgebe — Mobile App Developer (Flutter & Dart)
 // ─────────────────────────────────────────────────────────────
 
 export const PROFILE = {
   name: 'Kaleab Mezgebe',
-  title: 'Frontend & Mobile Software Engineer',
+  title: 'Mobile App Developer (Flutter & Dart)',
   company: 'Niyat Consultancy PLC',
   location: 'Addis Ababa & Mekelle, Ethiopia',
   email: 'kaleabmezgebe4@gmail.com',
@@ -16,35 +16,35 @@ export const PROFILE = {
   linkedinHandle: 'kaleab-mezgebe-764a56198',
   resume: 'assets/Kaleab_Mezgebe_CV.pdf',
   roles: [
-    'Frontend & Mobile Software Engineer',
-    'Flutter & Dart Specialist',
-    'React.js & TypeScript Architect',
-    'Real-time Systems Builder (SignalR)',
+    'Mobile App Developer (Flutter & Dart)',
+    'Android & iOS Cross-Platform Engineer',
+    'Firebase, REST API & SignalR Integrator',
+    'Frontend & React.js Developer',
     'FinTech & Payment Gateway Integrator',
   ],
   summary:
-    'Frontend & Mobile Software Engineer with 5+ years of experience engineering high-performance mobile apps, ' +
-    'reactive web platforms, and real-time systems. Specialized in Flutter/Dart, React.js, TypeScript, BLoC architecture, ' +
-    'SignalR stream synchronization, and payment integrations with Telebirr and Chapa. ' +
+    'Mobile App Developer with 1.5+ years of hands-on experience engineering production Android & iOS applications, ' +
+    'real-time systems, and reactive web platforms. Specialized in Flutter/Dart, Firebase, REST APIs, BLoC architecture, ' +
+    'SignalR stream synchronization, Google Maps SDK, and payment integrations with Telebirr and Chapa. ' +
     'Graduated with Academic Honors from Mekelle Institute of Technology (MIT) with a 3.88 / 4.00 CGPA.',
 };
 
 export const EXPERIENCE = [
   {
     company: 'Niyat Consultancy PLC',
-    role: 'Frontend & Mobile Developer',
+    role: 'Mobile App Developer (Flutter & Dart)',
     period: 'Sep 2025 — Present',
     location: 'Addis Ababa, Ethiopia',
     mode: 'Hybrid',
     type: 'Full-time',
     current: true,
     points: [
-      'Architect and build production cross-platform mobile apps in Flutter and high-throughput web dashboards in React.js and TypeScript.',
-      'Integrated real-time SignalR hubs and Google Maps SDK for live GPS fleet tracking and sub-second ride dispatch.',
+      'Architect and ship production cross-platform Android & iOS apps in Flutter/Dart alongside responsive web dashboards in React.js and TypeScript.',
+      'Integrated Firebase (FCM Push Notifications, Auth), real-time SignalR hubs, RESTful APIs, and Google Maps SDK for live GPS fleet tracking and sub-second ride dispatch.',
       'Engineered automated payment settlement pipelines with Telebirr and Chapa gateways for high-volume consumer transactions.',
-      'Standardized BLoC state architecture for predictable unidirectional data flow, locking mobile UI performance at 60 FPS.',
+      'Standardized Clean Architecture and BLoC state management for predictable unidirectional data flow, locking mobile UI performance at 60 FPS.',
     ],
-    stack: ['Flutter', 'Dart', 'React.js', 'TypeScript', 'BLoC', 'SignalR', 'Telebirr & Chapa', 'PostgreSQL', 'Tailwind CSS'],
+    stack: ['Flutter', 'Dart', 'Firebase', 'REST APIs', 'BLoC', 'SignalR', 'Google Maps SDK', 'React.js', 'TypeScript'],
     products: ['Axumite Ride (Play Store)', 'Shemeta E-Commerce'],
   },
   {
@@ -260,9 +260,10 @@ export const SKILL_CATEGORIES = {
 
 // node: true → appears as an interactive 3D node in the Three.js mesh
 export const SKILLS = [
-  { label: 'Flutter', cat: 'mobile', node: true, info: 'Primary mobile framework since 2021 — production apps on Google Play Store with thousands of active rides.' },
+  { label: 'Flutter', cat: 'mobile', node: true, info: 'Primary cross-platform Android & iOS framework — production apps published on Google Play Store with thousands of active rides.' },
   { label: 'Dart', cat: 'mobile', node: true, info: 'Language for all mobile apps — async streams, isolates, and clean object-oriented architecture.' },
   { label: 'BLoC Pattern', cat: 'mobile', node: true, info: 'State management choice for predictable unidirectional data flow and 60 FPS mobile UI.' },
+  { label: 'Firebase (FCM & Auth)', cat: 'mobile', node: true, info: 'Push notifications (FCM), authentication, Firestore real-time syncing, and crash reporting across Android & iOS.' },
   { label: 'Google Maps SDK', cat: 'mobile', node: true, info: 'Live geospatial tracking, polyline route calculation, and driver location updates.' },
   { label: 'React.js', cat: 'frontend', node: true, info: 'Core web UI framework for dashboards, admin portals, and multi-vendor e-commerce platforms.' },
   { label: 'TypeScript', cat: 'frontend', node: true, info: 'Type-safe enterprise web development across customer storefronts and internal tools.' },
@@ -362,7 +363,7 @@ export const HIGHLIGHTS = [
   'Shipped Axumite Ride to Google Play Store with thousands of active rides and live SignalR dispatch.',
   'Integrated Telebirr and Chapa payment gateways across production mobile and web platforms.',
   'Built on-device AI diagnostic mobile app using Flutter and TensorFlow Lite computer vision models.',
-  '5+ years engineering high-performance mobile apps (Flutter/Dart) and responsive web applications (React/TypeScript).',
+  '1.5+ years engineering production Android & iOS mobile apps (Flutter/Dart, Firebase, REST APIs) and responsive web platforms (React/TypeScript).',
 ];
 
 export const ANALYTICS = {

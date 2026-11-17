@@ -162,7 +162,7 @@ function renderStatic() {
     <li><b>${esc(a.title)}</b> — ${esc(a.org)}<span>${esc(a.date)}</span></li>`).join('');
   $('#year').textContent = new Date().getFullYear();
   const dim = $('#bp-dim-label');
-  if (dim) dim.textContent = `5+ YRS · 9+ PRODUCTION APPS · MIT HONORS (3.88 GPA)`;
+  if (dim) dim.textContent = `1.5+ YRS · 9+ PRODUCTION APPS · MIT HONORS (3.88 GPA)`;
   $('#exp-sub').textContent = `Production mobile and web engineering — newest first.`;
 }
 
@@ -405,17 +405,19 @@ function counters() {
     entries.forEach((e) => {
       if (e.isIntersecting) {
         const el = e.target;
-        const target = parseFloat(el.dataset.count);
+        const raw = el.dataset.count;
+        const target = parseFloat(raw);
         const suffix = el.dataset.suffix || '';
-        const isDecimal = String(target).includes('.');
+        const isDecimal = raw.includes('.');
+        const decimals = isDecimal ? raw.split('.')[1].length : 0;
         const duration = 1400;
         const start = performance.now();
         const step = (now) => {
           const progress = Math.min(1, (now - start) / duration);
           const current = progress * target;
-          el.textContent = (isDecimal ? current.toFixed(2) : Math.floor(current)) + suffix;
+          el.textContent = (isDecimal ? current.toFixed(decimals) : Math.floor(current)) + suffix;
           if (progress < 1) requestAnimationFrame(step);
-          else el.textContent = target + suffix;
+          else el.textContent = raw + suffix;
         };
         requestAnimationFrame(step);
         obs.unobserve(el);
@@ -667,7 +669,7 @@ function terminal() {
         `<span class="ok">kaleab</span>@<span class="ok">portfolio</span>`,
         '<span class="dim">─────────────────</span>',
         `<span class="c">OS</span>       ${esc(PROFILE.title)}`,
-        `<span class="c">Uptime</span>   5+ years production`,
+        `<span class="c">Uptime</span>   1.5+ years production`,
         `<span class="c">Host</span>     ${esc(PROFILE.location)}`,
         `<span class="c">Shell</span>    Dart / TypeScript / Python`,
         `<span class="c">Stack</span>    Flutter · React · SignalR · BLoC · FastAPI`,

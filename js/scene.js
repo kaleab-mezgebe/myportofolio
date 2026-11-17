@@ -738,7 +738,7 @@ function start() {
       tipKey = key;
       if (isCore) {
         tip.style.setProperty('--c', '#00f0ff');
-        tip.innerHTML = `<small>core // runtime</small><b>kaleab.engine</b><p>5+ years uptime · ${TEAM_COUNT} deployments. Click to broadcast packets to every service.</p>`;
+        tip.innerHTML = `<small>core // runtime</small><b>kaleab.engine</b><p>1.5+ years uptime · ${TEAM_COUNT} deployments. Click to broadcast packets to every service.</p>`;
       } else {
         tip.style.setProperty('--c', n.hex);
         tip.innerHTML = `<small>${SKILL_CATEGORIES[n.d.cat].label}</small><b>${n.d.label}</b><p>${n.d.info}</p>`;
