@@ -309,6 +309,8 @@ export const HIGHLIGHTS = [
   'Over 3+ years of professional experience engineering production Android & iOS mobile apps with Flutter, Dart, Firebase, REST APIs, and BLoC.',
 ];
 
+export const SOFOF_PROJECTS = [];
+
 export const ANALYTICS = {
   provider: null,
   domains: ['kaleab-mezgebe.github.io'],

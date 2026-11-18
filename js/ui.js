@@ -10,7 +10,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(pointer: fine)').matches;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const emit = (name, detail) => window.dispatchEvent(new CustomEvent(name, { detail }));
-const SECTION_IDS = ['hero', 'about', 'origin', 'flow', 'experience', 'projects', 'incident', 'skills', 'terminal', 'contact'];
+const SECTION_IDS = ['hero', 'about', 'flow', 'experience', 'projects', 'skills', 'terminal', 'contact'];
 
 renderStatic();
 renderFlow();
