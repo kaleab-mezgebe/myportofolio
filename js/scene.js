@@ -17,14 +17,14 @@ import { createPipeline } from './pipeline.js';
 // nx/ny: position in screen space (-1..1), my: ny on mobile, z: depth, s: scale, l: label opacity,
 // p: visibility of the 'follow the request' pipeline, ms: scale on phones (mesh only lives in the hero there)
 const KEYFRAMES = {
-  hero:       { nx: 0.44,  ny: 0,     my: 0.7,  z: 0,  s: 1.0,  l: 1, p: 0, ms: 1 },
-  about:      { nx: -0.55, ny: 0.05,  my: 0,    z: -5, s: 0.8,  l: 0, p: 0, ms: 0 },
-  flow:       { nx: 1.6,   ny: 0.1,   my: 0,    z: -20, s: 0.01, l: 0, p: 1, ms: 0 },
-  experience: { nx: 0.62,  ny: -0.05, my: 0,    z: -7, s: 0.75, l: 0, p: 0, ms: 0 },
-  projects:   { nx: 0,     ny: 0.1,   my: 0,    z: -9, s: 0.9,  l: 0, p: 0, ms: 0 },
-  skills:     { nx: -0.47, ny: -0.2,  my: 0,    z: 0,  s: 0.84, l: 1, p: 0, ms: 0 },
-  terminal:   { nx: 0.6,   ny: -0.05, my: 0,    z: -5, s: 0.8,  l: 0, p: 0, ms: 0 },
-  contact:    { nx: 0,     ny: -0.95, my: -0.8, z: -3, s: 1.25, l: 0, p: 0, ms: 0 },
+  hero: { nx: 0.44, ny: 0, my: 0.7, z: 0, s: 1.0, l: 1, p: 0, ms: 1 },
+  about: { nx: -0.55, ny: 0.05, my: 0, z: -5, s: 0.8, l: 0, p: 0, ms: 0 },
+  flow: { nx: 1.6, ny: 0.1, my: 0, z: -20, s: 0.01, l: 0, p: 1, ms: 0 },
+  experience: { nx: 0.62, ny: -0.05, my: 0, z: -7, s: 0.75, l: 0, p: 0, ms: 0 },
+  projects: { nx: 0, ny: 0.1, my: 0, z: -9, s: 0.9, l: 0, p: 0, ms: 0 },
+  skills: { nx: -0.47, ny: -0.2, my: 0, z: 0, s: 0.84, l: 1, p: 0, ms: 0 },
+  terminal: { nx: 0.6, ny: -0.05, my: 0, z: -5, s: 0.8, l: 0, p: 0, ms: 0 },
+  contact: { nx: 0, ny: -0.95, my: -0.8, z: -3, s: 1.25, l: 0, p: 0, ms: 0 },
 };
 
 const BG = 0x05070d;
@@ -66,7 +66,7 @@ function start() {
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.8, 0.4, 0.32);  composer.addPass(bloom);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.8, 0.4, 0.32); composer.addPass(bloom);
   composer.addPass(new OutputPass());
   // ?lite in the URL disables bloom (useful on low-end devices / for debugging)
   let useBloom = !new URLSearchParams(location.search).has('lite');
@@ -469,7 +469,7 @@ function start() {
     const stepEls = [...document.querySelectorAll('.flow-step')];
     flowStops = flowEl && stepEls.length
       ? [flowEl.getBoundingClientRect().top + scrollY + innerHeight * 0.2,
-        ...stepEls.map((el) => { const r = el.getBoundingClientRect(); return r.top + scrollY + r.height / 2; })]
+      ...stepEls.map((el) => { const r = el.getBoundingClientRect(); return r.top + scrollY + r.height / 2; })]
       : [];
   }
   let flowStops = [];
@@ -738,7 +738,7 @@ function start() {
       tipKey = key;
       if (isCore) {
         tip.style.setProperty('--c', '#00f0ff');
-        tip.innerHTML = `<small>core // runtime</small><b>kaleab.engine</b><p>1.5+ years uptime · ${TEAM_COUNT} deployments. Click to broadcast packets to every service.</p>`;
+        tip.innerHTML = `<small>core // runtime</small><b>kaleab.engine</b><p>Over 3+ years professional mobile experience · ${TEAM_COUNT} roles. Click to broadcast packets to every service.</p>`;
       } else {
         tip.style.setProperty('--c', n.hex);
         tip.innerHTML = `<small>${SKILL_CATEGORIES[n.d.cat].label}</small><b>${n.d.label}</b><p>${n.d.info}</p>`;

@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────
 //  Quick view — a 30-second recruiter summary.
-//  Kaleab Mezgebe — Frontend & Mobile Software Engineer
+//  Kaleab Mezgebe — Mobile App Developer (Flutter & Dart)
 // ─────────────────────────────────────────────────────────────
 import { PROFILE, EXPERIENCE, PROJECTS, SKILLS, SKILL_CATEGORIES, EDUCATION, HIGHLIGHTS } from './data.js';
 import { track } from './analytics.js';
@@ -33,7 +33,7 @@ function init() {
         <div>
           <h1 id="quick-title">${esc(PROFILE.name)}</h1>
           <p class="q-role">${esc(roleLine)}</p>
-          <p class="q-meta">${esc(PROFILE.location)} · 1.5+ years · Flutter, Dart, Firebase, REST APIs, BLoC</p>
+          <p class="q-meta">${esc(PROFILE.location)} · Over 3+ years professional experience · Flutter, Dart, Android &amp; iOS, Firebase, REST APIs</p>
         </div>
         <ul class="q-contact">
           <li><a href="mailto:${esc(PROFILE.email)}">${esc(PROFILE.email)}</a></li>

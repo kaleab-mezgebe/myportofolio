@@ -162,8 +162,8 @@ function renderStatic() {
     <li><b>${esc(a.title)}</b> — ${esc(a.org)}<span>${esc(a.date)}</span></li>`).join('');
   $('#year').textContent = new Date().getFullYear();
   const dim = $('#bp-dim-label');
-  if (dim) dim.textContent = `1.5+ YRS · 9+ PRODUCTION APPS · MIT HONORS (3.88 GPA)`;
-  $('#exp-sub').textContent = `Production mobile and web engineering — newest first.`;
+  if (dim) dim.textContent = `OVER 3+ YRS EXP · 5+ MOBILE APPS · MIT HONORS (3.88 GPA)`;
+  $('#exp-sub').textContent = `Production mobile app engineering — newest first.`;
 }
 
 function shortHash(s) {
@@ -669,10 +669,10 @@ function terminal() {
         `<span class="ok">kaleab</span>@<span class="ok">portfolio</span>`,
         '<span class="dim">─────────────────</span>',
         `<span class="c">OS</span>       ${esc(PROFILE.title)}`,
-        `<span class="c">Uptime</span>   1.5+ years production`,
+        `<span class="c">Uptime</span>   Over 3+ years professional experience`,
         `<span class="c">Host</span>     ${esc(PROFILE.location)}`,
-        `<span class="c">Shell</span>    Dart / TypeScript / Python`,
-        `<span class="c">Stack</span>    Flutter · React · SignalR · BLoC · FastAPI`,
+        `<span class="c">Shell</span>    Dart / Flutter / Android &amp; iOS`,
+        `<span class="c">Stack</span>    Flutter · Dart · Firebase · BLoC · REST APIs · SignalR`,
         `<span class="c">Honors</span>   MIT CGPA 3.88 · Exit Exam 86 (Top Tier)`,
       ];
       return [
