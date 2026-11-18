@@ -33,7 +33,7 @@ function init() {
         <div>
           <h1 id="quick-title">${esc(PROFILE.name)}</h1>
           <p class="q-role">${esc(roleLine)}</p>
-          <p class="q-meta">${esc(PROFILE.location)} · Over 3+ years professional experience · Flutter, Dart, Android &amp; iOS, Firebase, REST APIs</p>
+          <p class="q-meta">${esc(PROFILE.location)} · 3+ years experience · Flutter, Dart, BLoC/Cubit, Provider, Riverpod, Firebase, Dio</p>
         </div>
         <ul class="q-contact">
           <li><a href="mailto:${esc(PROFILE.email)}">${esc(PROFILE.email)}</a></li>

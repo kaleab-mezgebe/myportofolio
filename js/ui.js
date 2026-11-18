@@ -162,7 +162,7 @@ function renderStatic() {
     <li><b>${esc(a.title)}</b> — ${esc(a.org)}<span>${esc(a.date)}</span></li>`).join('');
   $('#year').textContent = new Date().getFullYear();
   const dim = $('#bp-dim-label');
-  if (dim) dim.textContent = `OVER 3+ YRS EXP · 5+ MOBILE APPS · MIT HONORS (3.88 GPA)`;
+  if (dim) dim.textContent = `3+ YRS EXP · 6+ MOBILE APPS · MIT HONORS (3.88 GPA)`;
   $('#exp-sub').textContent = `Production mobile app engineering — newest first.`;
 }
 
